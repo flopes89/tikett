@@ -11,7 +11,6 @@ const run = () => {
         schema: require("./schema"),
         rootValue: require("./resolvers"),
         graphiql: true,
-        formatError: (error_) => console.error(error_),
     }));
 
     app.listen(process.env.PORT, () => console.log(`Running server on ${process.env.PORT}`));
