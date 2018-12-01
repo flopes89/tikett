@@ -1,7 +1,10 @@
 const db = require("./db");
+const _ = require("lodash");
 
 const files = () => {
-    const files = db.getFiles();
+    // Deep copy the files array to make sure changing
+    // the tags on a file isn't persisted to the database
+    const files = _.map(db.getFiles(), _.clone);
 
     files.forEach((file_) => {
         if (file_.tags) {

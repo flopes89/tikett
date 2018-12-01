@@ -1,5 +1,6 @@
 import React from "react";
 import { Table } from "reactstrap";
+import Tag from "./tag";
 
 export default ({ files }) => (
     <Table>
@@ -17,7 +18,7 @@ export default ({ files }) => (
                     <tr key={index_}>
                         <td>{file_.name}</td>
                         <td>{file_.tags.map((tag_, index_) => (
-                            <span key={index_}>{tag_.name}</span>
+                            <Tag key={index_} color={tag_.color}>{tag_.name}</Tag>
                         ))}</td>
                     </tr>
                 );

@@ -14,8 +14,11 @@ export default () => (
             <Col><ReloadButton /></Col>
         </Row>
         <Row>
-            <Col>Folders</Col>
+            <Col xs={4}>
+                <h2>Tag Groups</h2>
+            </Col>
             <Col>
+                <h2>Files</h2>
                 <Files />
             </Col>
         </Row>

@@ -15,7 +15,7 @@ let DB = Object.assign({}, DB_DEFAULTS);
 
 const dump = () => {
     console.log("Dumping current database contents");
-    fs.writeFileSync(DBPATH, JSON.stringify(DB));
+    fs.writeFileSync(DBPATH, JSON.stringify(DB, null, 2));
 };
 
 const reload = () => {
