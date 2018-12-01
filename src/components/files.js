@@ -1,9 +1,16 @@
 import React from "react";
 import { Table } from "reactstrap";
 import Tag from "./tag";
-import { Form, FormGroup, Label, Input } from "reactstrap";
+import {
+    Form,
+    FormGroup,
+    Label,
+    Input,
+    Breadcrumb,
+    BreadcrumbItem,
+} from "reactstrap";
 
-export default ({ files, showAllChildren, toggleShowAllChildren }) => (
+export default ({ files, showAllChildren, toggleShowAllChildren, breadcrumbs, openFolder }) => (
     <div>
         <Form>
             <FormGroup check>
@@ -18,6 +25,11 @@ export default ({ files, showAllChildren, toggleShowAllChildren }) => (
                 </Label>
             </FormGroup>
         </Form>
+        <Breadcrumb>
+            {breadcrumbs.map((breadcrumb_, index_) => (
+                <BreadcrumbItem key={index_}>{breadcrumb_}</BreadcrumbItem>
+            ))}
+        </Breadcrumb>
         <Table>
             <thead>
                 <tr>
@@ -30,7 +42,11 @@ export default ({ files, showAllChildren, toggleShowAllChildren }) => (
                     let name = file_.name;
 
                     if (!file_.isFile) {
-                        name = "[" + name + "]";
+                        name = (
+                            <a onClick={() => openFolder(file_.name)}>
+                                [{name}]
+                            </a>
+                        );
                     }
 
                     return (

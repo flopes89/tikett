@@ -17,6 +17,11 @@ const files = ({ current, showAllChildren }) => {
     files.forEach((file_) => {
         const filePath = path.relative(currentFolder, file_.path);
 
+        // Ignore the current folder
+        if (!filePath) {
+            return;
+        }
+
         if (showAllChildren) {
             // When all ancestors should be shown, there is no use in
             // showing the folders themselves as well
@@ -24,8 +29,15 @@ const files = ({ current, showAllChildren }) => {
                 return;
             }
 
+            const dirname = path.dirname(filePath);
+
+            // Ignore files that are not actually children of this folder
+            if (dirname === "..") {
+                return;
+            }
+
             // Files should however show which folder they are in
-            file_.name = path.dirname(filePath) + path.sep + file_.name;
+            file_.name = dirname + path.sep + file_.name;
         } else if (filePath.indexOf(path.sep) !== -1) {
             // Ignore any files that in subfolder of the current path
             return;
@@ -38,6 +50,13 @@ const files = ({ current, showAllChildren }) => {
         }
 
         enhancedFiles.push(file_);
+    });
+
+    enhancedFiles.unshift({
+        name: "..",
+        tags: [],
+        isFile: false,
+        path: path.resolve(currentFolder, ".."),
     });
 
     return enhancedFiles;
