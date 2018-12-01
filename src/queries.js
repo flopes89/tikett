@@ -13,12 +13,10 @@ const FILES = `
 export default {
     GET_FILES: gql`
         query(
-            $sort: String = "nameAsc"
             $current: String = "./"
             $showAllChildren: Boolean = false 
         ) {
             files(
-                sort: $sort
                 current: $current
                 showAllChildren: $showAllChildren
             ) {
@@ -29,12 +27,10 @@ export default {
 
     RELOAD_FILES: gql`
         mutation reload(
-            $sort: String = "nameAsc"
             $current: String = "./"
             $showAllChildren: Boolean = false
         ) {
             reload(
-                sort: $sort
                 current: $current
                 showAllChildren: $showAllChildren
             ) {

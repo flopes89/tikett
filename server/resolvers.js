@@ -2,7 +2,7 @@ const path = require("path");
 const db = require("./db");
 const _ = require("lodash");
 
-const files = ({ sort, current, showAllChildren }) => {
+const files = ({ current, showAllChildren }) => {
     // Deep copy the files array to make sure changing
     // the tags on a file isn't persisted to the database
     const files = _.map(db.getFiles(), _.clone);
@@ -15,18 +15,29 @@ const files = ({ sort, current, showAllChildren }) => {
     let enhancedFiles = [];
 
     files.forEach((file_) => {
-        // Ignore any files that in subfolder of the current path
         const filePath = path.relative(currentFolder, file_.path);
-        if (!showAllChildren && filePath.indexOf(path.sep) !== -1) {
-            return null;
+
+        if (showAllChildren) {
+            // When all ancestors should be shown, there is no use in
+            // showing the folders themselves as well
+            if (!file_.isFile) {
+                return;
+            }
+
+            // Files should however show which folder they are in
+            file_.name = path.dirname(filePath) + path.sep + file_.name;
+        } else if (filePath.indexOf(path.sep) !== -1) {
+            // Ignore any files that in subfolder of the current path
+            return;
         }
 
         if (file_.tags) {
             const tagObjects = [];
             file_.tags.forEach((tag_) => tagObjects.push(db.getOrCreateTag(tag_)));
             file_.tags = tagObjects;
-            enhancedFiles.push(file_);
         }
+
+        enhancedFiles.push(file_);
     });
 
     return enhancedFiles;

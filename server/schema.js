@@ -27,7 +27,6 @@ module.exports = buildSchema(`
         ): [Tag]!
 
         files(
-            sort: String = "nameAsc"
             current: String = "./"
             showAllChildren: Boolean = false
         ): [File]!
@@ -35,7 +34,6 @@ module.exports = buildSchema(`
 
     type Mutation {
         reload(
-            sort: String = "nameAsc"
             current: String = "./"
             showAllChildren: Boolean = false
         ): [File]!
