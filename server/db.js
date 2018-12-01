@@ -13,25 +13,28 @@ const DB_DEFAULTS = {
 
 let DB = Object.assign({}, DB_DEFAULTS);
 
-const dump = () => fs.writeFileSync(DBPATH, JSON.stringify(DB));
+const dump = () => {
+    console.log("Dumping current database contents");
+    fs.writeFileSync(DBPATH, JSON.stringify(DB));
+};
 
 const reload = () => {
     if (!fs.existsSync(DBPATH)) {
         dump();
     }
 
+    console.log("Reloading databse from file");
     DB = Object.assign({}, DB_DEFAULTS, JSON.parse(fs.readFileSync(DBPATH)));
 };
 
 reload();
 
-const getFiles = () => {
-    reload();
-    return DB.files;
-};
+const getFiles = () => DB.files;
 
 const reloadFiles = () => {
-    const files = glob.sync(process.env.FILE_ROOT + "/**/*");
+    const files = glob.sync(process.env.FILE_ROOT + "/**/*", {
+        ignore: "**/tagsterdb.json",
+    });
 
     DB.files = [];
 
@@ -47,16 +50,13 @@ const reloadFiles = () => {
             isFile: fs.statSync(file_).isFile(),
         });
     });
-
-    dump();
 };
 
 const getOrCreateTag = (tag_) => {
-    reload();
-
     let result = _.find(DB.tags, { name: tag_ });
 
     if (!result) {
+        console.log("Creating new tag [" + tag_ + "]");
         result = {
             name: tag_,
             color: "#ccc",
@@ -64,12 +64,12 @@ const getOrCreateTag = (tag_) => {
         DB.tags.push(result);
     }
 
-    dump();
-
     return result;
 };
 
 module.exports = {
+    dump,
+    reload,
     getFiles,
     reloadFiles,
     getOrCreateTag,

@@ -10,14 +10,18 @@ export default ({ files }) => (
             </tr>
         </thead>
         <tbody>
-            {files.map((file_, index_) => (
-                <tr key={index_}>
-                    <td>{file_.name}</td>
-                    <td>{file_.tags.map((tag_, index_) => (
-                        <span key={index_}>{tag_.name}</span>
-                    ))}</td>
-                </tr>
-            ))}
+            {files.map((file_, index_) => {
+                if (!file_.isFile) return null;
+
+                return (
+                    <tr key={index_}>
+                        <td>{file_.name}</td>
+                        <td>{file_.tags.map((tag_, index_) => (
+                            <span key={index_}>{tag_.name}</span>
+                        ))}</td>
+                    </tr>
+                );
+            })}
         </tbody>
     </Table>
 );
