@@ -1,13 +1,12 @@
 import React from "react";
-import { Button } from "reactstrap";
+import { Badge } from "reactstrap";
 
 export default ({ children, color }) => (
-    <Button
+    <Badge
         style={{
             backgroundColor: color,
         }}
-        size="sm"
     >
         {children}
-    </Button>
+    </Badge>
 );

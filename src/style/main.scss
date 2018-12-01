@@ -1,2 +1,10 @@
 @import "custom";
 @import "~bootstrap/scss/bootstrap";
+
+#files_component {
+    tr {
+        &.folder {
+            cursor: pointer;
+        }
+    }
+}
