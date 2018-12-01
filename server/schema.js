@@ -27,14 +27,18 @@ module.exports = buildSchema(`
         ): [Tag]!
 
         files(
-            sort: String
-            current: String
-            showAllChildren: Boolean
+            sort: String = "nameAsc"
+            current: String = "./"
+            showAllChildren: Boolean = false
         ): [File]!
     }
 
     type Mutation {
-        reload: [File]!
+        reload(
+            sort: String = "nameAsc"
+            current: String = "./"
+            showAllChildren: Boolean = false
+        ): [File]!
 
         addTag(
             file: String!

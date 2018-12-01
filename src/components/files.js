@@ -12,14 +12,22 @@ export default ({ files }) => (
         </thead>
         <tbody>
             {files.map((file_, index_) => {
-                if (!file_.isFile) return null;
+                let name = file_.name;
+
+                if (!file_.isFile) {
+                    name = "[" + name + "]";
+                }
 
                 return (
                     <tr key={index_}>
-                        <td>{file_.name}</td>
-                        <td>{file_.tags.map((tag_, index_) => (
-                            <Tag key={index_} color={tag_.color}>{tag_.name}</Tag>
-                        ))}</td>
+                        <td>
+                            {name}
+                        </td>
+                        <td>
+                            {file_.isFile && file_.tags.map((tag_, index_) => (
+                                <Tag key={index_} color={tag_.color}>{tag_.name}</Tag>
+                            ))}
+                        </td>
                     </tr>
                 );
             })}
