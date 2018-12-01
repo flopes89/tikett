@@ -4,11 +4,11 @@ import ReloadButton from "../components/reloadButton";
 import queries from "../queries";
 import { Loading, Error } from "./util";
 
-const update = (cache_, { files }) => {
+const update = (cache_, { data: { reload } }) => {
     cache_.writeQuery({
         query: queries.GET_FILES,
         data: {
-            files,
+            files: reload,
         }
     });
 };
