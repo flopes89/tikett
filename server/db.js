@@ -1,54 +1,70 @@
 const path = require("path");
 const fs = require("fs");
 const glob = require("glob");
-const lowdb = require("lowdb");
-const FileSync = require("lowdb/adapters/FileSync");
+const _ = require("lodash");
 
-const adapter = new FileSync(path.resolve(process.env.FILE_ROOT, "otfs-db.json"));
-const db = lowdb(adapter);
+const DBPATH = path.resolve(process.env.FILE_ROOT, "tagsterdb.json");
 
-db.defaults({
+const DB_DEFAULTS = {
     files: [],
     tagGroups: [],
     tags: [],
-}).write();
+};
 
-const getFiles = () => db.get("files").value();
+let DB = Object.assign({}, DB_DEFAULTS);
+
+const dump = () => fs.writeFileSync(DBPATH, JSON.stringify(DB));
+
+const reload = () => {
+    if (!fs.existsSync(DBPATH)) {
+        dump();
+    }
+
+    DB = Object.assign({}, DB_DEFAULTS, JSON.parse(fs.readFileSync(DBPATH)));
+};
+
+reload();
+
+const getFiles = () => {
+    reload();
+    return DB.files;
+};
 
 const reloadFiles = () => {
     const files = glob.sync(process.env.FILE_ROOT + "/**/*");
 
-    db.unset("files").write();
-    db.set("files", []).write();
-    const dbFiles = db.get("files");
+    DB.files = [];
 
     files.forEach((file_) => {
         const basename = path.basename(file_);
         const name = basename.replace(/\[[^\]]*\]/, "");
         const tags = /\[([^\]]*)\]/.exec(basename);
 
-        dbFiles.push({
+        DB.files.push({
             name: name,
             tags: tags ? tags[1].split(" ") : [],
             path: path.resolve(file_),
             isFile: fs.statSync(file_).isFile(),
-        }).write();
+        });
     });
 
-    return true;
+    dump();
 };
 
 const getOrCreateTag = (tag_) => {
-    const tags = db.get("tags");
-    let result = tags.find({ name: tag_ }).value();
+    reload();
+
+    let result = _.find(DB.tags, { name: tag_ });
 
     if (!result) {
         result = {
             name: tag_,
             color: "#ccc",
         };
-        tags.push(result).write();
+        DB.tags.push(result);
     }
+
+    dump();
 
     return result;
 };

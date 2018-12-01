@@ -1,7 +1,7 @@
 import React from "react";
 import { Table } from "reactstrap";
 
-export default (files_) => (
+export default ({ files }) => (
     <Table>
         <thead>
             <tr>
@@ -10,11 +10,11 @@ export default (files_) => (
             </tr>
         </thead>
         <tbody>
-            {files_.map((file_, index_) => (
+            {files.map((file_, index_) => (
                 <tr key={index_}>
                     <td>{file_.name}</td>
-                    <td>{file_.tags.map((tag_) => (
-                        <span>{tag_.name}</span>
+                    <td>{file_.tags.map((tag_, index_) => (
+                        <span key={index_}>{tag_.name}</span>
                     ))}</td>
                 </tr>
             ))}

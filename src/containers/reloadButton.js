@@ -4,12 +4,14 @@ import ReloadButton from "../components/reloadButton";
 import queries from "../queries";
 import { Loading, Error } from "./util";
 
-const update = (cache_, { data: files }) => cache_.writeQuery({
-    query: queries.GET_FILES,
-    data: {
-        files,
-    }
-});
+const update = (cache_, { files }) => {
+    cache_.writeQuery({
+        query: queries.GET_FILES,
+        data: {
+            files,
+        }
+    });
+};
 
 export default () => (
     <Mutation
