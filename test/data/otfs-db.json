@@ -1,0 +1,44 @@
+{
+  "tagGroups": [],
+  "tags": [
+    {
+      "name": "tag1",
+      "color": "#ccc"
+    },
+    {
+      "name": "tag2",
+      "color": "#ccc"
+    }
+  ],
+  "files": [
+    {
+      "name": "file1.txt",
+      "tags": [],
+      "path": "C:\\Users\\FloPes\\Development\\ofts\\test\\data\\file1.txt",
+      "isFile": true
+    },
+    {
+      "name": "file1.txt",
+      "tags": [
+        "tag1"
+      ],
+      "path": "C:\\Users\\FloPes\\Development\\ofts\\test\\data\\file1[tag1].txt",
+      "isFile": true
+    },
+    {
+      "name": "file2",
+      "tags": [
+        "tag1",
+        "tag2"
+      ],
+      "path": "C:\\Users\\FloPes\\Development\\ofts\\test\\data\\file2[tag1 tag2]",
+      "isFile": true
+    },
+    {
+      "name": "otfs-db.json",
+      "tags": [],
+      "path": "C:\\Users\\FloPes\\Development\\ofts\\test\\data\\otfs-db.json",
+      "isFile": true
+    }
+  ]
+}
