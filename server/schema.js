@@ -34,7 +34,7 @@ module.exports = buildSchema(`
     }
 
     type Mutation {
-        reload: Boolean!
+        reload: [File]!
 
         addTag(
             file: String!
