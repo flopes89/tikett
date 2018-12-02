@@ -28,14 +28,14 @@ module.exports = buildSchema(`
 
         files(
             current: String = "./"
-            showAllChildren: Boolean = false
+            showDescendants: Boolean = false
         ): [File]!
     }
 
     type Mutation {
         reload(
             current: String = "./"
-            showAllChildren: Boolean = false
+            showDescendants: Boolean = false
         ): [File]!
 
         addTag(

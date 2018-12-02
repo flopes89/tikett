@@ -8,35 +8,44 @@ class FilesContainer extends React.PureComponent {
     constructor(props_) {
         super(props_);
 
-        this.toggleShowAllChildren = this.toggleShowAllChildren.bind(this);
+        this.toggleShowDescendants = this.toggleShowDescendants.bind(this);
         this.openFolder = this.openFolder.bind(this);
 
         this.state = {
-            current: "",
-            showAllChildren: false,
+            current: "/",
+            showDescendants: false,
         };
     }
 
     openFolder(folder_) {
-        const parts = this.state.current.split("/");
+        console.log("open folder: " + folder_);
         let newCurrent = this.state.current;
 
-        if (folder_ === "..") {
-            if (parts[parts.length] !== "") {
-                newCurrent = parts[parts.length - 1];
+        if (folder_.indexOf("/") === 0) {
+            newCurrent = folder_;
+        } else if (folder_ === "..") {
+            if (newCurrent === "/") {
+                newCurrent = "/";
+            } else {
+                const parts = newCurrent.split("/");
+                console.log(parts);
+                parts.splice(-2, 2);
+                console.log(parts);
+                newCurrent = parts.join("/") + "/";
             }
         } else {
             newCurrent += folder_ + "/";
         }
 
+        console.log("new folder: " + newCurrent);
         this.setState({
             current: newCurrent,
         });
     }
 
-    toggleShowAllChildren() {
+    toggleShowDescendants() {
         this.setState({
-            showAllChildren: !this.state.showAllChildren,
+            showDescendants: !this.state.showDescendants,
         });
     }
 
@@ -44,16 +53,32 @@ class FilesContainer extends React.PureComponent {
         const {
             state: {
                 current,
-                showAllChildren,
+                showDescendants,
             }
         } = this;
+        console.log("current: " + current);
+
+        const breadcrumbs = [];
+        let breadcrumbPath = "/";
+        current.split("/").forEach((crumb_) => {
+            if (!crumb_) {
+                return;
+            }
+
+            breadcrumbs.push({
+                name: crumb_,
+                path: breadcrumbPath + crumb_,
+            });
+
+            breadcrumbPath += crumb_ + "/";
+        });
 
         return (
             <Query
                 query={queries.GET_FILES}
                 variables={{
                     current,
-                    showAllChildren,
+                    showDescendants,
                 }}
             >
                 {({ loading, error, data }) => {
@@ -62,10 +87,10 @@ class FilesContainer extends React.PureComponent {
                     return (
                         <Files
                             files={data.files}
-                            breadcrumbs={current.split("/")}
+                            breadcrumbs={breadcrumbs}
                             openFolder={this.openFolder}
-                            showAllChildren={showAllChildren}
-                            toggleShowAllChildren={this.toggleShowAllChildren}
+                            showDescendants={showDescendants}
+                            toggleShowDescendants={this.toggleShowDescendants}
                         />
                     );
                 }}

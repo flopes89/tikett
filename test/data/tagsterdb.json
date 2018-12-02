@@ -37,6 +37,21 @@
       ],
       "path": "C:\\Users\\FloPes\\Development\\ofts\\test\\data\\folder1\\file11[moretag].exe",
       "isFile": true
+    },
+    {
+      "name": "folder2",
+      "tags": [],
+      "path": "C:\\Users\\FloPes\\Development\\ofts\\test\\data\\folder1\\folder2",
+      "isFile": false
+    },
+    {
+      "name": "file4",
+      "tags": [
+        "tag5",
+        "new_-ta%.g"
+      ],
+      "path": "C:\\Users\\FloPes\\Development\\ofts\\test\\data\\folder1\\folder2\\file4[tag5 new_-ta%.g]",
+      "isFile": true
     }
   ],
   "tagGroups": [],
@@ -51,6 +66,14 @@
     },
     {
       "name": "moretag",
+      "color": "#ccc"
+    },
+    {
+      "name": "tag5",
+      "color": "#ccc"
+    },
+    {
+      "name": "new_-ta%.g",
       "color": "#ccc"
     }
   ]

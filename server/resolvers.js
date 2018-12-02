@@ -2,10 +2,11 @@ const path = require("path");
 const db = require("./db");
 const _ = require("lodash");
 
-const files = ({ current, showAllChildren }) => {
+const files = ({ current, showDescendants }) => {
     // Deep copy the files array to make sure changing
     // the tags on a file isn't persisted to the database
     const files = _.map(db.getFiles(), _.clone);
+    current = current.substring(1, current.length);
 
     const currentFolder = path.resolve(process.env.FILE_ROOT, current);
 
@@ -22,24 +23,21 @@ const files = ({ current, showAllChildren }) => {
             return;
         }
 
-        if (showAllChildren) {
-            // When all ancestors should be shown, there is no use in
+        if (filePath.indexOf("..") !== -1) {
+            return;
+        }
+
+        if (showDescendants) {
+            // When all descendants should be shown, there is no use in
             // showing the folders themselves as well
             if (!file_.isFile) {
                 return;
             }
 
-            const dirname = path.dirname(filePath);
-
-            // Ignore files that are not actually children of this folder
-            if (dirname === "..") {
-                return;
-            }
-
             // Files should however show which folder they are in
-            file_.name = dirname + path.sep + file_.name;
+            file_.name = path.dirname(filePath) + path.sep + file_.name;
         } else if (filePath.indexOf(path.sep) !== -1) {
-            // Ignore any files that in subfolder of the current path
+            // Ignore files and folders in ancestors that are not actually children of this folder
             return;
         }
 

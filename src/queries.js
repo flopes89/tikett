@@ -14,11 +14,11 @@ export default {
     GET_FILES: gql`
         query(
             $current: String = "./"
-            $showAllChildren: Boolean = false 
+            $showDescendants: Boolean = false 
         ) {
             files(
                 current: $current
-                showAllChildren: $showAllChildren
+                showDescendants: $showDescendants
             ) {
                 ${FILES}
             }
@@ -28,11 +28,11 @@ export default {
     RELOAD_FILES: gql`
         mutation reload(
             $current: String = "./"
-            $showAllChildren: Boolean = false
+            $showDescendants: Boolean = false
         ) {
             reload(
                 current: $current
-                showAllChildren: $showAllChildren
+                showDescendants: $showDescendants
             ) {
                 ${FILES}
             }
