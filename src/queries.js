@@ -13,7 +13,7 @@ const FILES = `
 export default {
     GET_FILES: gql`
         query(
-            $current: String = "./"
+            $current: String = "/"
             $showDescendants: Boolean = false 
         ) {
             files(
@@ -27,7 +27,7 @@ export default {
 
     RELOAD_FILES: gql`
         mutation reload(
-            $current: String = "./"
+            $current: String = "/"
             $showDescendants: Boolean = false
         ) {
             reload(

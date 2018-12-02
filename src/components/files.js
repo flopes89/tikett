@@ -11,6 +11,7 @@ import {
     Breadcrumb,
     BreadcrumbItem,
 } from "reactstrap";
+import Octicon, { FileDirectory, File } from "@githubprimer/octicons-react";
 
 export default ({
     files,
@@ -52,13 +53,13 @@ export default ({
                 <Col>
                     <Form>
                         <FormGroup check>
-                            <Label check>
+                            <Label check className="pl-2">
                                 <Input
                                     type="checkbox"
                                     checked={showDescendants}
                                     onChange={toggleShowDescendants}
                                 />
-                                Show all children
+                                Show descendants
                             </Label>
                         </FormGroup>
                     </Form>
@@ -67,26 +68,25 @@ export default ({
             <Row>
                 <Col>
                     <Table hover>
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Tags</th>
-                            </tr>
-                        </thead>
                         <tbody>
                             {files.map((file_, index_) => {
                                 let name = file_.name;
-                                let className = "";
+                                let icon = (<Octicon icon={File} />);
+                                let className = "file";
                                 let onClick = null;
 
                                 if (!file_.isFile) {
                                     name = "[" + name + "]";
+                                    icon = (<Octicon icon={FileDirectory} />);
                                     className = "folder";
                                     onClick = () => openFolder(file_.name);
                                 }
 
                                 return (
                                     <tr key={index_} className={className} onClick={onClick}>
+                                        <td>
+                                            {icon}
+                                        </td>
                                         <td>
                                             {name}
                                         </td>

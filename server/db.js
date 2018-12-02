@@ -69,11 +69,14 @@ const getOrCreateTag = (tag_) => {
 
 const getTagGroups = () => DB.tagGroups;
 
+const getTags = () => DB.tags;
+
 module.exports = {
     dump,
     reload,
     getFiles,
     getTagGroups,
+    getTags,
     reloadFiles,
     getOrCreateTag,
 };
