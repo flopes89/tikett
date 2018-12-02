@@ -5,15 +5,24 @@ import "bootstrap";
 import "./style/main.scss";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
+import { Provider } from "react-redux";
+import { createStore } from "redux";
+import reducer from "./reducer";
 
 const client = new ApolloClient({
     uri: "/graphql",
 })
 
+const store = createStore(reducer, {},
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
+
 const root = document.getElementById("react-root");
 ReactDOM.render(
     <ApolloProvider client={client}>
-        <App />
+        <Provider store={store}>
+            <App />
+        </Provider>
     </ApolloProvider>
     , root);
 
