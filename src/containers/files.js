@@ -18,7 +18,6 @@ class FilesContainer extends React.PureComponent {
     }
 
     openFolder(folder_) {
-        console.log("open folder: " + folder_);
         let newCurrent = this.state.current;
 
         if (folder_.indexOf("/") === 0) {
@@ -28,16 +27,13 @@ class FilesContainer extends React.PureComponent {
                 newCurrent = "/";
             } else {
                 const parts = newCurrent.split("/");
-                console.log(parts);
                 parts.splice(-2, 2);
-                console.log(parts);
                 newCurrent = parts.join("/") + "/";
             }
         } else {
             newCurrent += folder_ + "/";
         }
 
-        console.log("new folder: " + newCurrent);
         this.setState({
             current: newCurrent,
         });
@@ -56,7 +52,6 @@ class FilesContainer extends React.PureComponent {
                 showDescendants,
             }
         } = this;
-        console.log("current: " + current);
 
         const breadcrumbs = [];
         let breadcrumbPath = "/";

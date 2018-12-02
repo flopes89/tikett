@@ -38,4 +38,17 @@ export default {
             }
         }
     `,
+
+    GET_TAG_GROUPS: gql`
+        query {
+            tagGroups {
+                name
+                color
+                tags {
+                    name
+                    color
+                }
+            }
+        }
+    `,
 };

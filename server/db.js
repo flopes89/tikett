@@ -67,10 +67,13 @@ const getOrCreateTag = (tag_) => {
     return result;
 };
 
+const getTagGroups = () => DB.tagGroups;
+
 module.exports = {
     dump,
     reload,
     getFiles,
+    getTagGroups,
     reloadFiles,
     getOrCreateTag,
 };

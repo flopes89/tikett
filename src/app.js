@@ -8,6 +8,7 @@ import {
 } from "reactstrap";
 import Files from "./containers/files";
 import ReloadButton from "./containers/reloadButton";
+import TagGroups from "./containers/tagGroups";
 
 export default () => (
     <div>
@@ -23,6 +24,7 @@ export default () => (
             <Container>
                 <Row>
                     <Col xs={4}>
+                        <TagGroups />
                     </Col>
                     <Col>
                         <Files />
@@ -31,7 +33,7 @@ export default () => (
             </Container>
         </main>
         <hr />
-        <footer className="text-center">
+        <footer className="text-center mb-3">
             <Container>
                 tagster &copy; Florian Peschka
             </Container>

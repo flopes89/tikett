@@ -65,7 +65,12 @@ const reload = (args_) => {
     return files(args_);
 };
 
+const tagGroups = () => {
+    return db.getTagGroups();
+};
+
 module.exports = {
     files,
+    tagGroups,
     reload,
 };
