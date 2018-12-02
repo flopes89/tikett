@@ -1,7 +1,7 @@
 import React from "react";
 import { Row, Col } from "reactstrap";
 import Tag from "./tag";
-import CreateTagGroup from "../containers/addTagGroup";
+import CreateTagGroup from "../containers/createTagGroup";
 
 const tagGroup = (group_, index_) => (
     <div className="tag_group" key={index_}>

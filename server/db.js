@@ -69,6 +69,14 @@ const getOrCreateTag = (tag_) => {
 
 const getTagGroups = () => DB.tagGroups;
 
+const createTagGroup = (name_) => {
+    DB.tagGroups.push({
+        name: name_,
+        color: "#ccc",
+        tags: [],
+    });
+};
+
 const getTags = () => DB.tags;
 
 module.exports = {
@@ -76,6 +84,7 @@ module.exports = {
     reload,
     getFiles,
     getTagGroups,
+    createTagGroup,
     getTags,
     reloadFiles,
     getOrCreateTag,

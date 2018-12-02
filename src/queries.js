@@ -10,6 +10,15 @@ const FILES = `
     isFile
 `;
 
+const TAG_GROUPS = `
+    name
+    color
+    tags {
+        name
+        color
+    }`
+    ;
+
 export default {
     GET_FILES: gql`
         query(
@@ -42,12 +51,19 @@ export default {
     GET_TAG_GROUPS: gql`
         query {
             tagGroups {
-                name
-                color
-                tags {
-                    name
-                    color
-                }
+                ${TAG_GROUPS}
+            }
+        }
+    `,
+
+    CREATE_TAG_GROUP: gql`
+        mutation createTagGroup(
+            $name: String!
+        ) {
+            createTagGroup(
+                name: $name
+            ) {
+                ${TAG_GROUPS}
             }
         }
     `,

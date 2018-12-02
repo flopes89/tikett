@@ -54,7 +54,33 @@
       "isFile": true
     }
   ],
-  "tagGroups": [],
+  "tagGroups": [
+    {
+      "name": "asd",
+      "color": "#ccc",
+      "tags": []
+    },
+    {
+      "name": "asdasd",
+      "color": "#ccc",
+      "tags": []
+    },
+    {
+      "name": "kasdfjöaskdlöf ",
+      "color": "#ccc",
+      "tags": []
+    },
+    {
+      "name": "kasdlfjöasödlkfasjdf",
+      "color": "#ccc",
+      "tags": []
+    },
+    {
+      "name": "fadfsdfaf",
+      "color": "#ccc",
+      "tags": []
+    }
+  ],
   "tags": [
     {
       "name": "tag1",

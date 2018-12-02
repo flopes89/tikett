@@ -50,24 +50,29 @@ module.exports = buildSchema(`
 
         renameTag(
             tag: String!
-            newName: String!
+            name: String!
         ): Tag!
 
         createTag(
-            tag: String!
+            name: String!
         ): Tag!
 
         deleteTag(
             tag: String!
         ): Boolean!
 
-        createGroup(
+        createTagGroup(
+            name: String!
+        ): [TagGroup]!
+
+        renameTagGroup(
             group: String!
+            name: String!
         ): TagGroup!
 
-        deleteGroup(
+        deleteTagGroup(
             group: String!
-        ): Boolean!
+        ): [TagGroup]!
 
         moveTag(
             tag: String!

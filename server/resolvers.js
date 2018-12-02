@@ -98,8 +98,14 @@ const tagGroups = () => {
     return enhancedGroups;
 };
 
+const createTagGroup = (args_) => {
+    db.createTagGroup(args_.name);
+    return tagGroups();
+};
+
 module.exports = {
     files,
     tagGroups,
     reload,
+    createTagGroup,
 };
