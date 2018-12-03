@@ -9,6 +9,7 @@ import {
 import Files from "./containers/files";
 import ReloadButton from "./containers/reloadButton";
 import TagGroups from "./containers/tagGroups";
+import Breadcrumbs from "./containers/breadcrumbs";
 
 export default () => (
     <div>
@@ -27,6 +28,7 @@ export default () => (
                         <TagGroups />
                     </Col>
                     <Col>
+                        <Breadcrumbs />
                         <Files />
                     </Col>
                 </Row>

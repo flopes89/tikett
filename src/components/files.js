@@ -1,6 +1,5 @@
 import React from "react";
 import { Table } from "reactstrap";
-import Tag from "./tag";
 import {
     Row,
     Col,
@@ -11,96 +10,53 @@ import {
     Breadcrumb,
     BreadcrumbItem,
 } from "reactstrap";
-import Octicon, { FileDirectory, File } from "@githubprimer/octicons-react";
+import PropTypes from "prop-types";
+import Breadcrumbs from "./breadcrumbs";
+import File from "./file";
 
-export default ({
-    files,
-    showDescendants,
-    toggleShowDescendants,
-    breadcrumbs,
-    openFolder
-}) => (
-        <div id="files_component">
-            <Row>
-                <Col>
-                    <Breadcrumb>
-                        <BreadcrumbItem>
-                            <a href="#" onClick={() => openFolder("/")}>
-                                Home
-                            </a>
-                        </BreadcrumbItem>
-                        {breadcrumbs.map((breadcrumb_, index_) => {
-                            let inner = breadcrumb_.name;
-
-                            if (index_ < (breadcrumbs.length - 1)) {
-                                inner = (
-                                    <a href="#" onClick={() => openFolder(breadcrumb_.path)}>
-                                        {inner}
-                                    </a>
-                                );
-                            }
-
-                            return (
-                                <BreadcrumbItem key={index_}>
-                                    {inner}
-                                </BreadcrumbItem>
-                            );
-                        })}
-                    </Breadcrumb>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <Form>
-                        <FormGroup check>
-                            <Label check className="pl-2">
-                                <Input
-                                    type="checkbox"
-                                    checked={showDescendants}
-                                    onChange={toggleShowDescendants}
-                                />
-                                Show descendants
+const Files = (props) => (
+    <div id="files_component">
+        <Row>
+            <Col>
+                <Form>
+                    <FormGroup check>
+                        <Label check className="pl-2">
+                            <Input
+                                type="checkbox"
+                                checked={props.showDescendants}
+                                onChange={props.toggleShowDescendants}
+                            />
+                            Show descendants
                             </Label>
-                        </FormGroup>
-                    </Form>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <Table hover>
-                        <tbody>
-                            {files.map((file_, index_) => {
-                                let name = file_.name;
-                                let icon = (<Octicon icon={File} />);
-                                let className = "file";
-                                let onClick = null;
+                    </FormGroup>
+                </Form>
+            </Col>
+        </Row>
+        <Row>
+            <Col>
+                <Table hover>
+                    <tbody>
+                        {props.files.map((file, index) => (
+                            <File
+                                key={index}
+                                name={file.name}
+                                isFile={file.isFile}
+                                tags={file.tags}
+                                openFolder={props.openFolder}
+                            />
+                        ))}
+                    </tbody>
+                </Table>
+            </Col>
+        </Row>
+    </div >
+);
 
-                                if (!file_.isFile) {
-                                    name = "[" + name + "]";
-                                    icon = (<Octicon icon={FileDirectory} />);
-                                    className = "folder";
-                                    onClick = () => openFolder(file_.name);
-                                }
+Files.propTypes = {
+    files: PropTypes.arrayOf(PropTypes.shape(File.propTypes)).isRequired,
+    showDescendants: PropTypes.bool,
+    toggleShowDescendants: PropTypes.func,
+    openFolder: PropTypes.func,
+};
 
-                                return (
-                                    <tr key={index_} className={className} onClick={onClick}>
-                                        <td>
-                                            {icon}
-                                        </td>
-                                        <td>
-                                            {name}
-                                        </td>
-                                        <td>
-                                            {file_.isFile && file_.tags.map((tag_, index_) => (
-                                                <Tag key={index_} color={tag_.color}>{tag_.name}</Tag>
-                                            ))}
-                                        </td>
-                                    </tr>
-                                );
-                            })}
-                        </tbody>
-                    </Table>
-                </Col>
-            </Row>
-        </div >
-    );
+export default Files;

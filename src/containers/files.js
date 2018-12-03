@@ -1,97 +1,51 @@
 import React from "react";
 import { Query } from "react-apollo";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import Files from "../components/files"
 import queries from "../queries";
 import { Loading, Error } from "./util";
+import * as actions from "../reducer";
 
-class FilesContainer extends React.PureComponent {
-    constructor(props_) {
-        super(props_);
+const FilesContainer = (props) => {
+    return (
+        <Query
+            query={queries.GET_FILES}
+            variables={{
+                current: props.current,
+                showDescendants: props.showDescendants,
+            }}
+        >
+            {({ loading, error, data }) => {
+                if (loading) return <Loading />;
+                if (error) return <Error />;
+                return (
+                    <Files
+                        files={data.files}
+                        openFolder={props.openFolder}
+                        showDescendants={props.showDescendants}
+                        toggleShowDescendants={props.toggleShowDescendants}
+                    />
+                );
+            }}
+        </Query>
+    );
+};
 
-        this.toggleShowDescendants = this.toggleShowDescendants.bind(this);
-        this.openFolder = this.openFolder.bind(this);
+FilesContainer.propTypes = {};
 
-        this.state = {
-            current: "/",
-            showDescendants: false,
-        };
-    }
-
-    openFolder(folder_) {
-        let newCurrent = this.state.current;
-
-        if (folder_.indexOf("/") === 0) {
-            newCurrent = folder_;
-        } else if (folder_ === "..") {
-            if (newCurrent === "/") {
-                newCurrent = "/";
-            } else {
-                const parts = newCurrent.split("/");
-                parts.splice(-2, 2);
-                newCurrent = parts.join("/") + "/";
-            }
-        } else {
-            newCurrent += folder_ + "/";
-        }
-
-        this.setState({
-            current: newCurrent,
-        });
-    }
-
-    toggleShowDescendants() {
-        this.setState({
-            showDescendants: !this.state.showDescendants,
-        });
-    }
-
-    render() {
-        const {
-            state: {
-                current,
-                showDescendants,
-            }
-        } = this;
-
-        const breadcrumbs = [];
-        let breadcrumbPath = "/";
-        current.split("/").forEach((crumb_) => {
-            if (!crumb_) {
-                return;
-            }
-
-            breadcrumbs.push({
-                name: crumb_,
-                path: breadcrumbPath + crumb_,
-            });
-
-            breadcrumbPath += crumb_ + "/";
-        });
-
-        return (
-            <Query
-                query={queries.GET_FILES}
-                variables={{
-                    current,
-                    showDescendants,
-                }}
-            >
-                {({ loading, error, data }) => {
-                    if (loading) return <Loading />;
-                    if (error) return <Error />;
-                    return (
-                        <Files
-                            files={data.files}
-                            breadcrumbs={breadcrumbs}
-                            openFolder={this.openFolder}
-                            showDescendants={showDescendants}
-                            toggleShowDescendants={this.toggleShowDescendants}
-                        />
-                    );
-                }}
-            </Query>
-        );
-    }
-}
-
-export default FilesContainer;
+export default connect(
+    (state_) => ({
+        showDescendants: state_.files.showDescendants,
+        current: state_.files.current,
+    }),
+    (dispatch_) => ({
+        toggleShowDescendants: () => dispatch_({
+            type: actions.FILES_TOGGLE_SHOWDESCENDANTS,
+        }),
+        openFolder: (folder_) => dispatch_({
+            type: actions.FILES_NAVIGATE,
+            folder: folder_,
+        }),
+    }),
+)(FilesContainer);

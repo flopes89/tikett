@@ -1,20 +1,26 @@
-export const OPEN_CREATE_NEW_TAG_GROUP_INPUT = "OPEN_CREATE_NEW_TAG_GROUP_INPUT";
-export const ABORT_CREATE_NEW_TAG_GROUP_INPUT = "ABORT_CREATE_NEW_TAG_GROUP_INPUT";
-export const CONFIRM_CREATE_NEW_TAG_GROUP_INPUT = "CONFIRM_CREATE_NEW_TAG_GROUP_INPUT";
-export const CHANGE_CREATE_NEW_TAG_GROUP_INPUT = "CHANGE_CREATE_NEW_TAG_GROUP_INPUT";
+export const NEWTAGGROUP_OPEN = "NEWTAGGROUP_OPEN";
+export const NEWTAGGROUP_ABORT = "NEWTAGGROUP_ABORT";
+export const NEWTAGGROUP_CONFIRM = "NEWTAGGROUP_CONFIG";
+export const NEWTAGGROUP_CHANGE = "NEWTAGGROUP_CHANGE";
+export const FILES_TOGGLE_SHOWDESCENDANTS = "FILES_TOGGLE_SHOWDESCENDANTS";
+export const FILES_NAVIGATE = "FILES_NAVIGATE";
 
 export const INIT_STATE = {
     tagGroups: {
         createNewOpened: false,
         createNewName: "",
     },
+    files: {
+        showDescendants: false,
+        current: "/",
+    },
 };
 
 export default (state_, action_) => {
-    const newState = Object.assign({}, state_);
+    const newState = Object.assign({}, INIT_STATE, state_);
 
     switch (action_.type) {
-        case OPEN_CREATE_NEW_TAG_GROUP_INPUT:
+        case NEWTAGGROUP_OPEN:
             return {
                 ...newState,
                 tagGroups: {
@@ -23,7 +29,7 @@ export default (state_, action_) => {
                 },
             };
 
-        case ABORT_CREATE_NEW_TAG_GROUP_INPUT:
+        case NEWTAGGROUP_ABORT:
             return {
                 ...newState,
                 tagGroups: {
@@ -32,7 +38,7 @@ export default (state_, action_) => {
                 },
             };
 
-        case CONFIRM_CREATE_NEW_TAG_GROUP_INPUT:
+        case NEWTAGGROUP_CONFIRM:
             if (!newState.tagGroups.createNewName) {
                 return newState;
             }
@@ -46,13 +52,47 @@ export default (state_, action_) => {
                 },
             };
 
-        case CHANGE_CREATE_NEW_TAG_GROUP_INPUT:
+        case NEWTAGGROUP_CHANGE:
             return {
                 ...newState,
                 tagGroups: {
                     ...newState.tagGroups,
                     createNewName: action_.name,
                 },
+            };
+
+        case FILES_TOGGLE_SHOWDESCENDANTS:
+            return {
+                ...newState,
+                files: {
+                    ...newState.files,
+                    showDescendants: !newState.files.showDescendants,
+                }
+            }
+
+        case FILES_NAVIGATE:
+            let newCurrent = newState.files.current;
+
+            if (action_.folder.indexOf("/") === 0) {
+                newCurrent = action_.folder_;
+            } else if (action_.folder_ === "..") {
+                if (newCurrent === "/") {
+                    newCurrent = "/";
+                } else {
+                    const parts = newCurrent.split("/");
+                    parts.splice(-2, 2);
+                    newCurrent = parts.join("/") + "/";
+                }
+            } else {
+                newCurrent += action_.folder_ + "/";
+            }
+
+            return {
+                ...newState,
+                files: {
+                    ...newState.files,
+                    current: newCurrent,
+                }
             };
     }
 

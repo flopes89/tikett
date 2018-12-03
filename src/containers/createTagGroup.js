@@ -35,16 +35,16 @@ export default connect(
     }),
     (dispatch_) => ({
         open: () => dispatch_({
-            type: actions.OPEN_CREATE_NEW_TAG_GROUP_INPUT,
+            type: actions.NEWTAGGROUP_OPEN,
         }),
         confirm: () => dispatch_({
-            type: actions.CONFIRM_CREATE_NEW_TAG_GROUP_INPUT,
+            type: actions.NEWTAGGROUP_CONFIRM,
         }),
         abort: () => dispatch_({
-            type: actions.ABORT_CREATE_NEW_TAG_GROUP_INPUT,
+            type: actions.NEWTAGGROUP_ABORT,
         }),
         change: (name_) => dispatch_({
-            type: actions.CHANGE_CREATE_NEW_TAG_GROUP_INPUT,
+            type: actions.NEWTAGGROUP_CHANGE,
             name: name_,
         }),
     }),
