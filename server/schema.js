@@ -22,10 +22,6 @@ module.exports = buildSchema(`
     type Query {
         tagGroups: [TagGroup]!
 
-        tags(
-            group: String
-        ): [Tag]!
-
         files(
             current: String = "/"
             showDescendants: Boolean = false

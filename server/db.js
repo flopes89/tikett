@@ -7,15 +7,19 @@ const DBPATH = path.resolve(process.env.FILE_ROOT, "tagsterdb.json");
 
 const DB_DEFAULTS = {
     files: [],
-    tagGroups: [],
-    tags: [],
+    tagGroups: [{
+        name: "Ungrouped",
+        color: "#333",
+        tags: [],
+    }],
 };
 
-let DB = Object.assign({}, DB_DEFAULTS);
+let DB = _.cloneDeep(DB_DEFAULTS);
 
 const dump = () => {
     console.log("Dumping current database contents");
     fs.writeFileSync(DBPATH, JSON.stringify(DB, null, 2));
+
 };
 
 const reload = () => {
@@ -24,7 +28,7 @@ const reload = () => {
     }
 
     console.log("Reloading databse from file");
-    DB = Object.assign({}, DB_DEFAULTS, JSON.parse(fs.readFileSync(DBPATH)));
+    DB = JSON.parse(fs.readFileSync(DBPATH));
 };
 
 reload();
@@ -39,29 +43,46 @@ const reloadFiles = () => {
     DB.files = [];
 
     files.forEach((file_) => {
+        console.log("Reading file [" + file_ + "]");
+
         const basename = path.basename(file_);
         const name = basename.replace(/\[[^\]]*\]/, "");
-        const tags = /\[([^\]]*)\]/.exec(basename);
+        let tags = /\[([^\]]*)\]/.exec(basename);
+        tags = tags ? tags[1].split(" ") : [];
 
         DB.files.push({
-            name: name,
-            tags: tags ? tags[1].split(" ") : [],
+            name,
+            tags,
             path: path.resolve(file_),
             isFile: fs.statSync(file_).isFile(),
         });
+
+        if (tags) {
+            tags.forEach((tag_) => getOrCreateTag(tag_));
+        }
     });
 };
 
 const getOrCreateTag = (tag_) => {
-    let result = _.find(DB.tags, { name: tag_ });
+    let result = null;
+
+    DB.tagGroups.forEach((group_) => {
+        if (result) return;
+
+        let found = _.find(group_.tags, { name: tag_ });
+        if (found) {
+            result = found;
+        }
+    });
 
     if (!result) {
         console.log("Creating new tag [" + tag_ + "]");
+        const ungrouped = _.find(DB.tagGroups, { name: "Ungrouped" });
         result = {
             name: tag_,
             color: "#ccc",
         };
-        DB.tags.push(result);
+        ungrouped.tags.push(result);
     }
 
     return result;

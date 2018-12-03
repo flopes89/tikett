@@ -65,38 +65,7 @@ const reload = (args_) => {
     return files(args_);
 };
 
-const tagGroups = () => {
-    const tags = _.map(db.getTags(), _.clone);
-    const tagGroups = _.map(db.getTagGroups(), _.clone);
-    let enhancedGroups = [];
-
-    tagGroups.forEach((group_) => {
-        const group = {
-            name: group_.name,
-            color: group_.color,
-            tags: [],
-        };
-
-        // Find the tag objects and remove them from (the copy of) the array of all tags
-        // so ungrouped tags can be combined into an "ungrouped" group
-        group_.tags.forEach((tag_) => {
-            const tag = _.find(tags, { name: tag_.name });
-            group.tags.push(tag);
-            _.pull(tags, tag);
-        });
-
-        enhancedGroups.push(group);
-    });
-
-    // All remaining tags are considered ungrouped
-    enhancedGroups.unshift({
-        name: "Ungrouped",
-        color: "#ccc",
-        tags,
-    });
-
-    return enhancedGroups;
-};
+const tagGroups = () => db.getTagGroups();
 
 const createTagGroup = (args_) => {
     db.createTagGroup(args_.name);

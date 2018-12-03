@@ -7,8 +7,7 @@ const FILES = `
         color
     }
     path
-    isFile
-`;
+    isFile`;
 
 const TAG_GROUPS = `
     name
@@ -16,8 +15,7 @@ const TAG_GROUPS = `
     tags {
         name
         color
-    }`
-    ;
+    }`;
 
 export default {
     GET_FILES: gql`
@@ -31,8 +29,7 @@ export default {
             ) {
                 ${FILES}
             }
-        }
-    `,
+        }`,
 
     RELOAD_FILES: gql`
         mutation reload(
@@ -45,16 +42,14 @@ export default {
             ) {
                 ${FILES}
             }
-        }
-    `,
+        }`,
 
     GET_TAG_GROUPS: gql`
         query {
             tagGroups {
                 ${TAG_GROUPS}
             }
-        }
-    `,
+        }`,
 
     CREATE_TAG_GROUP: gql`
         mutation createTagGroup(
@@ -65,6 +60,5 @@ export default {
             ) {
                 ${TAG_GROUPS}
             }
-        }
-    `,
+        }`,
 };
