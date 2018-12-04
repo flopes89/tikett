@@ -29,10 +29,7 @@ module.exports = buildSchema(`
     }
 
     type Mutation {
-        reload(
-            current: String = "/"
-            showDescendants: Boolean = false
-        ): [File]!
+        reload: Boolean!
 
         addTag(
             file: String!

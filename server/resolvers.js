@@ -60,14 +60,18 @@ const files = ({ current, showDescendants }) => {
     return enhancedFiles;
 };
 
-const reload = (args) => {
+const reload = () => {
     db.reloadFiles();
-    return files(args);
+    return true;
 };
 
 const tagGroups = () => db.getTagGroups();
 
 const createTagGroup = (args) => {
+    if (!args.name) {
+        throw "Name must not be empty!";
+    }
+
     db.createTagGroup(args.name);
     return tagGroups();
 };

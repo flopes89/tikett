@@ -19,7 +19,6 @@ const run = () => {
         rootValue: require("./resolvers"),
         graphiql: true,
         formatError: (error) => {
-            console.error(error);
             return {
                 message: error.message,
                 locations: error.locations,

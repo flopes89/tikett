@@ -32,16 +32,8 @@ export default {
         }`,
 
     RELOAD_FILES: gql`
-        mutation reload(
-            $current: String = "/"
-            $showDescendants: Boolean = false
-        ) {
-            reload(
-                current: $current
-                showDescendants: $showDescendants
-            ) {
-                ${FILES}
-            }
+        mutation reload {
+            reload
         }`,
 
     GET_TAG_GROUPS: gql`
