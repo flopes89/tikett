@@ -32,7 +32,12 @@ const FilesContainer = (props) => {
     );
 };
 
-FilesContainer.propTypes = {};
+FilesContainer.propTypes = {
+    showDescendants: PropTypes.bool.isRequired,
+    current: PropTypes.string.isRequired,
+    toggleShowDescendants: PropTypes.func.isRequired,
+    openFolder: PropTypes.func.isRequired,
+};
 
 export default connect(
     (state_) => ({
@@ -44,7 +49,7 @@ export default connect(
             type: actions.FILES_TOGGLE_SHOWDESCENDANTS,
         }),
         openFolder: (folder_) => dispatch_({
-            type: actions.FILES_NAVIGATE,
+            type: actions.FILES_OPENFOLDER,
             folder: folder_,
         }),
     }),

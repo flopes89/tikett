@@ -1,6 +1,6 @@
-# tagster
+# tikett
 
-File tagging for developers.
+Offlein file tagging software.
 
 ## Setup
 

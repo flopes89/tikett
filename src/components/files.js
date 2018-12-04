@@ -1,17 +1,7 @@
 import React from "react";
 import { Table } from "reactstrap";
-import {
-    Row,
-    Col,
-    Form,
-    FormGroup,
-    Label,
-    Input,
-    Breadcrumb,
-    BreadcrumbItem,
-} from "reactstrap";
+import { Row, Col, Form, FormGroup, Label, Input, } from "reactstrap";
 import PropTypes from "prop-types";
-import Breadcrumbs from "./breadcrumbs";
 import File from "./file";
 
 const Files = (props) => (

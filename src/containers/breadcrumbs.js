@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import * as actions from "../reducer";
 import Breadcrumbs from "../components/breadcrumbs";
+import PropTypes from "prop-types";
 
 const BreadcrumbsContainer = (props) => {
     const breadcrumbs = [];
@@ -28,13 +29,18 @@ const BreadcrumbsContainer = (props) => {
     return (<Breadcrumbs breadcrumbs={breadcrumbs} openFolder={props.openFolder} />);
 };
 
+BreadcrumbsContainer.propTypes = {
+    current: PropTypes.string.isRequired,
+    openFolder: PropTypes.func.isRequired,
+}
+
 export default connect(
     (state) => ({
         current: state.files.current,
     }),
     (dispatch) => ({
         openFolder: (folder) => dispatch({
-            type: actions.FILES_NAVIGATE,
+            type: actions.FILES_OPENFOLDER,
             folder,
         }),
     })

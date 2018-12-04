@@ -72,26 +72,6 @@
           "color": "#ccc"
         },
         {
-          "name": "[tag1 tag2]",
-          "color": "#ccc"
-        },
-        {
-          "name": "tag1 tag2",
-          "color": "#ccc"
-        },
-        {
-          "name": "[moretag]",
-          "color": "#ccc"
-        },
-        {
-          "name": "[tag5 new_-ta%.g]",
-          "color": "#ccc"
-        },
-        {
-          "name": "tag5 new_-ta%.g",
-          "color": "#ccc"
-        },
-        {
           "name": "tag5",
           "color": "#ccc"
         },
@@ -100,51 +80,6 @@
           "color": "#ccc"
         }
       ]
-    },
-    {
-      "name": "",
-      "color": "#ccc",
-      "tags": []
-    },
-    {
-      "name": "",
-      "color": "#ccc",
-      "tags": []
-    },
-    {
-      "name": "",
-      "color": "#ccc",
-      "tags": []
-    },
-    {
-      "name": "",
-      "color": "#ccc",
-      "tags": []
-    },
-    {
-      "name": "",
-      "color": "#ccc",
-      "tags": []
-    },
-    {
-      "name": "",
-      "color": "#ccc",
-      "tags": []
-    },
-    {
-      "name": "",
-      "color": "#ccc",
-      "tags": []
-    },
-    {
-      "name": "",
-      "color": "#ccc",
-      "tags": []
-    },
-    {
-      "name": "",
-      "color": "#ccc",
-      "tags": []
     }
   ]
 }

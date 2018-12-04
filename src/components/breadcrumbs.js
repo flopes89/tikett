@@ -16,11 +16,11 @@ const CrumbItem = (props) => {
     return (<BreadcrumbItem>{inner}</BreadcrumbItem>);
 };
 
-Breadcrumb.propTypes = {
+CrumbItem.propTypes = {
     name: PropTypes.string.isRequired,
     path: PropTypes.string.isRequired,
     isClickable: PropTypes.bool,
-    openFolder: PropTypes.func,
+    openFolder: PropTypes.func.isRequired,
 };
 
 const Crumbs = (props) => (
@@ -43,7 +43,7 @@ const Crumbs = (props) => (
 
 Crumbs.propTypes = {
     breadcrumbs: PropTypes.array.isRequired,
-    openFolder: PropTypes.func,
+    openFolder: PropTypes.func.isRequired,
 };
 
 export default Crumbs;

@@ -3,7 +3,7 @@ const fs = require("fs");
 const glob = require("glob");
 const _ = require("lodash");
 
-const DBPATH = path.resolve(process.env.FILE_ROOT, "tagsterdb.json");
+const DBPATH = path.resolve(process.env.FILE_ROOT, "tikettdb.json");
 
 const DB_DEFAULTS = {
     files: [],
@@ -37,7 +37,7 @@ const getFiles = () => DB.files;
 
 const reloadFiles = () => {
     const files = glob.sync(process.env.FILE_ROOT + "/**/*", {
-        ignore: "**/tagsterdb.json",
+        ignore: "**/tikettdb.json",
     });
 
     DB.files = [];
