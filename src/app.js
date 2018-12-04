@@ -1,11 +1,5 @@
 import React from "react";
-import {
-    Container,
-    Row,
-    Col,
-    Navbar,
-    NavbarBrand,
-} from "reactstrap";
+import { Container, Row, Col, Navbar, NavbarBrand } from "reactstrap";
 import Files from "./containers/files";
 import ReloadButton from "./containers/reloadButton";
 import TagGroups from "./containers/tagGroups";

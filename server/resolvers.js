@@ -15,8 +15,8 @@ const files = ({ current, showDescendants }) => {
     // To do this, each file is enanced before it's returned
     let enhancedFiles = [];
 
-    files.forEach((file_) => {
-        const filePath = path.relative(currentFolder, file_.path);
+    files.forEach((file) => {
+        const filePath = path.relative(currentFolder, file.path);
 
         // Ignore the current folder
         if (!filePath) {
@@ -30,24 +30,24 @@ const files = ({ current, showDescendants }) => {
         if (showDescendants) {
             // When all descendants should be shown, there is no use in
             // showing the folders themselves as well
-            if (!file_.isFile) {
+            if (!file.isFile) {
                 return;
             }
 
             // Files should however show which folder they are in
-            file_.name = path.dirname(filePath) + path.sep + file_.name;
+            file.name = path.dirname(filePath) + path.sep + file.name;
         } else if (filePath.indexOf(path.sep) !== -1) {
             // Ignore files and folders in ancestors that are not actually children of this folder
             return;
         }
 
-        if (file_.tags) {
+        if (file.tags) {
             const tagObjects = [];
-            file_.tags.forEach((tag_) => tagObjects.push(db.getOrCreateTag(tag_)));
-            file_.tags = tagObjects;
+            file.tags.forEach((tag) => tagObjects.push(db.getOrCreateTag(tag)));
+            file.tags = tagObjects;
         }
 
-        enhancedFiles.push(file_);
+        enhancedFiles.push(file);
     });
 
     enhancedFiles.unshift({
@@ -60,15 +60,15 @@ const files = ({ current, showDescendants }) => {
     return enhancedFiles;
 };
 
-const reload = (args_) => {
+const reload = (args) => {
     db.reloadFiles();
-    return files(args_);
+    return files(args);
 };
 
 const tagGroups = () => db.getTagGroups();
 
-const createTagGroup = (args_) => {
-    db.createTagGroup(args_.name);
+const createTagGroup = (args) => {
+    db.createTagGroup(args.name);
     return tagGroups();
 };
 

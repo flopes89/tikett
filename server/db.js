@@ -42,10 +42,10 @@ const reloadFiles = () => {
 
     DB.files = [];
 
-    files.forEach((file_) => {
-        console.log("Reading file [" + file_ + "]");
+    files.forEach((file) => {
+        console.log("Reading file [" + file + "]");
 
-        const basename = path.basename(file_);
+        const basename = path.basename(file);
         const name = basename.replace(/\[[^\]]*\]/, "");
         let tags = /\[([^\]]*)\]/.exec(basename);
         tags = tags ? tags[1].split(" ") : [];
@@ -53,33 +53,33 @@ const reloadFiles = () => {
         DB.files.push({
             name,
             tags,
-            path: path.resolve(file_),
-            isFile: fs.statSync(file_).isFile(),
+            path: path.resolve(file),
+            isFile: fs.statSync(file).isFile(),
         });
 
         if (tags) {
-            tags.forEach((tag_) => getOrCreateTag(tag_));
+            tags.forEach((tag) => getOrCreateTag(tag));
         }
     });
 };
 
-const getOrCreateTag = (tag_) => {
+const getOrCreateTag = (tag) => {
     let result = null;
 
-    DB.tagGroups.forEach((group_) => {
+    DB.tagGroups.forEach((group) => {
         if (result) return;
 
-        let found = _.find(group_.tags, { name: tag_ });
+        let found = _.find(group.tags, { name: tag });
         if (found) {
             result = found;
         }
     });
 
     if (!result) {
-        console.log("Creating new tag [" + tag_ + "]");
+        console.log("Creating new tag [" + tag + "]");
         const ungrouped = _.find(DB.tagGroups, { name: "Ungrouped" });
         result = {
-            name: tag_,
+            name: tag,
             color: "#ccc",
         };
         ungrouped.tags.push(result);
@@ -90,9 +90,9 @@ const getOrCreateTag = (tag_) => {
 
 const getTagGroups = () => DB.tagGroups;
 
-const createTagGroup = (name_) => {
+const createTagGroup = (name) => {
     DB.tagGroups.push({
-        name: name_,
+        name,
         color: "#ccc",
         tags: [],
     });

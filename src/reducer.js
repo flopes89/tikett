@@ -16,10 +16,10 @@ export const INIT_STATE = {
     },
 };
 
-export default (state_, action_) => {
-    const newState = Object.assign({}, INIT_STATE, state_);
+export default (state, action) => {
+    const newState = Object.assign({}, INIT_STATE, state);
 
-    switch (action_.type) {
+    switch (action.type) {
         case NEWTAGGROUP_OPEN:
             return {
                 ...newState,
@@ -57,7 +57,7 @@ export default (state_, action_) => {
                 ...newState,
                 tagGroups: {
                     ...newState.tagGroups,
-                    createNewName: action_.name,
+                    createNewName: action.name,
                 },
             };
 
@@ -73,9 +73,9 @@ export default (state_, action_) => {
         case FILES_OPENFOLDER:
             let newCurrent = newState.files.current;
 
-            if (action_.folder.indexOf("/") === 0) {
-                newCurrent = action_.folder;
-            } else if (action_.folder === "..") {
+            if (action.folder.indexOf("/") === 0) {
+                newCurrent = action.folder;
+            } else if (action.folder === "..") {
                 if (newCurrent === "/") {
                     newCurrent = "/";
                 } else {
@@ -84,7 +84,7 @@ export default (state_, action_) => {
                     newCurrent = parts.join("/") + "/";
                 }
             } else {
-                newCurrent += action_.folder + "/";
+                newCurrent += action.folder + "/";
             }
 
             return {

@@ -2,23 +2,24 @@ import React from "react";
 import { Row, Col } from "reactstrap";
 import Tag from "./tag";
 import CreateTagGroup from "../containers/createTagGroup";
+import PropTypes from "prop-types";
 
-const tagGroup = (group_, index_) => (
-    <div className="tag_group" key={index_}>
+const tagGroup = (group, index) => (
+    <div className="tag_group" key={index}>
         <Row>
-            <Col><strong>{group_.name}</strong></Col>
+            <Col><strong>{group.name}</strong></Col>
         </Row>
         <Row>
             <Col>
-                {group_.tags.map((tag_, index_) => (
-                    <Tag key={index_} color={tag_.color}>{tag_.name}</Tag>
+                {group.tags.map((tag, index) => (
+                    <Tag key={index} color={tag.color}>{tag.name}</Tag>
                 ))}
             </Col>
         </Row>
     </div>
 );
 
-export default ({ tagGroups }) => (
+const TagGroups = ({ tagGroups }) => (
     <div id="tag_groups">
         {tagGroups.map(tagGroup)}
         <hr />
@@ -29,3 +30,9 @@ export default ({ tagGroups }) => (
         </Row>
     </div>
 );
+
+TagGroups.propTypes = {
+    tagGroups: PropTypes.arrayOf(PropTypes.shape(Tag.propTypes)),
+};
+
+export default TagGroups;

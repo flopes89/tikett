@@ -40,17 +40,17 @@ FilesContainer.propTypes = {
 };
 
 export default connect(
-    (state_) => ({
-        showDescendants: state_.files.showDescendants,
-        current: state_.files.current,
+    (state) => ({
+        showDescendants: state.files.showDescendants,
+        current: state.files.current,
     }),
-    (dispatch_) => ({
-        toggleShowDescendants: () => dispatch_({
+    (dispatch) => ({
+        toggleShowDescendants: () => dispatch({
             type: actions.FILES_TOGGLE_SHOWDESCENDANTS,
         }),
-        openFolder: (folder_) => dispatch_({
+        openFolder: (folder) => dispatch({
             type: actions.FILES_OPENFOLDER,
-            folder: folder_,
+            folder,
         }),
     }),
 )(FilesContainer);

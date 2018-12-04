@@ -8,17 +8,17 @@ const BreadcrumbsContainer = (props) => {
     const breadcrumbs = [];
     let breadcrumbPath = "/";
 
-    props.current.split("/").forEach((crumb_) => {
-        if (!crumb_) {
+    props.current.split("/").forEach((crumb) => {
+        if (!crumb) {
             return;
         }
 
         breadcrumbs.push({
-            name: crumb_,
-            path: breadcrumbPath + crumb_,
+            name: crumb,
+            path: breadcrumbPath + crumb,
         });
 
-        breadcrumbPath += crumb_ + "/";
+        breadcrumbPath += crumb + "/";
     });
 
     breadcrumbs.unshift({

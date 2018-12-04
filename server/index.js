@@ -8,23 +8,23 @@ const run = () => {
 
     app.use(express.static(path.resolve(__dirname, "..", "public")));
 
-    app.use("/graphql", (req_, res_, next_) => {
+    app.use("/graphql", (req, res, next) => {
         console.log(">>> new graphql request");
         db.reload();
-        return next_();
+        return next();
     });
 
     app.use("/graphql", graphqlHttp({
         schema: require("./schema"),
         rootValue: require("./resolvers"),
         graphiql: true,
-        formatError: (error_) => {
-            console.error(error_);
+        formatError: (error) => {
+            console.error(error);
             return {
-                message: error_.message,
-                locations: error_.locations,
-                stack: error_.stack ? error_.stack.split('\n') : [],
-                path: error_.path,
+                message: error.message,
+                locations: error.locations,
+                stack: error.stack ? error.stack.split('\n') : [],
+                path: error.path,
             };
         },
         extensions: () => {

@@ -6,46 +6,46 @@ import * as actions from "../reducer";
 import queries from "../queries";
 import { Loading, Error } from "./util";
 
-const CreateTagGroupContainer = (props_) => {
-    const update = (cache_, { data: { createTagGroup } }) => {
-        cache_.writeQuery({
+const CreateTagGroupContainer = (props) => {
+    const update = (cache, { data: { createTagGroup } }) => {
+        cache.writeQuery({
             query: queries.GET_TAG_GROUPS,
             data: {
                 tagGroups: createTagGroup,
             }
         });
-        props_.confirm();
+        props.confirm();
     };
 
     return (
-        <Mutation mutation={queries.CREATE_TAG_GROUP} update={update} variables={{ name: props_.name }}>
+        <Mutation mutation={queries.CREATE_TAG_GROUP} update={update} variables={{ name: props.name }}>
             {(createTagGroup_, { loading, error }) => {
                 if (loading) return <Loading />;
                 if (error) return <Error />;
-                return <CreateTagGroup {...props_} confirm={createTagGroup_} />;
+                return <CreateTagGroup {...props} confirm={createTagGroup_} />;
             }}
         </Mutation>
     );
 };
 
 export default connect(
-    (state_) => ({
-        isOpen: Boolean(state_.tagGroups.createNewOpened),
-        name: state_.tagGroups.createNewName,
+    (state) => ({
+        isOpen: Boolean(state.tagGroups.createNewOpened),
+        name: state.tagGroups.createNewName,
     }),
-    (dispatch_) => ({
-        open: () => dispatch_({
+    (dispatch) => ({
+        open: () => dispatch({
             type: actions.NEWTAGGROUP_OPEN,
         }),
-        confirm: () => dispatch_({
+        confirm: () => dispatch({
             type: actions.NEWTAGGROUP_CONFIRM,
         }),
-        abort: () => dispatch_({
+        abort: () => dispatch({
             type: actions.NEWTAGGROUP_ABORT,
         }),
-        change: (name_) => dispatch_({
+        change: (name) => dispatch({
             type: actions.NEWTAGGROUP_CHANGE,
-            name: name_,
+            name,
         }),
     }),
 )(CreateTagGroupContainer);

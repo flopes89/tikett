@@ -5,27 +5,27 @@ import PropTypes from "prop-types";
 
 const ENTER = 13;
 
-const AddTagGroup = (props_) => {
-    const onKeyPress = (event_) => {
-        if (event_.which === ENTER) {
-            props_.confirm();
+const AddTagGroup = (props) => {
+    const onKeyPress = (event) => {
+        if (event.which === ENTER) {
+            props.confirm();
         }
     };
 
     return (
         <div id="create_new_tag_group">
-            {props_.isOpen && (
+            {props.isOpen && (
                 <Input
-                    innerRef={(ref_) => ref_ && ref_.focus()}
-                    value={props_.name}
-                    onChange={(event_) => props_.change(event_.target.value)}
-                    onBlur={props_.abort}
+                    innerRef={(ref) => ref && ref.focus()}
+                    value={props.name}
+                    onChange={(event) => props.change(event.target.value)}
+                    onBlur={props.abort}
                     onKeyPress={onKeyPress}
                     placeholder="Press enter to confirm"
                 />
             )}
-            {!props_.isOpen && (
-                <Button size="sm" color="primary" onClick={props_.open}>
+            {!props.isOpen && (
+                <Button size="sm" color="primary" onClick={props.open}>
                     <Octicon icon={Plus} className="mr-1" />
                     Create tag group
             </Button>
