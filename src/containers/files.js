@@ -4,33 +4,22 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Files from "../components/files"
 import queries from "../queries";
-import { Loading, Error } from "./util";
+import { catchLoadingError } from "./util";
 import * as actions from "../reducer";
 
-const FilesContainer = (props) => {
-    return (
-        <Query
-            query={queries.GET_FILES}
-            variables={{
-                current: props.current,
-                showDescendants: props.showDescendants,
-            }}
-        >
-            {({ loading, error, data }) => {
-                if (loading) return <Loading />;
-                if (error) return <Error />;
-                return (
-                    <Files
-                        files={data.files}
-                        openFolder={props.openFolder}
-                        showDescendants={props.showDescendants}
-                        toggleShowDescendants={props.toggleShowDescendants}
-                    />
-                );
-            }}
-        </Query>
-    );
-};
+const FilesContainer = (props) => (
+    <Query
+        query={queries.GET_FILES}
+        variables={{
+            current: props.current,
+            showDescendants: props.showDescendants,
+        }}
+    >
+        {(state) => catchLoadingError(state)(
+            <Files {...props} files={state.data.files} />
+        )}
+    </Query>
+);
 
 FilesContainer.propTypes = {
     showDescendants: PropTypes.bool.isRequired,

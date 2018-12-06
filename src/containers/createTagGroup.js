@@ -4,7 +4,7 @@ import { Mutation } from "react-apollo";
 import CreateTagGroup from "../components/createTagGroup";
 import * as actions from "../reducer";
 import queries from "../queries";
-import { Loading, Error } from "./util";
+import { catchLoadingError } from "./util";
 
 const CreateTagGroupContainer = (props) => {
     const update = (cache, { data: { createTagGroup } }) => {
@@ -19,14 +19,14 @@ const CreateTagGroupContainer = (props) => {
 
     return (
         <Mutation mutation={queries.CREATE_TAG_GROUP} update={update} variables={{ name: props.name }}>
-            {(createTagGroup_, { loading, error }) => {
-                if (loading) return <Loading />;
-                if (error) return <Error />;
-                return <CreateTagGroup {...props} confirm={createTagGroup_} />;
-            }}
+            {(createGroup, state) => catchLoadingError(state)(
+                <CreateTagGroup {...props} confirm={createGroup} />
+            )}
         </Mutation>
     );
 };
+
+CreateTagGroupContainer.propTypes = CreateTagGroup.propTypes;
 
 export default connect(
     (state) => ({

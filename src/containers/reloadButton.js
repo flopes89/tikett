@@ -2,7 +2,7 @@ import React from "react";
 import { Mutation } from "react-apollo";
 import ReloadButton from "../components/reloadButton";
 import queries from "../queries";
-import { Loading, Error } from "./util";
+import { catchLoadingError } from "./util";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
@@ -18,11 +18,9 @@ const ReloadButtonContainer = ({ current, showDescendants }) => (
             }
         ]}
     >
-        {(reload, { loading, error }) => {
-            if (loading) return <Loading />;
-            if (error) return <Error />;
-            return <ReloadButton onClick={reload} />;
-        }}
+        {(reload, state) => catchLoadingError(state)(
+            <ReloadButton onClick={reload} />
+        )}
     </Mutation>
 );
 

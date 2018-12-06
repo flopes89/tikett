@@ -1,6 +1,6 @@
 export const NEWTAGGROUP_OPEN = "NEWTAGGROUP_OPEN";
 export const NEWTAGGROUP_ABORT = "NEWTAGGROUP_ABORT";
-export const NEWTAGGROUP_CONFIRM = "NEWTAGGROUP_CONFIG";
+export const NEWTAGGROUP_CONFIRM = "NEWTAGGROUP_CONFIRM";
 export const NEWTAGGROUP_CHANGE = "NEWTAGGROUP_CHANGE";
 export const FILES_TOGGLE_SHOWDESCENDANTS = "FILES_TOGGLE_SHOWDESCENDANTS";
 export const FILES_OPENFOLDER = "FILES_OPENFOLDER";
@@ -39,10 +39,6 @@ export default (state, action) => {
             };
 
         case NEWTAGGROUP_CONFIRM:
-            if (!newState.tagGroups.createNewName) {
-                return newState;
-            }
-
             return {
                 ...newState,
                 tagGroups: {

@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 
 const ENTER = 13;
 
-const AddTagGroup = (props) => {
+const CreateTagGroup = (props) => {
     const onKeyPress = (event) => {
         if (event.which === ENTER) {
             props.confirm();
@@ -34,7 +34,7 @@ const AddTagGroup = (props) => {
     );
 };
 
-AddTagGroup.propTypes = {
+CreateTagGroup.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     name: PropTypes.string.isRequired,
     open: PropTypes.func.isRequired,
@@ -43,4 +43,4 @@ AddTagGroup.propTypes = {
     change: PropTypes.func.isRequired,
 };
 
-export default AddTagGroup;
+export default CreateTagGroup;

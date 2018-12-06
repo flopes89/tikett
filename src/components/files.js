@@ -43,7 +43,7 @@ const Files = (props) => (
 );
 
 Files.propTypes = {
-    files: PropTypes.arrayOf(PropTypes.shape(File.propTypes)).isRequired,
+    files: PropTypes.arrayOf(PropTypes.shape(File.propTypes)),
     showDescendants: PropTypes.bool,
     toggleShowDescendants: PropTypes.func,
     openFolder: PropTypes.func,

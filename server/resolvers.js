@@ -68,11 +68,10 @@ const reload = () => {
 const tagGroups = () => db.getTagGroups();
 
 const createTagGroup = (args) => {
-    if (!args.name) {
-        throw "Name must not be empty!";
+    if (args.name && args.name !== "") {
+        db.createTagGroup(args.name);
     }
 
-    db.createTagGroup(args.name);
     return tagGroups();
 };
 
