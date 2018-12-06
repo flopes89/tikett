@@ -67,7 +67,9 @@ const getOrCreateTag = (tag) => {
     let result = null;
 
     DB.tagGroups.forEach((group) => {
-        if (result) return;
+        if (result) {
+            return;
+        }
 
         let found = _.find(group.tags, { name: tag });
         if (found) {
@@ -77,11 +79,17 @@ const getOrCreateTag = (tag) => {
 
     if (!result) {
         console.log("Creating new tag [" + tag + "]");
-        const ungrouped = _.find(DB.tagGroups, { name: "Ungrouped" });
+        let ungrouped = _.find(DB.tagGroups, { name: "Ungrouped" });
+
+        if (!ungrouped) {
+            ungrouped = createTagGroup("Ungrouped");
+        }
+
         result = {
             name: tag,
             color: "#ccc",
         };
+
         ungrouped.tags.push(result);
     }
 
@@ -91,14 +99,26 @@ const getOrCreateTag = (tag) => {
 const getTagGroups = () => DB.tagGroups;
 
 const createTagGroup = (name) => {
-    DB.tagGroups.push({
+    if (_.find(DB.tagGroups, { name })) {
+        return;
+    }
+
+    const newGroup = {
         name,
         color: "#ccc",
         tags: [],
-    });
+    };
+
+    DB.tagGroups.push(newGroup);
+
+    return newGroup;
 };
 
 const getTags = () => DB.tags;
+
+const removeTagGroup = (name) => {
+    _.remove(DB.tagGroups, { name });
+};
 
 module.exports = {
     dump,
@@ -109,4 +129,5 @@ module.exports = {
     getTags,
     reloadFiles,
     getOrCreateTag,
+    removeTagGroup,
 };

@@ -75,9 +75,18 @@ const createTagGroup = (args) => {
     return tagGroups();
 };
 
+const removeTagGroup = (args) => {
+    if (args.group && args.group !== "") {
+        db.removeTagGroup(args.group);
+    }
+
+    return tagGroups();
+};
+
 module.exports = {
     files,
     tagGroups,
     reload,
     createTagGroup,
+    removeTagGroup,
 };

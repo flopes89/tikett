@@ -11,7 +11,7 @@ const TagGroup = (props) => (
                 <strong>{props.name}</strong>
             </Col>
             <Col>
-                <span onClick={props.remove}><Octicon icon={Trashcan} /></span>
+                <a href="#" onClick={props.remove}><Octicon icon={Trashcan} /></a>
             </Col>
         </Row>
         <Row>

@@ -63,7 +63,7 @@ module.exports = buildSchema(`
             name: String!
         ): TagGroup!
 
-        deleteTagGroup(
+        removeTagGroup(
             group: String!
         ): [TagGroup]!
 

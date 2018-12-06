@@ -53,4 +53,15 @@ export default {
                 ${TAG_GROUPS}
             }
         }`,
+
+    REMOVE_TAG_GROUP: gql`
+        mutation removeTagGroup(
+            $group: String!
+        ) {
+            removeTagGroup(
+                group: $group
+            ) {
+                ${TAG_GROUPS}
+            }
+        }`,
 };

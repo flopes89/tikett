@@ -3,7 +3,7 @@ import { Row, Col } from "reactstrap";
 import Tag from "./tag";
 import CreateTagGroup from "../containers/createTagGroup";
 import PropTypes from "prop-types";
-import TagGroup from "./tagGroup";
+import TagGroup from "../containers/tagGroup";
 
 const TagGroups = ({ tagGroups }) => (
     <div id="tag_groups">
