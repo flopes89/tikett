@@ -4,6 +4,10 @@ export const NEWTAGGROUP_CONFIRM = "NEWTAGGROUP_CONFIRM";
 export const NEWTAGGROUP_CHANGE = "NEWTAGGROUP_CHANGE";
 export const FILES_TOGGLE_SHOWDESCENDANTS = "FILES_TOGGLE_SHOWDESCENDANTS";
 export const FILES_OPENFOLDER = "FILES_OPENFOLDER";
+export const FILES_NEWTAG_OPEN = "NEWTAG_OPEN";
+export const FILES_NEWTAG_ABORT = "NEWTAG_ABORT";
+export const FILES_NEWTAG_CONFIRM = "NEWTAG_CONFIRM";
+export const FILES_NEWTAG_CHANGE = "NEWTAG_CHANGE";
 
 export const INIT_STATE = {
     tagGroups: {
@@ -13,6 +17,9 @@ export const INIT_STATE = {
     files: {
         showDescendants: false,
         current: "/",
+        createNewTagOpened: false,
+        createNewTagName: "",
+        createNewTagOnFile: "",
     },
 };
 
@@ -89,6 +96,43 @@ export default (state, action) => {
                     ...newState.files,
                     current: newCurrent,
                 }
+            };
+
+            case FILES_NEWTAG_OPEN:
+            return {
+                ...newState,
+                files: {
+                    ...newState.files,
+                    createNewTagOnFile: action.file,
+                    createNewTagOpened: true,
+                },
+            };
+
+            case FILES_NEWTAG_ABORT:
+            return {
+                ...newState,
+                files: {
+                    ...newState.files,
+                    createNewTagOpened: false,
+                },
+            };
+
+            case FILES_NEWTAG_CHANGE:
+            return {
+                ...newState,
+                files: {
+                    ...newState.files,
+                    createNewTagName: action.name,
+                },
+            };
+
+            case FILES_NEWTAG_CONFIRM:
+            return {
+                ...newState,
+                files: {
+                    ...newState.files,
+                    createNewTagName: "",
+                },
             };
     }
 

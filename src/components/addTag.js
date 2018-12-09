@@ -5,10 +5,10 @@ import PropTypes from "prop-types";
 
 const ENTER = 13;
 
-const CreateTag = (props) => {
+const AddTag = (props) => {
     const onKeyPress = (event) => {
         if (event.which === ENTER) {
-            props.confirm();
+            props.confirm(props.file);
         }
     };
 
@@ -26,13 +26,20 @@ const CreateTag = (props) => {
     }
 
     return (
-        <Badge color="primary" onClick={props.open}>
-            <Octicon icon={Plus} height="12" verticalAlign="text-top" />
+        <Badge color="primary" onClick={() => props.open(props.file)}>
+            <Octicon icon={Plus} height={12} verticalAlign="text-top" />
         </Badge>
     );
 };
 
-CreateTag.propTypes = {
+AddTag.propTypes = {
+    open: PropTypes.func.isRequired,
+    isOpen: PropTypes.bool.isRequired,
+    name: PropTypes.string.isRequired,
+    change: PropTypes.func.isRequired,
+    abort: PropTypes.func.isRequired,
+    confirm: PropTypes.func.isRequired,
+    file: PropTypes.string.isRequired,
 };
 
-export default CreateTag;
+export default AddTag;

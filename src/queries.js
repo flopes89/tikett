@@ -17,6 +17,11 @@ const TAG_GROUPS = `
         color
     }`;
 
+const TAGS = `
+    name
+    color
+`;
+
 export default {
     GET_FILES: gql`
         query(
@@ -62,6 +67,17 @@ export default {
                 group: $group
             ) {
                 ${TAG_GROUPS}
+            }
+        }`,
+
+    ADD_TAG: gql`
+        mutation addTag(
+            $name: String!
+        ) {
+            addTag(
+                name: $name
+            ) {
+                ${FILES}
             }
         }`,
 };
