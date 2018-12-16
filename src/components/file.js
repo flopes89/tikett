@@ -29,7 +29,7 @@ const FileComponent = (props) => {
                 {props.isFile && props.tags.map((tag, index) => (
                     <Tag key={index} color={tag.color}>{tag.name}</Tag>
                 ))}
-                {props.isFile && (<AddTag file={props.name} />)}
+                {props.isFile && (<AddTag path={props.path} />)}
             </td>
         </tr>
     );
@@ -37,6 +37,7 @@ const FileComponent = (props) => {
 
 FileComponent.propTypes = {
     name: PropTypes.string.isRequired,
+    path: PropTypes.string.isRequired,
     isFile: PropTypes.bool.isRequired,
     openFolder: PropTypes.func,
     tags: PropTypes.arrayOf(PropTypes.shape(Tag.propTypes)),

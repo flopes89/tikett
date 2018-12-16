@@ -26,7 +26,7 @@ const AddTag = (props) => {
     }
 
     return (
-        <Badge color="primary" onClick={() => props.open(props.file)}>
+        <Badge color="primary" onClick={() => props.open(props.path)}>
             <Octicon icon={Plus} height={12} verticalAlign="text-top" />
         </Badge>
     );
@@ -39,7 +39,7 @@ AddTag.propTypes = {
     change: PropTypes.func.isRequired,
     abort: PropTypes.func.isRequired,
     confirm: PropTypes.func.isRequired,
-    file: PropTypes.string.isRequired,
+    path: PropTypes.string.isRequired,
 };
 
 export default AddTag;

@@ -98,17 +98,17 @@ export default (state, action) => {
                 }
             };
 
-            case FILES_NEWTAG_OPEN:
+        case FILES_NEWTAG_OPEN:
             return {
                 ...newState,
                 files: {
                     ...newState.files,
-                    createNewTagOnFile: action.file,
+                    createNewTagOnPath: action.path,
                     createNewTagOpened: true,
                 },
             };
 
-            case FILES_NEWTAG_ABORT:
+        case FILES_NEWTAG_ABORT:
             return {
                 ...newState,
                 files: {
@@ -117,7 +117,7 @@ export default (state, action) => {
                 },
             };
 
-            case FILES_NEWTAG_CHANGE:
+        case FILES_NEWTAG_CHANGE:
             return {
                 ...newState,
                 files: {
@@ -126,7 +126,7 @@ export default (state, action) => {
                 },
             };
 
-            case FILES_NEWTAG_CONFIRM:
+        case FILES_NEWTAG_CONFIRM:
             return {
                 ...newState,
                 files: {

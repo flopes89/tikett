@@ -72,12 +72,12 @@ export default {
 
     ADD_TAG: gql`
         mutation addTag(
+            $path: String!
             $name: String!
         ) {
             addTag(
+                path: $path
                 name: $name
-            ) {
-                ${FILES}
-            }
+            )
         }`,
 };

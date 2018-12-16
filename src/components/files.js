@@ -33,6 +33,7 @@ const Files = (props) => (
                                 isFile={file.isFile}
                                 tags={file.tags}
                                 openFolder={props.openFolder}
+                                path={file.path}
                             />
                         ))}
                     </tbody>

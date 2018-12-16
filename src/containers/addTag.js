@@ -6,42 +6,43 @@ import { connect } from "react-redux";
 import * as actions from "../reducer";
 import { catchLoadingError } from "./util";
 
-const AddTagContainer = (props) => {
-    const update = (cache, { data: { addTag } }) => {
-        cache.writeQuery({
-            query: queries.GET_FILES,
-            data: {
-                files: addTag,
-            }
-        });
-        props.confirm();
-    };
-
-    return (
-        <Mutation mutation={queries.ADD_TAG} update={update} variables={{
+const AddTagContainer = (props) => (
+    <Mutation
+        mutation={queries.ADD_TAG}
+        variables={{
             name: props.name,
-            file: props.file,
-            current: props.current,
-            showDescendants: props.showDescendants,
-        }}>
-            {(addTag, state) => catchLoadingError(state)(
-                <AddTag {...props} confirm={addTag} />
-            )}
-        </Mutation>
-    );
-};
+            path: props.path,
+        }}
+        refetchQueries={[
+            {
+                query: queries.GET_FILES,
+                variables: {
+                    current: props.current,
+                    showDescendants: props.showDescendants,
+                }
+            },
+            {
+                query: queries.GET_TAG_GROUPS,
+            }
+        ]}
+        update={props.confirm} >
+        {(addTag, state) => catchLoadingError(state)(
+            <AddTag {...props} confirm={addTag} />
+        )}
+    </Mutation>
+);
 
 export default connect(
-    (state) => ({
+    (state, props) => ({
+        name: state.files.createNewTagName,
+        isOpen: state.files.createNewTagOpened && (state.files.createNewTagOnPath === props.path),
         current: state.files.current,
         showDescendants: state.files.showDescendants,
-        isOpen: Boolean(state.files.createNewTagOpened),
-        name: state.files.createNewTagName,
     }),
     (dispatch) => ({
-        open: (file) => dispatch({
+        open: (path) => dispatch({
             type: actions.FILES_NEWTAG_OPEN,
-            file
+            path
         }),
         confirm: () => dispatch({
             type: actions.FILES_NEWTAG_CONFIRM,
@@ -53,5 +54,5 @@ export default connect(
             type: actions.FILES_NEWTAG_CHANGE,
             name,
         }),
-    })
+    }),
 )(AddTagContainer);

@@ -1,6 +1,6 @@
 # tikett
 
-Offlein file tagging software.
+Offline file tagging software.
 
 ## Setup
 
@@ -12,7 +12,7 @@ $ npm install --production-only
 $ npm start
 ```
 
-- Navigate to `localhost:POST`
+- Navigate to `localhost:PORT`
 
 ## Developing
 

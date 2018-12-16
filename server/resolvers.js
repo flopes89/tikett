@@ -91,6 +91,16 @@ const createTag = (args) => {
     return tagGroups();
 };
 
+const addTag = (args) => {
+    if (!args.name) {
+        return false;
+    }
+
+    db.addTagToFile(args.path, args.name);
+
+    return true;
+};
+
 module.exports = {
     files,
     tagGroups,
@@ -98,4 +108,5 @@ module.exports = {
     createTagGroup,
     removeTagGroup,
     createTag,
+    addTag,
 };

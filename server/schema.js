@@ -32,11 +32,9 @@ module.exports = buildSchema(`
         reload: Boolean!
 
         addTag(
-            current: String = "/"
-            showDescendants: Boolean = false
-            file: String!
-            tag: String!
-        ): [File]!
+            path: String!
+            name: String!
+        ): Boolean!
 
         removeTag(
             current: String = "/"
