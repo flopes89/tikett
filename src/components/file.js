@@ -3,6 +3,7 @@ import Octicon, { FileDirectory, File } from "@githubprimer/octicons-react";
 import PropTypes from "prop-types";
 import Tag from "./tag";
 import AddTag from "../containers/addTag";
+import RemoveTag from "../containers/removeTag";
 
 const FileComponent = (props) => {
     let name = props.name;
@@ -27,7 +28,10 @@ const FileComponent = (props) => {
             </td>
             <td>
                 {props.isFile && props.tags.map((tag, index) => (
-                    <Tag key={index} color={tag.color}>{tag.name}</Tag>
+                    <Tag key={index} color={tag.color}>
+                        {tag.name}
+                        <RemoveTag name={tag.name} path={props.path} />
+                    </Tag>
                 ))}
                 {props.isFile && (<AddTag path={props.path} />)}
             </td>

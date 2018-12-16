@@ -2,31 +2,44 @@ import React from "react";
 import { connect } from "react-redux";
 import { Mutation } from "react-apollo";
 import CreateTagGroup from "../components/createTagGroup";
+import PropTypes from "prop-types";
 import * as actions from "../reducer";
 import queries from "../queries";
 import { catchLoadingError } from "./util";
 
-const CreateTagGroupContainer = (props) => {
-    const update = (cache, { data: { createTagGroup } }) => {
-        cache.writeQuery({
-            query: queries.GET_TAG_GROUPS,
-            data: {
-                tagGroups: createTagGroup,
+const CreateTagGroupContainer = (props) => (
+    <Mutation
+        mutation={queries.CREATE_TAG_GROUP}
+        variables={{
+            name: props.name
+        }}
+        update={props.confirm}
+        refetchQueries={[
+            {
+                query: queries.GET_TAG_GROUPS,
             }
-        });
-        props.confirm();
-    };
+        ]}>
+        {(createGroup, state) => catchLoadingError(state)(
+            <CreateTagGroup
+                isOpen={props.isOpen}
+                name={props.name}
+                open={props.open}
+                abort={props.abort}
+                change={props.change}
+                confirm={createGroup}
+            />
+        )}
+    </Mutation>
+);
 
-    return (
-        <Mutation mutation={queries.CREATE_TAG_GROUP} update={update} variables={{ name: props.name }}>
-            {(createGroup, state) => catchLoadingError(state)(
-                <CreateTagGroup {...props} confirm={createGroup} />
-            )}
-        </Mutation>
-    );
+CreateTagGroupContainer.propTypes = {
+    isOpen: PropTypes.bool,
+    name: PropTypes.string,
+    open: PropTypes.func.isRequired,
+    confirm: PropTypes.func.isRequired,
+    abort: PropTypes.func.isRequired,
+    change: PropTypes.func.isRequired,
 };
-
-CreateTagGroupContainer.propTypes = CreateTagGroup.propTypes;
 
 export default connect(
     (state) => ({

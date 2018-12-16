@@ -37,20 +37,18 @@ module.exports = buildSchema(`
         ): Boolean!
 
         removeTag(
-            current: String = "/"
-            showDescendants: Boolean = false
-            file: String!
-            tag: String!
-        ): [File]!
+            path: String!
+            name: String!
+        ): Boolean!
 
         renameTag(
             tag: String!
             name: String!
-        ): [TagGroup]!
+        ): Boolean!
 
         createTag(
             name: String!
-        ): Tag!
+        ): Boolean!
 
         deleteTag(
             tag: String!
@@ -58,20 +56,20 @@ module.exports = buildSchema(`
 
         createTagGroup(
             name: String!
-        ): [TagGroup]!
+        ): Boolean!
 
         renameTagGroup(
             group: String!
             name: String!
-        ): TagGroup!
+        ): Boolean!
 
         removeTagGroup(
             group: String!
-        ): [TagGroup]!
+        ): Boolean!
 
         moveTag(
             tag: String!
             group: String!
-        ): TagGroup!
+        ): Boolean!
     }
 `);

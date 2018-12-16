@@ -68,27 +68,30 @@ const reload = () => {
 const tagGroups = () => db.getTagGroups();
 
 const createTagGroup = (args) => {
-    if (args.name && args.name !== "") {
-        db.createTagGroup(args.name);
+    if (!args.name) {
+        return false;
     }
 
+    db.createTagGroup(args.name);
     return tagGroups();
 };
 
 const removeTagGroup = (args) => {
-    if (args.group && args.group !== "") {
-        db.removeTagGroup(args.group);
+    if (!args.group) {
+        return false;
     }
 
+    db.removeTagGroup(args.group);
     return tagGroups();
 };
 
 const createTag = (args) => {
-    if (args.name) {
-        db.getOrCreateTag(args.name);
+    if (!args.name) {
+        return false;
     }
 
-    return tagGroups();
+    db.getOrCreateTag(args.name);
+    return true;
 };
 
 const addTag = (args) => {
@@ -97,7 +100,11 @@ const addTag = (args) => {
     }
 
     db.addTagToFile(args.path, args.name);
+    return true;
+};
 
+const removeTag = (args) => {
+    db.removeTagFromFile(args.path, args.name);
     return true;
 };
 
@@ -109,4 +116,5 @@ module.exports = {
     removeTagGroup,
     createTag,
     addTag,
+    removeTag,
 };

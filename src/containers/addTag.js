@@ -2,6 +2,7 @@ import React from "react";
 import { Mutation } from "react-apollo";
 import queries from "../queries";
 import AddTag from "../components/addTag";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import * as actions from "../reducer";
 import { catchLoadingError } from "./util";
@@ -27,10 +28,28 @@ const AddTagContainer = (props) => (
         ]}
         update={props.confirm} >
         {(addTag, state) => catchLoadingError(state)(
-            <AddTag {...props} confirm={addTag} />
+            <AddTag
+                name={props.name}
+                change={props.change}
+                abort={props.abort}
+                isOpen={props.isOpen}
+                open={props.open}
+                path={props.path}
+                confirm={addTag}
+            />
         )}
     </Mutation>
 );
+
+AddTag.propTypes = {
+    open: PropTypes.func.isRequired,
+    isOpen: PropTypes.bool.isRequired,
+    name: PropTypes.string.isRequired,
+    change: PropTypes.func.isRequired,
+    abort: PropTypes.func.isRequired,
+    confirm: PropTypes.func.isRequired,
+    path: PropTypes.string.isRequired,
+};
 
 export default connect(
     (state, props) => ({

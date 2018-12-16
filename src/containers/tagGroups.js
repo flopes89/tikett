@@ -4,8 +4,14 @@ import queries from "../queries";
 import TagGroups from "../components/tagGroups";
 import { catchLoadingError } from "./util";
 
-export default () => (
+const TagGroupsContainer = () => (
     <Query query={queries.GET_TAG_GROUPS}>
         {(state) => catchLoadingError(state)(<TagGroups tagGroups={state.data.tagGroups} />)}
     </Query>
 );
+
+TagGroupsContainer.propTypes = {
+
+};
+
+export default TagGroupsContainer;

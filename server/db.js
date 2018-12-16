@@ -126,15 +126,30 @@ const addTagToFile = (filePath, tagName) => {
     const file = getFile(filePath);
     const newTag = getOrCreateTag(tagName);
     file.tags.push(newTag.name);
-
-    const ext = path.extname(filePath);
-    const basename = path.basename(filePath, ext);
-    const name = basename.replace(/\[[^\]]*\]/, "");
-    const newPath = path.resolve(path.dirname(filePath), name + "[" + file.tags.join(" ") + "]" + ext);
-
-    fs.renameSync(filePath, newPath);
-    file.path = newPath;
+    updateFilePath(file);
 };
+
+const removeTagFromFile = (filePath, tagName) => {
+    const file = getFile(filePath);
+    _.remove(file.tags, (tag) => tag === tagName);
+    updateFilePath(file);
+};
+
+const updateFilePath = (file) => {
+    const ext = path.extname(file.path);
+    const basename = path.basename(file.path, ext);
+    const name = basename.replace(/\[[^\]]*\]/, "");
+
+    let tags = file.tags.join(" ");
+    if (tags && tags !== "") {
+        tags = "[" + tags + "]";
+    }
+
+    const newPath = path.resolve(path.dirname(file.path), name + tags + ext);
+
+    fs.renameSync(file.path, newPath);
+    file.path = newPath;
+}
 
 module.exports = {
     dump,
@@ -148,4 +163,5 @@ module.exports = {
     removeTagGroup,
     getFile,
     addTagToFile,
+    removeTagFromFile,
 };

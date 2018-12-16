@@ -1,27 +1,5 @@
 import gql from "graphql-tag";
 
-const FILES = `
-    name
-    tags {
-        name
-        color
-    }
-    path
-    isFile`;
-
-const TAG_GROUPS = `
-    name
-    color
-    tags {
-        name
-        color
-    }`;
-
-const TAGS = `
-    name
-    color
-`;
-
 export default {
     GET_FILES: gql`
         query(
@@ -32,7 +10,13 @@ export default {
                 current: $current
                 showDescendants: $showDescendants
             ) {
-                ${FILES}
+                name
+                tags {
+                    name
+                    color
+                }
+                path
+                isFile
             }
         }`,
 
@@ -44,7 +28,12 @@ export default {
     GET_TAG_GROUPS: gql`
         query {
             tagGroups {
-                ${TAG_GROUPS}
+                name
+                color
+                tags {
+                    name
+                    color
+                }
             }
         }`,
 
@@ -54,9 +43,7 @@ export default {
         ) {
             createTagGroup(
                 name: $name
-            ) {
-                ${TAG_GROUPS}
-            }
+            )
         }`,
 
     REMOVE_TAG_GROUP: gql`
@@ -65,9 +52,7 @@ export default {
         ) {
             removeTagGroup(
                 group: $group
-            ) {
-                ${TAG_GROUPS}
-            }
+            )
         }`,
 
     ADD_TAG: gql`
@@ -76,6 +61,17 @@ export default {
             $name: String!
         ) {
             addTag(
+                path: $path
+                name: $name
+            )
+        }`,
+
+    REMOVE_TAG: gql`
+        mutation removeTag(
+            $path: String!
+            $name: String!
+        ) {
+            removeTag(
                 path: $path
                 name: $name
             )
