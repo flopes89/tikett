@@ -73,16 +73,16 @@ const createTagGroup = (args) => {
     }
 
     db.createTagGroup(args.name);
-    return tagGroups();
+    return true;
 };
 
 const removeTagGroup = (args) => {
-    if (!args.group) {
+    if (!args.group || args.group === "Ungrouped") {
         return false;
     }
 
     db.removeTagGroup(args.group);
-    return tagGroups();
+    return true;
 };
 
 const createTag = (args) => {

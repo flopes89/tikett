@@ -24,7 +24,7 @@ const RemoveTag = (props) => (
         ]}>
         {(mutate, state) => catchLoadingError(state)(
             <a href="#" onClick={mutate}>
-                <Octicon icon={Trashcan} height={12} verticalAlign="text-top" />
+                <Octicon icon={Trashcan} height={12} verticalAlign="middle" />
             </a>
         )}
     </Mutation>

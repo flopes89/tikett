@@ -10,9 +10,11 @@ const TagGroup = (props) => (
             <Col>
                 <strong>{props.name}</strong>
             </Col>
-            <Col>
-                <a href="#" onClick={props.remove}><Octicon icon={Trashcan} /></a>
-            </Col>
+            {props.name !== "Ungrouped" && (
+                <Col>
+                    <a href="#" onClick={props.remove}><Octicon icon={Trashcan} /></a>
+                </Col>
+            )}
         </Row>
         <Row>
             <Col>
