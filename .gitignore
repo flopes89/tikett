@@ -1,5 +1,6 @@
 node_modules
 public
 !public/index.html
+dist
 .env
 tikettdb.json
