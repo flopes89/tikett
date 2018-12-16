@@ -2,14 +2,19 @@ const path = require("path");
 const express = require("express");
 const graphqlHttp = require("express-graphql");
 const db = require("./db");
+const bodyParser = require("body-parser");
 
 const run = () => {
     const app = express();
 
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({ extended: true }));
+
     app.use(express.static(path.resolve(__dirname, "..", "public")));
 
     app.use("/graphql", (req, res, next) => {
-        console.log(">>> new graphql request");
+        console.log(">>> New GraphQL request");
+        console.log(req.body);
         db.reload();
         return next();
     });
@@ -19,6 +24,7 @@ const run = () => {
         rootValue: require("./resolvers"),
         graphiql: true,
         formatError: (error) => {
+            console.error(error);
             return {
                 message: error.message,
                 locations: error.locations,
@@ -28,7 +34,7 @@ const run = () => {
         },
         extensions: () => {
             db.dump();
-            console.log("<<< graphql request done");
+            console.log("<<< Finished GraphQL request");
             return {
                 lastDbUpdate: new Date().toISOString(),
             };

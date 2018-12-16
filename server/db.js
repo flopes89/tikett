@@ -27,7 +27,7 @@ const reload = () => {
         dump();
     }
 
-    console.log("Reloading databse from file");
+    console.log("Reloading database from file");
     DB = JSON.parse(fs.readFileSync(DBPATH));
 };
 
