@@ -1,5 +1,6 @@
-const dotenv = require("dotenv");
-dotenv.load();
+process.env.FILE_ROOT = "test/data";
 
 const server = require("./server");
-server.run();
+const opn = require("opn");
+
+server.run().then((port) => opn("http://localhost:" + port));

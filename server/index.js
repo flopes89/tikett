@@ -3,8 +3,9 @@ const express = require("express");
 const graphqlHttp = require("express-graphql");
 const db = require("./db");
 const bodyParser = require("body-parser");
+const net = require("net");
 
-const run = () => {
+const run = async () => {
     const app = express();
 
     app.use(bodyParser.json());
@@ -41,12 +42,30 @@ const run = () => {
         }
     }));
 
-    app.listen(process.env.PORT, () => {
-        console.log(`Running server on ${process.env.PORT}`);
+    const port = await findRandomOpenPort();
+
+    app.listen(port, () => {
+        console.log(`Running server on ${port}`);
         db.reloadFiles();
         db.dump();
     });
+
+    return port;
 };
+
+const findRandomOpenPort = () => new Promise((resolve, reject) => {
+    const server = net.createServer();
+    server.unref();
+    server.on("error", reject);
+
+    server.listen(0, () => {
+        const { port } = server.address();
+
+        server.close(() => {
+            resolve(port);
+        });
+    });
+});
 
 module.exports = {
     run,
