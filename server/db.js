@@ -3,7 +3,7 @@ const fs = require("fs");
 const glob = require("glob");
 const _ = require("lodash");
 
-const DBPATH = path.resolve(process.env.FILE_ROOT, "tikettdb.json");
+let DBPATH = "";
 
 const DB_DEFAULTS = {
     files: [],
@@ -16,13 +16,26 @@ const DB_DEFAULTS = {
 
 let DB = _.cloneDeep(DB_DEFAULTS);
 
-const dump = () => {
-    console.log("Dumping current database contents");
-    fs.writeFileSync(DBPATH, JSON.stringify(DB, null, 2));
+const init = (path) => {
+    DBPATH = path.resolve(path, "tikettdb.json");
+    reload();
+};
 
+const getRoot = () => {
+    if (!DBPATH) {
+        console.error("No DB initialized!");
+        return "";
+    }
+
+    return path.dirname(DBPATH);
 };
 
 const reload = () => {
+    if (!DBPATH) {
+        console.error("No DB initialized!");
+        return;
+    }
+
     if (!fs.existsSync(DBPATH)) {
         dump();
     }
@@ -31,12 +44,26 @@ const reload = () => {
     DB = JSON.parse(fs.readFileSync(DBPATH));
 };
 
-reload();
+const dump = () => {
+    if (!DBPATH) {
+        console.error("No DB initialized!");
+        return;
+    }
+
+    console.log("Dumping current database contents");
+    fs.writeFileSync(DBPATH, JSON.stringify(DB, null, 2));
+};
 
 const getFiles = () => DB.files;
 
 const reloadFiles = () => {
-    const files = glob.sync(process.env.FILE_ROOT + "/**/*", {
+    const root = getRoot();
+    if (!root) {
+        console.error("No root folder set!");
+        return;
+    }
+
+    const files = glob.sync(root + "/**/*", {
         ignore: "**/tikettdb.json",
     });
 
@@ -152,6 +179,8 @@ const updateFilePath = (file) => {
 }
 
 module.exports = {
+    init,
+    getRoot,
     dump,
     reload,
     getFiles,

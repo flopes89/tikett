@@ -1,5 +1,3 @@
-process.env.FILE_ROOT = "test/data";
-
 const server = require("./server");
 const opn = require("opn");
 

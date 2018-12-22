@@ -29,6 +29,10 @@ module.exports = buildSchema(`
     }
 
     type Mutation {
+        changeRoot(
+            folder: String!
+        ): Boolean!
+
         reload: Boolean!
 
         addTag(

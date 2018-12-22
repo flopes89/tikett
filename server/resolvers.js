@@ -1,6 +1,21 @@
 const path = require("path");
+const fs = require("fs");
 const db = require("./db");
 const _ = require("lodash");
+
+const changeRoot = (args) => {
+    const folder = path.resolve(args.folder);
+
+    if (!fs.statSync(folder).isDirectory) {
+        throw "Must be a folder!";
+    }
+
+    fs.accessSync(folder, fs.constants.F_OK | fs.constants.W_OK | fs.constants.R_OK);
+
+    db.init(folder);
+
+    return true;
+};
 
 const files = ({ current, showDescendants }) => {
     // Deep copy the files array to make sure changing
@@ -8,7 +23,7 @@ const files = ({ current, showDescendants }) => {
     const files = _.map(db.getFiles(), _.clone);
     current = current.substring(1, current.length);
 
-    const currentFolder = path.resolve(process.env.FILE_ROOT, current);
+    const currentFolder = path.resolve(db.getRoot(), current);
 
     // The file objects returned from graphql should contain the full tag
     // objects instead of just the names (that are saved in the DB)
