@@ -1,6 +1,10 @@
 const { buildSchema } = require("graphql");
 
 module.exports = buildSchema(`
+    type Config {
+        root: String!
+    }
+
     type File {
         name: String!
         tags: [Tag]!
@@ -20,6 +24,8 @@ module.exports = buildSchema(`
     }
 
     type Query {
+        config: Config!
+
         tagGroups: [TagGroup]!
 
         files(

@@ -23,7 +23,7 @@ const init = (path) => {
 
 const getRoot = () => {
     if (!DBPATH) {
-        console.error("No DB initialized!");
+        console.error("Cannot get root: No DB initialized!");
         return "";
     }
 
@@ -32,7 +32,7 @@ const getRoot = () => {
 
 const reload = () => {
     if (!DBPATH) {
-        console.error("No DB initialized!");
+        console.error("Cannot reload DB: No DB initialized!");
         return;
     }
 
@@ -46,7 +46,7 @@ const reload = () => {
 
 const dump = () => {
     if (!DBPATH) {
-        console.error("No DB initialized!");
+        console.error("Cannot dump DB: No DB initialized!");
         return;
     }
 

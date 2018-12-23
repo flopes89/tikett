@@ -2,6 +2,11 @@ const path = require("path");
 const fs = require("fs");
 const db = require("./db");
 const _ = require("lodash");
+const config = require("./config");
+
+const getConfig = () => ({
+    root: config.getRoot,
+});
 
 const changeRoot = (args) => {
     const folder = path.resolve(args.folder);
@@ -12,6 +17,7 @@ const changeRoot = (args) => {
 
     fs.accessSync(folder, fs.constants.F_OK | fs.constants.W_OK | fs.constants.R_OK);
 
+    config.setRoot(folder);
     db.init(folder);
 
     return true;
@@ -124,6 +130,8 @@ const removeTag = (args) => {
 };
 
 module.exports = {
+    config: getConfig,
+    changeRoot,
     files,
     tagGroups,
     reload,
