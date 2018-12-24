@@ -8,8 +8,16 @@ export const FILES_NEWTAG_OPEN = "NEWTAG_OPEN";
 export const FILES_NEWTAG_ABORT = "NEWTAG_ABORT";
 export const FILES_NEWTAG_CONFIRM = "NEWTAG_CONFIRM";
 export const FILES_NEWTAG_CHANGE = "NEWTAG_CHANGE";
+export const CONFIG_ROOT_OPEN = "CONFIG_ROOT_OPEN";
+export const CONFIG_ROOT_ABORT = "CONFIG_ROOT_ABORT";
+export const CONFIG_ROOT_CHANGE = "CONFIG_ROOT_CHANGE";
+export const CONFIG_ROOT_CONFIRM = "CONFIG_ROOT_CONFIRM";
 
 export const INIT_STATE = {
+    config: {
+        root: "",
+        rootOpened: false,
+    },
     tagGroups: {
         createNewOpened: false,
         createNewName: "",
@@ -134,6 +142,43 @@ export default (state, action) => {
                     createNewTagName: "",
                 },
             };
+
+        case CONFIG_ROOT_OPEN:
+            return {
+                ...newState,
+                config: {
+                    ...newState.config,
+                    rootOpened: true,
+                }
+            };
+
+        case CONFIG_ROOT_ABORT:
+            return {
+                ...newState,
+                config: {
+                    ...newState.config,
+                    rootOpened: false,
+                }
+            };
+
+        case CONFIG_ROOT_CHANGE:
+            return {
+                ...newState,
+                config: {
+                    ...newState.config,
+                    root: action.root,
+                }
+            };
+
+        case CONFIG_ROOT_CONFIRM:
+            return {
+                ...newState,
+                config: {
+                    ...newState.config,
+                    rootOpened: false,
+                }
+            };
+
     }
 
     return INIT_STATE;

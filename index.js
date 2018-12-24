@@ -4,4 +4,8 @@ const opn = require("opn");
 
 config.load();
 
-server.run().then((port) => opn("http://localhost:" + port));
+server.run().then((port) => {
+    if (process.env.NODE_ENV === "production") {
+        opn("http://localhost:" + port);
+    }
+});

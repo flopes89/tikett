@@ -31,6 +31,7 @@ const getRoot = () => CONFIG.root;
 
 const setRoot = (root) => {
     CONFIG.root = root;
+    console.log("New root: " + CONFIG.root);
     write();
 };
 

@@ -54,6 +54,11 @@ const run = async () => {
 };
 
 const findRandomOpenPort = () => new Promise((resolve, reject) => {
+    if (process.env.NODE_ENV === "development") {
+        resolve(50550);
+        return;
+    }
+
     const server = net.createServer();
     server.unref();
     server.on("error", reject);

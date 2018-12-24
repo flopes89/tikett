@@ -5,6 +5,7 @@ import ReloadButton from "./containers/reloadButton";
 import TagGroups from "./containers/tagGroups";
 import Breadcrumbs from "./containers/breadcrumbs";
 import Octicon, { Tag } from "@githubprimer/octicons-react";
+import SetRoot from "./containers/setRoot";
 
 export default () => (
     <div>
@@ -14,6 +15,7 @@ export default () => (
                     <NavbarBrand tag="a" href="/">
                         <h1><Octicon icon={Tag} size="medium" /> tikett</h1>
                     </NavbarBrand>
+                    <SetRoot />
                     <ReloadButton />
                 </Container>
             </Navbar>

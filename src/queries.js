@@ -76,4 +76,13 @@ export default {
                 name: $name
             )
         }`,
+
+    CHANGE_ROOT: gql`
+        mutation changeRoot(
+            $folder: String!
+        ) {
+            changeRoot(
+                folder: $folder
+            )
+        }`,
 };
