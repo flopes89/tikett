@@ -41,7 +41,7 @@ SetRootContainer.propTypes = {
 export default connect(
     (state) => ({
         root: state.config.root,
-        isOpen: state.config.rootIsOpened
+        isOpen: state.config.rootOpened
     }),
     (dispatch) => ({
         open: () => dispatch({

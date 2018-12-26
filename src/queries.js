@@ -1,6 +1,13 @@
 import gql from "graphql-tag";
 
 export default {
+    GET_CONFIG: gql`
+        query {
+            config {
+                root
+            }
+        }`,
+
     GET_FILES: gql`
         query(
             $current: String = "/"

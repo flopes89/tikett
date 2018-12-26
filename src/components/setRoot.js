@@ -1,10 +1,28 @@
 import React from "react";
+import { Input } from "reactstrap";
 import PropTypes from "prop-types";
 import { Alert } from "reactstrap";
 
+const ENTER = 13;
+
 const SetRoot = (props) => {
     if (props.isOpen) {
-        return null;
+        const onKeyPress = (event) => {
+            if (event.which === ENTER) {
+                props.confirm(props.root);
+            }
+        };
+
+        return (
+            <Input
+                innerRef={(ref) => ref && ref.focus()}
+                value={props.root}
+                onChange={(event) => props.change(event.target.value)}
+                onBlur={props.abort}
+                onKeyPress={onKeyPress}
+                placeholder="Press enter to confirm"
+            />
+        );
     }
 
     let root = props.root;
@@ -17,7 +35,7 @@ const SetRoot = (props) => {
     }
 
     return (
-        <a href="#">
+        <a href="#" onClick={props.open}>
             {root}
         </a>
     );
