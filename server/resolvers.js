@@ -11,6 +11,10 @@ const getConfig = () => ({
 const changeRoot = (args) => {
     const folder = path.resolve(args.folder);
 
+    if (!fs.existsSync(folder)) {
+        throw "Folder does not exist";
+    }
+
     if (!fs.statSync(folder).isDirectory) {
         throw "Must be a folder!";
     }

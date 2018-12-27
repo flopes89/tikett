@@ -15,7 +15,12 @@ export const Error = () => (
 
 export const catchLoadingError = (state = {}) => (component) => {
     if (state.error) {
-        return (<Error />);
+        return (
+            <div>
+                <Error />
+                {component}
+            </div>
+        );
     }
 
     // In case of queries, data will always be an object, just empty: render loading
