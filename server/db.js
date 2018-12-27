@@ -16,8 +16,8 @@ const DB_DEFAULTS = {
 
 let DB = _.cloneDeep(DB_DEFAULTS);
 
-const init = (path) => {
-    DBPATH = path.resolve(path, "tikettdb.json");
+const init = (folder) => {
+    DBPATH = path.resolve(folder, "tikettdb.json");
     reload();
 };
 

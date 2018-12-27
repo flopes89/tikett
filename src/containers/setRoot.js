@@ -14,7 +14,11 @@ const SetRootContainer = (props) => (
             folder: props.root
         }}
         update={props.confirm}
-        refetchQueries={[queries.GET_FILES, queries.GET_TAG_GROUPS]}
+        refetchQueries={[{
+            query: queries.GET_FILES,
+        }, {
+            query: queries.GET_TAG_GROUPS
+        }]}
     >
         {(setRoot, state) => catchLoadingError(state)(
             <SetRoot

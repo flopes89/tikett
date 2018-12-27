@@ -5,6 +5,9 @@ import queries from "../queries";
 import { catchLoadingError } from "./util";
 import PropTypes from "prop-types";
 import SetRoot from "./setRoot";
+import TagGroups from "../containers/tagGroups";
+import Breadcrumbs from "../containers/breadcrumbs";
+import Files from "../containers/files";
 
 const Main = (props) => {
     if (props.config.root) {
