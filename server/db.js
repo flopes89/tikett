@@ -3,6 +3,8 @@ const fs = require("fs");
 const glob = require("glob");
 const _ = require("lodash");
 
+const LOG = require("./logger")("db");
+
 let DBPATH = "";
 
 const DB_DEFAULTS = {
@@ -23,7 +25,7 @@ const init = (folder) => {
 
 const getRoot = () => {
     if (!DBPATH) {
-        console.error("Cannot get root: No DB initialized!");
+        LOG.error("Cannot get root: No DB initialized!");
         return "";
     }
 
@@ -32,7 +34,7 @@ const getRoot = () => {
 
 const reload = () => {
     if (!DBPATH) {
-        console.error("Cannot reload DB: No DB initialized!");
+        LOG.error("Cannot reload DB: No DB initialized!");
         return;
     }
 
@@ -40,17 +42,17 @@ const reload = () => {
         dump();
     }
 
-    console.log("Reloading database from file");
+    LOG.info("Reloading database from file");
     DB = JSON.parse(fs.readFileSync(DBPATH));
 };
 
 const dump = () => {
     if (!DBPATH) {
-        console.error("Cannot dump DB: No DB initialized!");
+        LOG.error("Cannot dump DB: No DB initialized!");
         return;
     }
 
-    console.log("Dumping current database contents");
+    LOG.info("Dumping current database contents");
     fs.writeFileSync(DBPATH, JSON.stringify(DB, null, 2));
 };
 
@@ -59,7 +61,7 @@ const getFiles = () => DB.files;
 const reloadFiles = () => {
     const root = getRoot();
     if (!root) {
-        console.error("No root folder set!");
+        LOG.error("No root folder set!");
         return;
     }
 
@@ -70,7 +72,7 @@ const reloadFiles = () => {
     DB.files = [];
 
     files.forEach((file) => {
-        console.log("Reading file [" + file + "]");
+        LOG.info("Reading file [" + file + "]");
 
         const basename = path.basename(file);
         const name = basename.replace(/\[[^\]]*\]/, "");
@@ -105,7 +107,7 @@ const getOrCreateTag = (tag) => {
     });
 
     if (!result) {
-        console.log("Creating new tag [" + tag + "]");
+        LOG.info("Creating new tag [" + tag + "]");
         let ungrouped = _.find(DB.tagGroups, { name: "Ungrouped" });
 
         if (!ungrouped) {

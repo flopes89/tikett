@@ -6,6 +6,8 @@ const bodyParser = require("body-parser");
 const net = require("net");
 const config = require("./config");
 
+const LOG = require("./logger")("server");
+
 const run = async () => {
     const app = express();
 
@@ -15,8 +17,7 @@ const run = async () => {
     app.use(express.static(path.resolve(__dirname, "..", "public")));
 
     app.use("/graphql", (req, res, next) => {
-        console.log(">>> New GraphQL request");
-        console.log(req.body);
+        LOG.silly(">>> New GraphQL request", req.body);
         db.reload();
         return next();
     });
@@ -26,7 +27,7 @@ const run = async () => {
         rootValue: require("./resolvers"),
         graphiql: true,
         formatError: (error) => {
-            console.error(error);
+            LOG.error(error);
             return {
                 message: error.message,
                 locations: error.locations,
@@ -36,7 +37,7 @@ const run = async () => {
         },
         extensions: () => {
             db.dump();
-            console.log("<<< Finished GraphQL request");
+            LOG.silly("<<< Finished GraphQL request");
             return {
                 lastDbUpdate: new Date().toISOString(),
             };
@@ -46,7 +47,7 @@ const run = async () => {
     const port = await findRandomOpenPort();
 
     app.listen(port, () => {
-        console.log(`Running server on ${port}`);
+        LOG.info(`Running server on ${port}`);
         db.init(config.getRoot());
         db.reloadFiles();
         db.dump();
