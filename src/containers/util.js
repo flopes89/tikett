@@ -13,12 +13,12 @@ export const Error = () => (
     </Alert>
 );
 
-export const catchLoadingError = (state = {}) => (component) => {
+export const catchLoadingError = (state = {}, showIfError = false) => (component) => {
     if (state.error) {
         return (
             <div>
                 <Error />
-                {component}
+                {showIfError && component}
             </div>
         );
     }

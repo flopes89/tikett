@@ -20,7 +20,7 @@ const SetRootContainer = (props) => (
             query: queries.GET_TAG_GROUPS
         }]}
     >
-        {(setRoot, state) => catchLoadingError(state)(
+        {(setRoot, state) => catchLoadingError(state, true)(
             <SetRoot
                 isOpen={props.isOpen}
                 root={props.root}

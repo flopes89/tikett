@@ -4,6 +4,7 @@ const graphqlHttp = require("express-graphql");
 const db = require("./db");
 const bodyParser = require("body-parser");
 const net = require("net");
+const config = require("./config");
 
 const run = async () => {
     const app = express();
@@ -46,6 +47,7 @@ const run = async () => {
 
     app.listen(port, () => {
         console.log(`Running server on ${port}`);
+        db.init(config.getRoot());
         db.reloadFiles();
         db.dump();
     });
