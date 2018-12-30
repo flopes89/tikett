@@ -15,7 +15,7 @@ const formatter = winston.format.printf((info) => {
         label = label.padStart(8, " ");
     }
 
-    return `${info.timestamp} ${info.level} ${label} ${info.message}${metaObject}`;
+    return `${info.timestamp} ${label} ${info.level} ${info.message}${metaObject}`;
 });
 
 module.exports = (name) => winston.createLogger({

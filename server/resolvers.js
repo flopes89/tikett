@@ -23,6 +23,7 @@ const changeRoot = (args) => {
 
     config.setRoot(folder);
     db.init(folder);
+    reload();
 
     return true;
 };

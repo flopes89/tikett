@@ -1,7 +1,8 @@
 import React from "react";
 import { Input } from "reactstrap";
 import PropTypes from "prop-types";
-import { Alert } from "reactstrap";
+import { Button } from "reactstrap";
+import Icon, { Inbox } from "@githubprimer/octicons-react";
 
 const ENTER = 13;
 
@@ -25,19 +26,10 @@ const SetRoot = (props) => {
         );
     }
 
-    let root = props.root;
-    if (!props.root) {
-        root = (
-            <Alert color="danger">
-                No root folder set. Click here to set one now
-            </Alert>
-        );
-    }
-
     return (
-        <a href="#" onClick={props.open}>
-            {root}
-        </a>
+        <Button onClick={props.open}>
+            <Icon icon={Inbox} /> Change root
+        </Button>
     );
 };
 

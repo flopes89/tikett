@@ -1,8 +1,9 @@
 import React from "react";
-import { Container, Navbar, NavbarBrand } from "reactstrap";
+import { Container, Navbar, NavbarBrand, Row, Col } from "reactstrap";
 import ReloadButton from "./containers/reloadButton";
 import Octicon, { Tag } from "@githubprimer/octicons-react";
 import Main from "./containers/main";
+import SetRoot from "./containers/setRoot";
 
 export default () => (
     <div>
@@ -12,7 +13,14 @@ export default () => (
                     <NavbarBrand tag="a" href="/">
                         <h1><Octicon icon={Tag} size="medium" /> tikett</h1>
                     </NavbarBrand>
-                    <ReloadButton />
+                    <Row>
+                        <Col>
+                            <ReloadButton />
+                        </Col>
+                        <Col>
+                            <SetRoot />
+                        </Col>
+                    </Row>
                 </Container>
             </Navbar>
         </header>

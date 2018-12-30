@@ -20,6 +20,7 @@ let DB = _.cloneDeep(DB_DEFAULTS);
 
 const init = (folder) => {
     DBPATH = path.resolve(folder, "tikettdb.json");
+    DB = _.cloneDeep(DB_DEFAULTS);
     reload();
 };
 
@@ -42,7 +43,7 @@ const reload = () => {
         dump();
     }
 
-    LOG.info("Reloading database from file");
+    LOG.silly("Reloading database from [" + DBPATH + "]");
     DB = JSON.parse(fs.readFileSync(DBPATH));
 };
 
@@ -52,7 +53,7 @@ const dump = () => {
         return;
     }
 
-    LOG.info("Dumping current database contents");
+    LOG.silly("Dumping database to [" + DBPATH + "]");
     fs.writeFileSync(DBPATH, JSON.stringify(DB, null, 2));
 };
 
