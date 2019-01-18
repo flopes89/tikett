@@ -1,6 +1,5 @@
 import React from "react";
 import { Row, Col } from "reactstrap";
-import Tag from "./tag";
 import CreateTagGroup from "../containers/createTagGroup";
 import PropTypes from "prop-types";
 import TagGroup from "../containers/tagGroup";
@@ -20,7 +19,7 @@ const TagGroups = ({ tagGroups }) => (
 );
 
 TagGroups.propTypes = {
-    tagGroups: PropTypes.arrayOf(PropTypes.shape(Tag.propTypes)),
+    tagGroups: PropTypes.arrayOf(PropTypes.shape(TagGroup.propTypes)),
 };
 
 export default TagGroups;

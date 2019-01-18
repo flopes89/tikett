@@ -33,8 +33,8 @@ const CreateTagGroupContainer = (props) => (
 );
 
 CreateTagGroupContainer.propTypes = {
-    isOpen: PropTypes.bool,
-    name: PropTypes.string,
+    isOpen: PropTypes.bool.isRequired,
+    name: PropTypes.string.isRequired,
     open: PropTypes.func.isRequired,
     confirm: PropTypes.func.isRequired,
     abort: PropTypes.func.isRequired,

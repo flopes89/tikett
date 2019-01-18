@@ -27,7 +27,7 @@ const TagGroupContainer = (props) => (
 
 TagGroupContainer.propTypes = {
     name: PropTypes.string.isRequired,
-    tagGroups: PropTypes.arrayOf(PropTypes.shape(Tag.propTypes)),
+    tags: PropTypes.arrayOf(PropTypes.shape(Tag.propTypes)),
 };
 
 export default TagGroupContainer;

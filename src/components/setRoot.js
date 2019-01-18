@@ -34,12 +34,12 @@ const SetRoot = (props) => {
 };
 
 SetRoot.propTypes = {
-    isOpen: PropTypes.bool,
-    open: PropTypes.func,
-    abort: PropTypes.func,
-    change: PropTypes.func,
-    confirm: PropTypes.func,
-    root: PropTypes.string,
+    isOpen: PropTypes.bool.isRequired,
+    open: PropTypes.func.isRequired,
+    abort: PropTypes.func.isRequired,
+    change: PropTypes.func.isRequired,
+    confirm: PropTypes.func.isRequired,
+    root: PropTypes.string.isRequired,
 };
 
 export default SetRoot;
