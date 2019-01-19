@@ -3,13 +3,17 @@ import { Input } from "reactstrap";
 import PropTypes from "prop-types";
 import { Button } from "reactstrap";
 import Icon, { Inbox } from "@githubprimer/octicons-react";
-
-const ENTER = 13;
+import { connect } from "react-redux";
+import * as actions from "../reducer";
+import { Mutation } from "react-apollo";
+import queries from "../queries";
+import { catchLoadingError } from "./util";
+import { CONFIRM_KEYS } from "../const";
 
 const SetRoot = (props) => {
     if (props.isOpen) {
         const onKeyPress = (event) => {
-            if (event.which === ENTER) {
+            if (CONFIRM_KEYS.indexOf(event.which) !== -1) {
                 props.confirm(props.root);
             }
         };
@@ -42,4 +46,41 @@ SetRoot.propTypes = {
     root: PropTypes.string.isRequired,
 };
 
-export default SetRoot;
+const SetRootContainer = (props) => (
+    <Mutation
+        mutation={queries.CHANGE_ROOT}
+        variables={{
+            folder: props.root
+        }}
+        update={props.confirm}
+        refetchQueries={[{
+            query: queries.GET_FILES,
+        }, {
+            query: queries.GET_TAG_GROUPS
+        }]}
+    >
+        {(setRoot, state) => catchLoadingError(state, true)(<SetRoot {...props} confirm={setRoot} />)}
+    </Mutation>
+);
+
+export default connect(
+    (state) => ({
+        root: state.config.root,
+        isOpen: state.config.rootOpened
+    }),
+    (dispatch) => ({
+        open: () => dispatch({
+            type: actions.CONFIG_ROOT_OPEN,
+        }),
+        abort: () => dispatch({
+            type: actions.CONFIG_ROOT_ABORT,
+        }),
+        change: (root) => dispatch({
+            type: actions.CONFIG_ROOT_CHANGE,
+            root,
+        }),
+        confirm: () => dispatch({
+            type: actions.CONFIG_ROOT_CONFIRM,
+        })
+    })
+)(SetRootContainer);

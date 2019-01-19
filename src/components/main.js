@@ -4,7 +4,7 @@ import { Row, Col } from "reactstrap";
 import queries from "../queries";
 import { catchLoadingError } from "./util";
 import PropTypes from "prop-types";
-import SetRoot from "./setRoot";
+import SetRoot from "../containers/setRoot";
 import TagGroups from "../containers/tagGroups";
 import Breadcrumbs from "../containers/breadcrumbs";
 import Files from "../containers/files";

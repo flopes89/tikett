@@ -3,6 +3,12 @@ import { Table } from "reactstrap";
 import { Row, Col, Form, FormGroup, Label, Input, } from "reactstrap";
 import PropTypes from "prop-types";
 import File from "./file";
+import { Query } from "react-apollo";
+import { connect } from "react-redux";
+import Files from "./files";
+import queries from "../queries";
+import { catchLoadingError } from "./util";
+import * as actions from "../reducer";
 
 const Files = (props) => (
     <div id="files_component">
@@ -50,4 +56,30 @@ Files.propTypes = {
     openFolder: PropTypes.func,
 };
 
-export default Files;
+const FilesContainer = (props) => (
+    <Query
+        query={queries.GET_FILES}
+        variables={{
+            current: props.current,
+            showDescendants: props.showDescendants,
+        }}
+    >
+        {(state) => catchLoadingError(state)(<Files {...props} files={state.data.files} />)}
+    </Query>
+);
+
+export default connect(
+    (state) => ({
+        showDescendants: state.files.showDescendants,
+        current: state.files.current,
+    }),
+    (dispatch) => ({
+        toggleShowDescendants: () => dispatch({
+            type: actions.FILES_TOGGLE_SHOWDESCENDANTS,
+        }),
+        openFolder: (folder) => dispatch({
+            type: actions.FILES_OPENFOLDER,
+            folder,
+        }),
+    }),
+)(FilesContainer);

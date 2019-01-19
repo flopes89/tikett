@@ -2,7 +2,10 @@ import React from "react";
 import { Row, Col } from "reactstrap";
 import CreateTagGroup from "../containers/createTagGroup";
 import PropTypes from "prop-types";
-import TagGroup from "../containers/tagGroup";
+import TagGroup from "./tagGroup";
+import { Query } from "react-apollo";
+import queries from "../queries";
+import { catchLoadingError } from "./util";
 
 const TagGroups = ({ tagGroups }) => (
     <div id="tag_groups">
@@ -22,4 +25,10 @@ TagGroups.propTypes = {
     tagGroups: PropTypes.arrayOf(PropTypes.shape(TagGroup.propTypes)),
 };
 
-export default TagGroups;
+const TagGroupsContainer = () => (
+    <Query query={queries.GET_TAG_GROUPS}>
+        {(state) => catchLoadingError(state)(<TagGroups tagGroups={state.data.tagGroups} />)}
+    </Query>
+);
+
+export default TagGroupsContainer;

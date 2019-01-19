@@ -1,6 +1,6 @@
 import React from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
-import Tag from "../components/tag";
+import Tag from "../layout/tag";
 import PropTypes from "prop-types";
 import RemoveTag from "./removeTag";
 

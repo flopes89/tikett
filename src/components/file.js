@@ -1,13 +1,15 @@
 import React from "react";
-import Octicon, { FileDirectory, File } from "@githubprimer/octicons-react";
+import Octicon, { FileDirectory, File as FileIcon } from "@githubprimer/octicons-react";
 import PropTypes from "prop-types";
-import Tag from "./tag";
+import Tag from "../layout/tag";
 import AddTag from "../containers/addTag";
-import TagsContainer from "../containers/tags";
+import Tags from "./tags";
+import { Droppable } from "react-beautiful-dnd";
+import PropTypes from "prop-types";
 
-const FileComponent = (props) => {
+const File = (props) => {
     let name = props.name;
-    let icon = (<Octicon icon={File} />);
+    let icon = (<Octicon icon={FileIcon} />);
     let className = "file";
     let onClick = null;
 
@@ -19,22 +21,27 @@ const FileComponent = (props) => {
     }
 
     return (
-        <tr className={className} onClick={onClick}>
-            <td>
-                {icon}
-            </td>
-            <td>
-                {name}
-            </td>
-            <td>
-                {props.isFile && <TagsContainer path={props.path} tags={props.tags} />}
-                {props.isFile && (<AddTag path={props.path} />)}
-            </td>
-        </tr>
+        <Droppable droppableId={"tags-container-" + props.path}>
+            {(provided) => (
+                <tr
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    className={className}
+                    onClick={onClick}
+                >
+                    <td>{icon}</td>
+                    <td>{name}</td>
+                    <td>
+                        {props.isFile && (<Tags path={props.path} tags={props.tags} />)}
+                        {props.isFile && (<AddTag path={props.path} />)}
+                    </td>
+                </tr>
+            )}
+        </Droppable>
     );
 };
 
-FileComponent.propTypes = {
+File.propTypes = {
     name: PropTypes.string.isRequired,
     path: PropTypes.string.isRequired,
     isFile: PropTypes.bool.isRequired,
@@ -42,4 +49,4 @@ FileComponent.propTypes = {
     tags: PropTypes.arrayOf(PropTypes.shape(Tag.propTypes)),
 };
 
-export default FileComponent;
+export default File;

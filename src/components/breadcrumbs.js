@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Row, Col, Breadcrumb, BreadcrumbItem } from "reactstrap";
+import { connect } from "react-redux";
+import * as actions from "../reducer";
 
 const CrumbItem = (props) => {
     let inner = props.name;
@@ -42,8 +44,48 @@ const Crumbs = (props) => (
 );
 
 Crumbs.propTypes = {
-    breadcrumbs: PropTypes.array.isRequired,
+    breadcrumbs: PropTypes.arrayOf(PropTypes.shape(CrumbItem.propTypes)),
     openFolder: PropTypes.func.isRequired,
 };
 
-export default Crumbs;
+const BreadcrumbsContainer = (props) => {
+    const breadcrumbs = [];
+    let breadcrumbPath = "/";
+
+    props.current.split("/").forEach((crumb) => {
+        if (!crumb) {
+            return;
+        }
+
+        breadcrumbs.push({
+            name: crumb,
+            path: breadcrumbPath + crumb,
+        });
+
+        breadcrumbPath += crumb + "/";
+    });
+
+    breadcrumbs.unshift({
+        name: "Home",
+        path: "/",
+    });
+
+    return (<Breadcrumbs breadcrumbs={breadcrumbs} openFolder={props.openFolder} />);
+};
+
+BreadcrumbsContainer.propTypes = {
+    current: PropTypes.string.isRequired,
+    openFolder: PropTypes.func.isRequired,
+}
+
+export default connect(
+    (state) => ({
+        current: state.files.current,
+    }),
+    (dispatch) => ({
+        openFolder: (folder) => dispatch({
+            type: actions.FILES_OPENFOLDER,
+            folder,
+        }),
+    })
+)(BreadcrumbsContainer);

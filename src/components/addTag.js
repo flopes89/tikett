@@ -1,13 +1,17 @@
 import React from "react";
 import { Badge, Input } from "reactstrap";
 import Octicon, { Plus } from "@githubprimer/octicons-react";
+import { Mutation } from "react-apollo";
+import queries from "../queries";
 import PropTypes from "prop-types";
-
-const ENTER = 13;
+import { connect } from "react-redux";
+import * as actions from "../reducer";
+import { catchLoadingError } from "./util";
+import { CONFIRM_KEYS } from "../const";
 
 const AddTag = (props) => {
     const onKeyPress = (event) => {
-        if (event.which === ENTER) {
+        if (CONFIRM_KEYS.indexOf(event.which) !== -1) {
             props.confirm(props.file);
         }
     };
@@ -42,4 +46,52 @@ AddTag.propTypes = {
     path: PropTypes.string.isRequired,
 };
 
-export default AddTag;
+const AddTagContainer = (props) => (
+    <Mutation
+        mutation={queries.ADD_TAG}
+        variables={{
+            name: props.name,
+            path: props.path,
+        }}
+        refetchQueries={[
+            {
+                query: queries.GET_FILES,
+                variables: {
+                    current: props.current,
+                    showDescendants: props.showDescendants,
+                }
+            },
+            {
+                query: queries.GET_TAG_GROUPS,
+            }
+        ]}
+        update={props.confirm}
+    >
+        {(addTag, state) => catchLoadingError(state)(<AddTag {...props} confirm={addTag} />)}
+    </Mutation>
+);
+
+export default connect(
+    (state, props) => ({
+        name: state.files.createNewTagName,
+        isOpen: state.files.createNewTagOpened && (state.files.createNewTagOnPath === props.path),
+        current: state.files.current,
+        showDescendants: state.files.showDescendants,
+    }),
+    (dispatch) => ({
+        open: (path) => dispatch({
+            type: actions.FILES_NEWTAG_OPEN,
+            path
+        }),
+        confirm: () => dispatch({
+            type: actions.FILES_NEWTAG_CONFIRM,
+        }),
+        abort: () => dispatch({
+            type: actions.FILES_NEWTAG_ABORT,
+        }),
+        change: (name) => dispatch({
+            type: actions.FILES_NEWTAG_CHANGE,
+            name,
+        }),
+    }),
+)(AddTagContainer);
