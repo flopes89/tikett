@@ -2,10 +2,9 @@ import React from "react";
 import Octicon, { FileDirectory, File as FileIcon } from "@githubprimer/octicons-react";
 import PropTypes from "prop-types";
 import Tag from "../layout/tag";
-import AddTag from "../containers/addTag";
+import AddTag from "./addTag";
 import Tags from "./tags";
 import { Droppable } from "react-beautiful-dnd";
-import PropTypes from "prop-types";
 
 const File = (props) => {
     let name = props.name;

@@ -1,6 +1,6 @@
 import React from "react";
 import { Row, Col } from "reactstrap";
-import CreateTagGroup from "../containers/createTagGroup";
+import CreateTagGroup from "./createTagGroup";
 import PropTypes from "prop-types";
 import TagGroup from "./tagGroup";
 import { Query } from "react-apollo";

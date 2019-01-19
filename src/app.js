@@ -1,9 +1,9 @@
 import React from "react";
 import { Container, Navbar, NavbarBrand, Row, Col } from "reactstrap";
-import ReloadButton from "./containers/reloadButton";
+import ReloadButton from "./components/reloadButton";
 import Octicon, { Tag } from "@githubprimer/octicons-react";
-import Main from "./containers/main";
-import SetRoot from "./containers/setRoot";
+import Main from "./components/main";
+import SetRoot from "./components/setRoot";
 
 export default () => (
     <div>

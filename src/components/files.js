@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 import File from "./file";
 import { Query } from "react-apollo";
 import { connect } from "react-redux";
-import Files from "./files";
 import queries from "../queries";
 import { catchLoadingError } from "./util";
 import * as actions from "../reducer";

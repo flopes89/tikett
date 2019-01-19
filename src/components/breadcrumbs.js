@@ -18,13 +18,6 @@ const CrumbItem = (props) => {
     return (<BreadcrumbItem>{inner}</BreadcrumbItem>);
 };
 
-CrumbItem.propTypes = {
-    name: PropTypes.string.isRequired,
-    path: PropTypes.string.isRequired,
-    isClickable: PropTypes.bool,
-    openFolder: PropTypes.func.isRequired,
-};
-
 const Crumbs = (props) => (
     <Row>
         <Col>
@@ -42,11 +35,6 @@ const Crumbs = (props) => (
         </Col>
     </Row>
 );
-
-Crumbs.propTypes = {
-    breadcrumbs: PropTypes.arrayOf(PropTypes.shape(CrumbItem.propTypes)),
-    openFolder: PropTypes.func.isRequired,
-};
 
 const BreadcrumbsContainer = (props) => {
     const breadcrumbs = [];
@@ -70,13 +58,20 @@ const BreadcrumbsContainer = (props) => {
         path: "/",
     });
 
-    return (<Breadcrumbs breadcrumbs={breadcrumbs} openFolder={props.openFolder} />);
+    return (<Crumbs breadcrumbs={breadcrumbs} openFolder={props.openFolder} />);
 };
 
-BreadcrumbsContainer.propTypes = {
-    current: PropTypes.string.isRequired,
+CrumbItem.propTypes = {
+    name: PropTypes.string.isRequired,
+    path: PropTypes.string.isRequired,
+    isClickable: PropTypes.bool,
     openFolder: PropTypes.func.isRequired,
-}
+};
+
+Crumbs.propTypes = {
+    breadcrumbs: PropTypes.arrayOf(PropTypes.shape(CrumbItem.propTypes)),
+    openFolder: PropTypes.func.isRequired,
+};
 
 export default connect(
     (state) => ({

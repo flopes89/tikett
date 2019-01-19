@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Row, Col } from "reactstrap";
 import Octicon, { Trashcan } from "@githubprimer/octicons-react";
-import Tag from "./tag";
+import Tag from "../layout/tag";
 import { Mutation } from "react-apollo";
 import { catchLoadingError } from "./util";
 import queries from "../queries";
