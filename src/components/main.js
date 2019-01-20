@@ -4,10 +4,10 @@ import { Row, Col } from "reactstrap";
 import queries from "../queries";
 import { catchLoadingError } from "./util";
 import PropTypes from "prop-types";
-import SetRoot from "../components/setRoot";
-import TagGroups from "../components/tagGroups";
-import Breadcrumbs from "../components/breadcrumbs";
-import Files from "../components/files";
+import SetRoot from "./setRoot";
+import TagGroups from "./tagGroups";
+import Breadcrumbs from "./breadcrumbs";
+import Files from "./files";
 
 const Main = (props) => {
     if (props.config.root) {

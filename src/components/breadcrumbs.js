@@ -65,7 +65,7 @@ CrumbItem.propTypes = {
     name: PropTypes.string.isRequired,
     path: PropTypes.string.isRequired,
     isClickable: PropTypes.bool,
-    openFolder: PropTypes.func.isRequired,
+    openFolder: PropTypes.func,
 };
 
 Crumbs.propTypes = {

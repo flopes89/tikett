@@ -7,32 +7,30 @@ import Tags from "./tags";
 import { Droppable } from "react-beautiful-dnd";
 
 const File = (props) => {
-    let name = props.name;
-    let icon = (<Octicon icon={FileIcon} />);
-    let className = "file";
-    let onClick = null;
-
     if (!props.isFile) {
-        name = "[" + name + "]";
-        icon = (<Octicon icon={FileDirectory} />);
-        className = "folder";
-        onClick = () => props.openFolder(props.name);
+        return (
+            <tr className="folder" onClick={() => props.openFolder(props.name)}>
+                <td><Octicon icon={FileDirectory} /></td>
+                <td>[{props.name}]</td>
+                <td>&nbsp;</td>
+            </tr>
+        );
     }
 
     return (
-        <Droppable droppableId={"tags-container-" + props.path}>
+        <Droppable droppableId={"file-" + props.path}>
             {(provided) => (
                 <tr
                     ref={provided.innerRef}
                     {...provided.droppableProps}
-                    className={className}
-                    onClick={onClick}
+                    className="file"
                 >
-                    <td>{icon}</td>
-                    <td>{name}</td>
+                    <td>{<Octicon icon={FileIcon} />}</td>
+                    <td>{props.name}</td>
                     <td>
-                        {props.isFile && (<Tags path={props.path} tags={props.tags} />)}
-                        {props.isFile && (<AddTag path={props.path} />)}
+                        <Tags path={props.path} tags={props.tags} />
+                        {provided.placeholder}
+                        <AddTag path={props.path} />
                     </td>
                 </tr>
             )}
