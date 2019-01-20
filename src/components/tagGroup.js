@@ -2,31 +2,39 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Row, Col } from "reactstrap";
 import Octicon, { Trashcan } from "@githubprimer/octicons-react";
+import Tags from "./tags";
 import Tag from "../layout/tag";
 import { Mutation } from "react-apollo";
 import { catchLoadingError } from "./util";
 import queries from "../queries";
+import { Droppable } from "react-beautiful-dnd";
 
 const TagGroup = (props) => (
-    <div className="tag_group">
-        <Row>
-            <Col>
-                <strong>{props.name}</strong>
-            </Col>
-            {props.name !== "Ungrouped" && (
-                <Col>
-                    <a href="#" onClick={props.remove}><Octicon icon={Trashcan} /></a>
-                </Col>
-            )}
-        </Row>
-        <Row>
-            <Col>
-                {props.tags.map((tag, index) => (
-                    <Tag key={index} color={tag.color}>{tag.name}</Tag>
-                ))}
-            </Col>
-        </Row>
-    </div>
+    <Droppable droppableId={"tagGroup-" + props.name}>
+        {(provided) => (
+            <div
+                className="tag_group"
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+            >
+                <Row>
+                    <Col>
+                        <strong>{props.name}</strong>
+                    </Col>
+                    {props.name !== "Ungrouped" && (
+                        <Col>
+                            <a href="#" onClick={props.remove}><Octicon icon={Trashcan} /></a>
+                        </Col>
+                    )}
+                </Row>
+                <Row>
+                    <Col>
+                        <Tags tags={props.tags} />
+                    </Col>
+                </Row>
+            </div>
+        )}
+    </Droppable>
 );
 
 const TagGroupContainer = (props) => (
