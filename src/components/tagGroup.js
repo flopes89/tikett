@@ -10,7 +10,7 @@ import queries from "../queries";
 import { Droppable } from "react-beautiful-dnd";
 
 const TagGroup = (props) => (
-    <Droppable droppableId={"tagGroup-" + props.name}>
+    <Droppable droppableId={"tagGroup|" + props.name}>
         {(provided) => (
             <div
                 className="tag_group"
@@ -30,6 +30,7 @@ const TagGroup = (props) => (
                 <Row>
                     <Col>
                         <Tags tags={props.tags} />
+                        {provided.placeholder}
                     </Col>
                 </Row>
             </div>

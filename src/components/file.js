@@ -18,7 +18,7 @@ const File = (props) => {
     }
 
     return (
-        <Droppable droppableId={"file-" + props.path}>
+        <Droppable droppableId={"file|" + props.path}>
             {(provided) => (
                 <tr
                     ref={provided.innerRef}

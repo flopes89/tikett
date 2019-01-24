@@ -13,7 +13,7 @@ const Tag = (props) => (
 
 const TagsContainer = (props) => {
     return props.tags.map((tag, index) => (
-        <Draggable draggableId={"tag-" + tag.path + tag.name} index={index} key={index}>
+        <Draggable draggableId={"tag|" + props.path + "|" + tag.name} index={index} key={index}>
             {(provided, snapshot) => (
                 <React.Fragment>
                     <span

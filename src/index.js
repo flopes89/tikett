@@ -9,6 +9,7 @@ import { Provider } from "react-redux";
 import { createStore } from "redux";
 import reducer from "./reducer";
 import { DragDropContext } from "react-beautiful-dnd";
+import { onDragEnd } from "./responders";
 
 const client = new ApolloClient({
     uri: "/graphql",
@@ -17,13 +18,11 @@ const client = new ApolloClient({
 const store = createStore(reducer,
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
-const onDragEnd = () => null;
-
 const root = document.getElementById("react-root");
 ReactDOM.render(
     <ApolloProvider client={client}>
         <Provider store={store}>
-            <DragDropContext onDragEnd={onDragEnd}>
+            <DragDropContext onDragEnd={onDragEnd(client)}>
                 <App />
             </DragDropContext>
         </Provider>
