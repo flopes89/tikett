@@ -1,11 +1,9 @@
 import queries from "./queries";
 
-export const onDragEnd = (apolloClient_) => (dropResult_) => {
+export const onDragEnd = (client_, store_) => (dropResult_) => {
     if (!dropResult_.destination) {
         return;
     }
-
-    console.log(dropResult_);
 
     const destParts = dropResult_.destination.droppableId.split("|");
     const destType = destParts[0];
@@ -14,10 +12,10 @@ export const onDragEnd = (apolloClient_) => (dropResult_) => {
     const tagParts = dropResult_.draggableId.split("|");
     const tagName = tagParts[2];
 
-    console.log("Dropped [" + tagName + "] on [" + destType + "] [" + destName + "]");
+    const state = store_.getState();
 
     if (destType === "file") {
-        apolloClient_.mutate({
+        client_.mutate({
             mutation: queries.ADD_TAG,
             variables: {
                 path: destName,
@@ -27,9 +25,22 @@ export const onDragEnd = (apolloClient_) => (dropResult_) => {
                 {
                     query: queries.GET_FILES,
                     variables: {
-                        current: "/", // TODO
-                        showDescendants: false,
+                        current: state.files.current,
+                        showDescendants: state.files.showDescendants,
                     }
+                }
+            ]
+        })
+    } else if (destType === "tagGroup") {
+        client_.mutate({
+            mutation: queries.MOVE_TAG,
+            variables: {
+                tag: tagName,
+                group: destName,
+            },
+            refetchQueries: [
+                {
+                    query: queries.GET_TAG_GROUPS
                 }
             ]
         })

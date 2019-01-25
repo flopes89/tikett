@@ -92,4 +92,16 @@ export default {
                 folder: $folder
             )
         }`,
+
+    MOVE_TAG: gql`
+        mutation moveTag(
+            $tag: String!
+            $group: String!
+        ) {
+            moveTag(
+                tag: $tag
+                group: $group
+            )
+        }
+    `,
 };

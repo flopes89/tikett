@@ -134,6 +134,11 @@ const removeTag = (args) => {
     return true;
 };
 
+const moveTag = (args) => {
+    db.moveTag(args.tag, args.group);
+    return true;
+};
+
 module.exports = {
     config: getConfig,
     changeRoot,
@@ -145,4 +150,5 @@ module.exports = {
     createTag,
     addTag,
     removeTag,
+    moveTag,
 };

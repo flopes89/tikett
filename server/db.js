@@ -155,7 +155,11 @@ const getFile = (path) => _.find(DB.files, { path });
 const addTagToFile = (filePath, tagName) => {
     const file = getFile(filePath);
     const newTag = getOrCreateTag(tagName);
-    file.tags.push(newTag.name);
+
+    if (file.tags.indexOf(newTag.name) === -1) {
+        file.tags.push(newTag.name);
+    }
+
     updateFilePath(file);
 };
 
@@ -181,6 +185,19 @@ const updateFilePath = (file) => {
     file.path = newPath;
 }
 
+const moveTag = (tagName, groupName) => {
+    DB.tagGroups.forEach((group) => {
+        group.tags = group.tags.filter((tag) => tag.name !== tagName);
+
+        if (group.name === groupName) {
+            group.tags.push({
+                name: tagName,
+                color: group.color,
+            });
+        }
+    });
+};
+
 module.exports = {
     init,
     getRoot,
@@ -196,4 +213,5 @@ module.exports = {
     getFile,
     addTagToFile,
     removeTagFromFile,
+    moveTag,
 };

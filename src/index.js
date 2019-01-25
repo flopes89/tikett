@@ -22,7 +22,7 @@ const root = document.getElementById("react-root");
 ReactDOM.render(
     <ApolloProvider client={client}>
         <Provider store={store}>
-            <DragDropContext onDragEnd={onDragEnd(client)}>
+            <DragDropContext onDragEnd={onDragEnd(client, store)}>
                 <App />
             </DragDropContext>
         </Provider>
