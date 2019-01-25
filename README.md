@@ -1,5 +1,7 @@
 # tikett
 
+ [![Build Status](https://travis-ci.org/flopes89/tikett.svg?branch=master)](https://travis-ci.org/flopes89/tikett)
+ 
 Offline file tagging software.
 
 ## Setup
