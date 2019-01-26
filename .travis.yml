@@ -1,7 +1,16 @@
 language: node_js
 node_js:
   - "lts/*"
+cache: npm
 script:
   - npm run build-client
   - npm run build-server
-  
+deploy:
+  provider: releases
+  api_key:
+    secure: $GITHUB_OAUTH_KEY
+  skip_cleanup: true
+  on:
+    tags: true
+  file_glob: true
+  file: dist/*
