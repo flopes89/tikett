@@ -5,7 +5,7 @@ const _ = require("lodash");
 
 const LOG = require("./logger")("config");
 
-const CONFIG_PATH = path.resolve(os.homedir(), ".tikett.json");
+let CONFIG_PATH = path.resolve(os.homedir(), ".tikett.json");
 
 const CONFIG_DEFAULTS = {
     root: ""
@@ -13,7 +13,11 @@ const CONFIG_DEFAULTS = {
 
 let CONFIG = _.cloneDeep(CONFIG_DEFAULTS);
 
-const load = () => {
+const load = (configPath) => {
+    if (configPath) {
+        CONFIG_PATH = configPath;
+    }
+
     if (!fs.existsSync(CONFIG_PATH)) {
         write();
     }
@@ -39,7 +43,6 @@ const setRoot = (root) => {
 
 module.exports = {
     load,
-    write,
     getRoot,
     setRoot,
 };

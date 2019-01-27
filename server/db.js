@@ -144,8 +144,6 @@ const createTagGroup = (name) => {
     return newGroup;
 };
 
-const getTags = () => DB.tags;
-
 const removeTagGroup = (name) => {
     _.remove(DB.tagGroups, { name });
 };
@@ -206,7 +204,6 @@ module.exports = {
     getFiles,
     getTagGroups,
     createTagGroup,
-    getTags,
     reloadFiles,
     getOrCreateTag,
     removeTagGroup,
