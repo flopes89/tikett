@@ -3,6 +3,7 @@ node_js:
   - "lts/*"
 cache: npm
 script:
+  - npm run test
   - npm run build-client
   - npm run build-server
 deploy:
