@@ -57,6 +57,8 @@ const SetRootContainer = (props) => (
             query: queries.GET_FILES,
         }, {
             query: queries.GET_TAG_GROUPS
+        }, {
+            query: queries.GET_CONFIG,
         }]}
     >
         {(setRoot, state) => catchLoadingError(state, true)(<SetRoot {...props} confirm={setRoot} />)}

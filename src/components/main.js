@@ -1,33 +1,30 @@
 import React from "react";
 import { Query } from "react-apollo";
-import { Row, Col } from "reactstrap";
+import { Alert, Row, Col } from "reactstrap";
 import queries from "../queries";
 import { catchLoadingError } from "./util";
 import PropTypes from "prop-types";
-import SetRoot from "./setRoot";
 import TagGroups from "./tagGroups";
 import Breadcrumbs from "./breadcrumbs";
 import Files from "./files";
 
 const Main = (props) => {
-    if (props.config.root) {
+    if (!props.config.root) {
         return (
-            <Row>
-                <Col xs={4}>
-                    <TagGroups />
-                </Col>
-                <Col>
-                    <Breadcrumbs />
-                    <Files />
-                </Col>
-            </Row>
+            <Alert color="info">
+                No root set. Click "Change root" to set the root folder for your database.
+            </Alert>
         );
     }
 
     return (
         <Row>
+            <Col xs={4}>
+                <TagGroups />
+            </Col>
             <Col>
-                <SetRoot />
+                <Breadcrumbs />
+                <Files />
             </Col>
         </Row>
     );
