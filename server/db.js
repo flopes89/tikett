@@ -19,6 +19,11 @@ const DB_DEFAULTS = {
 let DB = _.cloneDeep(DB_DEFAULTS);
 
 const init = (folder) => {
+    if (!folder) {
+        LOG.warn("No root set. No DB will be initialized!");
+        return;
+    }
+
     DBPATH = path.resolve(folder, "tikettdb.json");
     DB = _.cloneDeep(DB_DEFAULTS);
     reload();
@@ -26,7 +31,6 @@ const init = (folder) => {
 
 const getRoot = () => {
     if (!DBPATH) {
-        LOG.error("Cannot get root: No DB initialized!");
         return "";
     }
 
@@ -35,7 +39,6 @@ const getRoot = () => {
 
 const reload = () => {
     if (!DBPATH) {
-        LOG.error("Cannot reload DB: No DB initialized!");
         return;
     }
 
@@ -49,7 +52,6 @@ const reload = () => {
 
 const dump = () => {
     if (!DBPATH) {
-        LOG.error("Cannot dump DB: No DB initialized!");
         return;
     }
 
@@ -61,8 +63,8 @@ const getFiles = () => DB.files;
 
 const reloadFiles = () => {
     const root = getRoot();
+
     if (!root) {
-        LOG.error("No root folder set!");
         return;
     }
 

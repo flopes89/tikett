@@ -25,6 +25,12 @@ const load = (configPath) => {
     LOG.info("Loading server config from [" + CONFIG_PATH + "]");
     CONFIG = JSON.parse(fs.readFileSync(CONFIG_PATH));
 
+    if (!fs.existsSync(CONFIG.root)) {
+        LOG.warn("Current root [" + CONFIG.root + "] does not exist. Root will be deleted and needs to be set anew");
+        CONFIG.root = "";
+        write();
+    }
+
     return CONFIG;
 };
 
