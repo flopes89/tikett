@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { Button } from "reactstrap";
 import Icon, { Inbox } from "@githubprimer/octicons-react";
 import { connect } from "react-redux";
-import * as actions from "../reducer";
+import { toggleRoot, changeRoot } from "../state/config";
 import { Mutation } from "react-apollo";
 import queries from "../queries";
 import { catchLoadingError } from "./util";
@@ -67,22 +67,13 @@ const SetRootContainer = (props) => (
 
 export default connect(
     (state) => ({
-        root: state.config.root,
-        isOpen: state.config.rootOpened
+        root: state.config.newRoot,
+        isOpen: state.config.rootOpen,
     }),
     (dispatch) => ({
-        open: () => dispatch({
-            type: actions.CONFIG_ROOT_OPEN,
-        }),
-        abort: () => dispatch({
-            type: actions.CONFIG_ROOT_ABORT,
-        }),
-        change: (root) => dispatch({
-            type: actions.CONFIG_ROOT_CHANGE,
-            root,
-        }),
-        confirm: () => dispatch({
-            type: actions.CONFIG_ROOT_CONFIRM,
-        })
+        open: () => dispatch(toggleRoot()),
+        abort: () => dispatch(toggleRoot()),
+        change: (root) => dispatch(changeRoot(root)),
+        confirm: () => dispatch(toggleRoot()),
     })
 )(SetRootContainer);

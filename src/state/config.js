@@ -10,8 +10,13 @@ export const changeRoot = (newRoot) => ({
     newRoot
 });
 
-export default (state = {}, action) => {
-    const newState = Object.assign({}, state);
+const INIT_STATE = {
+    rootOpen: false,
+    newRoot: "",
+};
+
+export default (state = INIT_STATE, action) => {
+    const newState = Object.assign({}, INIT_STATE, state);
 
     switch (action.type) {
         case ROOT_TOGGLE:
@@ -19,5 +24,13 @@ export default (state = {}, action) => {
                 ...newState,
                 rootOpen: !newState.rootOpen,
             };
+
+        case ROOT_CHANGE:
+            return {
+                ...newState,
+                newRoot: action.newRoot,
+            };
     }
+
+    return newState;
 };

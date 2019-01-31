@@ -5,9 +5,9 @@ import { Mutation } from "react-apollo";
 import queries from "../queries";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import * as actions from "../state";
 import { catchLoadingError } from "./util";
 import { CONFIRM_KEYS } from "../const";
+import { toggleAddTag, changeAddTag, getAddTagNamePropName, getAddTagOpenPropName } from "../state/files";
 
 const AddTag = (props) => {
     const onKeyPress = (event) => {
@@ -73,26 +73,15 @@ const AddTagContainer = (props) => (
 
 export default connect(
     (state, props) => ({
-        name: state.files.createNewTagName,
-        isOpen: state.files[props.path] && (state.files[props.path].newTagOpened),
-        current: state.files.current,
-        showDescendants: state.files.showDescendants,
+        name: state.files[getAddTagNamePropName(props.path)] || "",
+        isOpen: state.files[getAddTagOpenPropName(props.path)] || false,
+        current: state.fileBrowser.currentFolder,
+        showDescendants: state.fileBrowser.showDescendants,
     }),
     (dispatch, props) => ({
-        open: (path) => dispatch({
-            type: actions.FILES_NEWTAG_OPEN,
-            path
-        }),
-        confirm: () => dispatch({
-            type: actions.FILES_NEWTAG_CONFIRM,
-        }),
-        abort: () => dispatch({
-            type: actions.FILES_NEWTAG_ABORT,
-            path: props.path,
-        }),
-        change: (name) => dispatch({
-            type: actions.FILES_NEWTAG_CHANGE,
-            name,
-        }),
+        open: () => dispatch(toggleAddTag(props.path)),
+        confirm: () => dispatch(toggleAddTag(props.path)),
+        abort: () => dispatch(toggleAddTag(props.path)),
+        change: (name) => dispatch(changeAddTag(props.path, name)),
     }),
 )(AddTagContainer);

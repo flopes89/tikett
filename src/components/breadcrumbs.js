@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Row, Col, Breadcrumb, BreadcrumbItem } from "reactstrap";
 import { connect } from "react-redux";
-import * as actions from "../reducer";
+import { openFolder } from "../state/fileBrowser";
 
 const CrumbItem = (props) => {
     let inner = props.name;
@@ -75,12 +75,9 @@ Crumbs.propTypes = {
 
 export default connect(
     (state) => ({
-        current: state.files.current,
+        current: state.fileBrowser.currentFolder,
     }),
     (dispatch) => ({
-        openFolder: (folder) => dispatch({
-            type: actions.FILES_OPENFOLDER,
-            folder,
-        }),
+        openFolder: (folder) => dispatch(openFolder(folder)),
     })
 )(BreadcrumbsContainer);

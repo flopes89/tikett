@@ -34,7 +34,7 @@ const ReloadButtonContainer = ({ current, showDescendants }) => (
 
 export default connect(
     (state) => ({
-        current: state.files.current,
-        showDescendants: state.files.showDescendants,
+        current: state.fileBrowser.currentFolder,
+        showDescendants: state.fileBrowser.showDescendants,
     })
 )(ReloadButtonContainer);

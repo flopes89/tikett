@@ -10,8 +10,13 @@ export const openFolder = (folder) => ({
     folder,
 });
 
-export default (state = {}, action) => {
-    const newState = Object.assign({}, state);
+const INIT_STATE = {
+    currentFolder: "/",
+    showDescendants: false,
+};
+
+export default (state = INIT_STATE, action) => {
+    const newState = Object.assign({}, INIT_STATE, state);
 
     switch (action.type) {
         case SHOWDESC_TOGGLE:
@@ -21,7 +26,7 @@ export default (state = {}, action) => {
             };
 
         case OPEN_FOLDER:
-            let newCurrent = newState.files_currentFolder;
+            let newCurrent = newState.currentFolder;
 
             if (action.folder.indexOf("/") === 0) {
                 newCurrent = action.folder;
@@ -42,4 +47,6 @@ export default (state = {}, action) => {
                 currentFolder: newCurrent,
             };
     }
+
+    return newState;
 };

@@ -7,7 +7,7 @@ import { Query } from "react-apollo";
 import { connect } from "react-redux";
 import queries from "../queries";
 import { catchLoadingError } from "./util";
-import * as actions from "../reducer";
+import { toggleShowDescendants, openFolder } from "../state/fileBrowser";
 
 const Files = (props) => (
     <div id="files_component">
@@ -69,16 +69,11 @@ const FilesContainer = (props) => (
 
 export default connect(
     (state) => ({
-        showDescendants: state.files.showDescendants,
-        current: state.files.current,
+        showDescendants: state.fileBrowser.showDescendants,
+        current: state.fileBrowser.currentFolder,
     }),
     (dispatch) => ({
-        toggleShowDescendants: () => dispatch({
-            type: actions.FILES_TOGGLE_SHOWDESCENDANTS,
-        }),
-        openFolder: (folder) => dispatch({
-            type: actions.FILES_OPENFOLDER,
-            folder,
-        }),
+        toggleShowDescendants: () => dispatch(toggleShowDescendants()),
+        openFolder: (folder) => dispatch(openFolder(folder)),
     }),
 )(FilesContainer);

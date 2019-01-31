@@ -2,36 +2,39 @@ export const NAME_TOGGLE = "NAME_TOGGLE";
 export const NAME_CHANGE = "NAME_CHANGE";
 
 export const toggleName = (groupName) => ({
-    type: NEWTAG_TOGGLE,
+    type: NAME_TOGGLE,
     groupName,
 });
 
 export const changeName = (groupName, newName) => ({
-    type: NEWTAG_CHANGE,
+    type: NAME_CHANGE,
     groupName,
     newName
 });
 
-export default files = (state = {}, action) => {
+export const getOpenPropName = (groupName) => (groupName + "_open");
+export const getNamePropName = (groupName) => (groupName + "_name");
+
+export default (state = {}, action) => {
     const newState = Object.assign({}, state);
 
     if (!action.groupName) {
-        return;
+        return newState;
     }
-
-    const key = action.groupName + "_" + action.type;
 
     switch (action.type) {
-        case NEWTAG_TOGGLE:
+        case NAME_TOGGLE:
             return {
                 ...newState,
-                [key]: !newState[key],
+                [getOpenPropName(action.groupName)]: !newState[getOpenPropName(action.groupName)],
             };
 
-        case NEWTAG_CHANGE:
+        case NAME_CHANGE:
             return {
                 ...newState,
-                [key]: action.newName,
+                [getNamePropName(action.groupName)]: action.newName,
             };
     }
+
+    return newState;
 };
