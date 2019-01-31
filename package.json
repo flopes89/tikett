@@ -46,6 +46,7 @@
         "react": "16.6.3",
         "react-apollo": "2.3.2",
         "react-beautiful-dnd": "10.0.3",
+        "react-color": "2.17.0",
         "react-dom": "16.6.3",
         "react-redux": "5.1.1",
         "reactstrap": "6.5.0",

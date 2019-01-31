@@ -8,6 +8,7 @@ import { Mutation } from "react-apollo";
 import { catchLoadingError } from "./util";
 import queries from "../queries";
 import { Droppable } from "react-beautiful-dnd";
+import ColorPicker from "./colorPicker";
 
 const TagGroup = (props) => (
     <Droppable droppableId={"tagGroup|" + props.name}>
@@ -20,6 +21,7 @@ const TagGroup = (props) => (
                 <Row>
                     <Col>
                         <strong>{props.name}</strong>
+                        <ColorPicker />
                     </Col>
                     {props.name !== "Ungrouped" && (
                         <Col>

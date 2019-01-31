@@ -7,7 +7,7 @@ import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
-import reducer from "./reducer";
+import reducer from "./state";
 import { DragDropContext } from "react-beautiful-dnd";
 import { onDragEnd } from "./responders";
 

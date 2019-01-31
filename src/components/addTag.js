@@ -5,7 +5,7 @@ import { Mutation } from "react-apollo";
 import queries from "../queries";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import * as actions from "../reducer";
+import * as actions from "../state";
 import { catchLoadingError } from "./util";
 import { CONFIRM_KEYS } from "../const";
 
@@ -74,11 +74,11 @@ const AddTagContainer = (props) => (
 export default connect(
     (state, props) => ({
         name: state.files.createNewTagName,
-        isOpen: state.files.createNewTagOpened && (state.files.createNewTagOnPath === props.path),
+        isOpen: state.files[props.path] && (state.files[props.path].newTagOpened),
         current: state.files.current,
         showDescendants: state.files.showDescendants,
     }),
-    (dispatch) => ({
+    (dispatch, props) => ({
         open: (path) => dispatch({
             type: actions.FILES_NEWTAG_OPEN,
             path
@@ -88,6 +88,7 @@ export default connect(
         }),
         abort: () => dispatch({
             type: actions.FILES_NEWTAG_ABORT,
+            path: props.path,
         }),
         change: (name) => dispatch({
             type: actions.FILES_NEWTAG_CHANGE,
