@@ -5,13 +5,15 @@ import db from "../server/db";
 
 describe("database", () => {
     const root = path.resolve(__dirname, "data");
-    const dbPath = path.resolve(__dirname, "data", "tikettdb.json");
+    const dbPath = path.resolve(root, "tikettdb.json");
+    const configPath = path.resolve(__dirname, ".tikett.json");
 
     beforeAll(() => {
         if (fs.existsSync(dbPath)) {
             fs.unlinkSync(dbPath);
         }
 
+        config.load(configPath);
         config.setRoot(root);
     });
 

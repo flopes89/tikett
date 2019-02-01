@@ -6,14 +6,17 @@ import resolvers from "../server/resolvers";
 
 describe("queries", () => {
     const root = path.resolve(__dirname, "data");
-    const dbPath = path.resolve(__dirname, "data", "tikettdb.json");
+    const dbPath = path.resolve(root, "tikettdb.json");
+    const configPath = path.resolve(__dirname, ".tikett.json");
 
     beforeAll(() => {
         if (fs.existsSync(dbPath)) {
             fs.unlinkSync(dbPath);
         }
 
+        config.load(configPath);
         config.setRoot(root);
+
         db.init(root);
         db.reloadFiles();
     });
@@ -73,8 +76,10 @@ describe("queries", () => {
                 isFile: true,
                 tags: [{
                     name: "tag1",
+                    color: "#333",
                 }, {
-                    name: "tag2"
+                    name: "tag2",
+                    color: "#333",
                 }],
             }, {
                 name: "file2",
@@ -82,8 +87,10 @@ describe("queries", () => {
                 isFile: true,
                 tags: [{
                     name: "tag1",
+                    color: "#333",
                 }, {
-                    name: "tag2"
+                    name: "tag2",
+                    color: "#333",
                 }],
             }
         ]));

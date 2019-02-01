@@ -3,8 +3,8 @@ import path from "path";
 import config from "../server/config";
 
 describe("config", () => {
-    const configPath = path.resolve(__dirname, ".tikett.json");
     const root = path.resolve(__dirname, "data");
+    const configPath = path.resolve(__dirname, ".tikett.json");
 
     beforeAll(() => {
         if (fs.existsSync(configPath)) {

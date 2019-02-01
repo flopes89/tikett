@@ -35,10 +35,8 @@ const load = (configPath) => {
 };
 
 const write = () => {
-    if (process.env.NODE_ENV !== "test") {
-        LOG.info("Writing current config to [" + CONFIG_PATH + "]");
-        fs.writeFileSync(CONFIG_PATH, JSON.stringify(CONFIG, null, 2));
-    }
+    LOG.info("Writing current config to [" + CONFIG_PATH + "]");
+    fs.writeFileSync(CONFIG_PATH, JSON.stringify(CONFIG, null, 2));
 };
 
 const getRoot = () => CONFIG.root;
