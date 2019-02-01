@@ -54,6 +54,7 @@ export default (state = {}, action) => {
             return {
                 ...newState,
                 [getColorOpenPropName(action.groupName)]: !newState[getColorOpenPropName(action.groupName)],
+                [getColorPropName(action.groupName)]: "",
             };
 
         case COLOR_CHANGE:

@@ -1,0 +1,70 @@
+{
+  "files": [
+    {
+      "name": "file1.txt",
+      "tags": [],
+      "path": "C:\\Users\\FloPes\\Development\\tikett\\__tests__\\data\\file1.txt",
+      "isFile": true
+    },
+    {
+      "name": "file1.txt",
+      "tags": [
+        "tag1",
+        "tag2"
+      ],
+      "path": "C:\\Users\\FloPes\\Development\\tikett\\__tests__\\data\\file1[tag1 tag2].txt",
+      "isFile": true
+    },
+    {
+      "name": "file2",
+      "tags": [
+        "tag1",
+        "tag2"
+      ],
+      "path": "C:\\Users\\FloPes\\Development\\tikett\\__tests__\\data\\file2[tag1 tag2]",
+      "isFile": true
+    },
+    {
+      "name": "folder1",
+      "tags": [],
+      "path": "C:\\Users\\FloPes\\Development\\tikett\\__tests__\\data\\folder1",
+      "isFile": false
+    },
+    {
+      "name": "file11.exe",
+      "tags": [
+        "moretag"
+      ],
+      "path": "C:\\Users\\FloPes\\Development\\tikett\\__tests__\\data\\folder1\\file11[moretag].exe",
+      "isFile": true
+    },
+    {
+      "name": "folder2",
+      "tags": [],
+      "path": "C:\\Users\\FloPes\\Development\\tikett\\__tests__\\data\\folder1\\folder2",
+      "isFile": false
+    },
+    {
+      "name": "file4",
+      "tags": [
+        "tag5",
+        "new_-ta%.g"
+      ],
+      "path": "C:\\Users\\FloPes\\Development\\tikett\\__tests__\\data\\folder1\\folder2\\file4[tag5 new_-ta%.g]",
+      "isFile": true
+    }
+  ],
+  "tagGroups": [
+    {
+      "name": "Ungrouped",
+      "color": "#333",
+      "tags": [
+        "tag1",
+        "tag2",
+        "moretag",
+        "tag5",
+        "new_-ta%.g"
+      ]
+    }
+  ]
+}

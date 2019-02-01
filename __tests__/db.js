@@ -1,8 +1,9 @@
 import path from "path";
 import fs from "fs";
+import config from "../server/config";
 import db from "../server/db";
 
-describe("datbase", () => {
+describe("database", () => {
     const root = path.resolve(__dirname, "data");
     const dbPath = path.resolve(__dirname, "data", "tikettdb.json");
 
@@ -10,6 +11,8 @@ describe("datbase", () => {
         if (fs.existsSync(dbPath)) {
             fs.unlinkSync(dbPath);
         }
+
+        config.setRoot(root);
     });
 
     afterAll(() => {
@@ -43,52 +46,44 @@ describe("datbase", () => {
         const files = db.getFiles();
 
         expect(files).toHaveLength(7);
-        expect(files).toEqual(
-            expect.arrayContaining([
-                expect.objectContaining({
-                    name: "file1.txt",
-                    path: path.resolve(root, "file1.txt"),
-                    tags: [],
-                    isFile: true,
-                }),
-                expect.objectContaining({
-                    name: "file1.txt",
-                    path: path.resolve(root, "file1[tag1 tag2].txt"),
-                    tags: ["tag1", "tag2"],
-                    isFile: true,
-                }),
-                expect.objectContaining({
-                    name: "file2",
-                    path: path.resolve(root, "file2[tag1 tag2]"),
-                    tags: ["tag1", "tag2"],
-                    isFile: true,
-                }),
-                expect.objectContaining({
-                    name: "folder1",
-                    path: path.resolve(root, "folder1"),
-                    tags: [],
-                    isFile: false,
-                }),
-                expect.objectContaining({
-                    name: "file11.exe",
-                    path: path.resolve(root, "folder1", "file11[moretag].exe"),
-                    tags: ["moretag"],
-                    isFile: true,
-                }),
-                expect.objectContaining({
-                    name: "folder2",
-                    path: path.resolve(root, "folder1", "folder2"),
-                    tags: [],
-                    isFile: false,
-                }),
-                expect.objectContaining({
-                    name: "file4",
-                    path: path.resolve(root, "folder1", "folder2", "file4[tag5 new_-ta%.g]"),
-                    tags: ["tag5", "new_-ta%.g"],
-                    isFile: true,
-                }),
-            ])
-        );
+        expect(files).toEqual(expect.arrayContaining([
+            {
+                name: "file1.txt",
+                path: path.resolve(root, "file1.txt"),
+                isFile: true,
+                tags: [],
+            }, {
+                name: "file1.txt",
+                path: path.resolve(root, "file1[tag1 tag2].txt"),
+                isFile: true,
+                tags: ["tag1", "tag2"],
+            }, {
+                name: "file2",
+                path: path.resolve(root, "file2[tag1 tag2]"),
+                isFile: true,
+                tags: ["tag1", "tag2"],
+            }, {
+                name: "folder1",
+                path: path.resolve(root, "folder1"),
+                isFile: false,
+                tags: [],
+            }, {
+                name: "file11.exe",
+                path: path.resolve(root, "folder1", "file11[moretag].exe"),
+                isFile: true,
+                tags: ["moretag"],
+            }, {
+                name: "folder2",
+                path: path.resolve(root, "folder1", "folder2"),
+                isFile: false,
+                tags: [],
+            }, {
+                name: "file4",
+                path: path.resolve(root, "folder1", "folder2", "file4[tag5 new_-ta%.g]"),
+                isFile: true,
+                tags: ["tag5", "new_-ta%.g"],
+            }
+        ]));
 
         const tagGroups = db.getTagGroups();
 
@@ -98,28 +93,7 @@ describe("datbase", () => {
                 expect.objectContaining({
                     name: "Ungrouped",
                     color: "#333",
-                    tags: expect.arrayContaining([
-                        expect.objectContaining({
-                            name: "tag1",
-                            color: "#ccc",
-                        }),
-                        expect.objectContaining({
-                            name: "tag2",
-                            color: "#ccc",
-                        }),
-                        expect.objectContaining({
-                            name: "moretag",
-                            color: "#ccc",
-                        }),
-                        expect.objectContaining({
-                            name: "tag5",
-                            color: "#ccc",
-                        }),
-                        expect.objectContaining({
-                            name: "new_-ta%.g",
-                            color: "#ccc",
-                        }),
-                    ]),
+                    tags: expect.arrayContaining(["tag1", "tag2", "moretag", "tag5", "new_-ta%.g"]),
                 }),
             ]),
         );

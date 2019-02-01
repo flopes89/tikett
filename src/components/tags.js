@@ -12,29 +12,43 @@ const Tag = (props) => (
 );
 
 const TagsContainer = (props) => {
-    return props.tags.map((tag, index) => (
-        <Draggable draggableId={"tag|" + props.path + "|" + tag.name} index={index} key={index}>
-            {(provided, snapshot) => (
-                <React.Fragment>
-                    <span
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                    >
-                        <Tag {...tag} {...props} />
-                    </span>
-                    {snapshot.isDragging && (<Tag {...tag} {...props} />)}
-                </React.Fragment>
-            )}
-        </Draggable>
-    ));
+    return props.tags.map((tag, index) => {
+        let tagObject = tag;
+
+        if (typeof tagObject === "string") {
+            tagObject = {
+                name: tag,
+                color: props.color,
+            };
+        }
+
+        tagObject.path = props.path;
+
+        return (
+            <Draggable draggableId={"tag|" + props.path + "|" + tagObject.name} index={index} key={index}>
+                {(provided, snapshot) => (
+                    <React.Fragment>
+                        <span
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                        >
+                            <Tag {...tagObject} />
+                        </span>
+                        {snapshot.isDragging && (<Tag {...tagObject} />)}
+                    </React.Fragment>
+                )}
+            </Draggable>
+        )
+    });
 };
 
 Tag.propTypes = LayoutTag.propTypes;
 
 TagsContainer.propTypes = {
     path: PropTypes.string,
-    tags: PropTypes.arrayOf(PropTypes.shape(LayoutTag.propTypes)),
+    tags: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.object])),
+    color: PropTypes.string,
 };
 
 export default TagsContainer;

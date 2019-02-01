@@ -69,7 +69,7 @@ const reloadFiles = () => {
     }
 
     const files = glob.sync(root + "/**/*", {
-        ignore: "**/tikettdb.json",
+        ignore: ["**/tikettdb.json"],
     });
 
     DB.files = [];
@@ -99,13 +99,9 @@ const getOrCreateTag = (tag) => {
     let result = null;
 
     DB.tagGroups.forEach((group) => {
-        if (result) {
+        if (group.tags.includes(tag)) {
+            result = tag;
             return;
-        }
-
-        let found = _.find(group.tags, { name: tag });
-        if (found) {
-            result = found;
         }
     });
 
@@ -117,12 +113,26 @@ const getOrCreateTag = (tag) => {
             ungrouped = createTagGroup("Ungrouped");
         }
 
-        result = {
-            name: tag,
-            color: "#ccc",
-        };
+        result = tag;
 
         ungrouped.tags.push(result);
+    }
+
+    return result;
+};
+
+const getColorOfTag = (tag) => {
+    let result = null;
+
+    DB.tagGroups.forEach((group) => {
+        if (group.tags.includes(tag)) {
+            result = group.color;
+            return;
+        }
+    });
+
+    if (!result) {
+        result = "#333";
     }
 
     return result;
@@ -192,7 +202,6 @@ const moveTag = (tagName, groupName) => {
         if (group.name === groupName) {
             group.tags.push({
                 name: tagName,
-                color: group.color,
             });
         }
     });
@@ -213,4 +222,5 @@ module.exports = {
     addTagToFile,
     removeTagFromFile,
     moveTag,
+    getColorOfTag,
 };

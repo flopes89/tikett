@@ -37,10 +37,7 @@ export default {
             tagGroups {
                 name
                 color
-                tags {
-                    name
-                    color
-                }
+                tags
             }
         }`,
 

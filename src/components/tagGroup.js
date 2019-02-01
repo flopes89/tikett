@@ -1,9 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Row, Col } from "reactstrap";
-import Octicon, { Trashcan } from "@githubprimer/octicons-react";
+import Octicon, { Trashcan, Paintcan } from "@githubprimer/octicons-react";
 import Tags from "./tags";
-import Tag from "../layout/tag";
 import { Mutation } from "react-apollo";
 import { catchLoadingError } from "./util";
 import queries from "../queries";
@@ -23,7 +22,7 @@ const TagGroup = (props) => (
                 <Row>
                     <Col>
                         <strong>{props.name}</strong>
-                        <a href="#" onClick={props.toggleColor}>Choose color</a>
+                        <a href="#" onClick={props.toggleColor}><Octicon icon={Paintcan} /></a>
                         {props.colorOpen && (<ColorPicker onChange={props.changeColor} color={props.color} />)}
                     </Col>
                     {props.name !== "Ungrouped" && (
@@ -34,7 +33,7 @@ const TagGroup = (props) => (
                 </Row>
                 <Row>
                     <Col>
-                        <Tags tags={props.tags} />
+                        <Tags tags={props.tags} color={props.color} />
                         {provided.placeholder}
                     </Col>
                 </Row>
@@ -57,7 +56,7 @@ const TagGroupContainer = (props) => (
 
 TagGroupContainer.propTypes = {
     name: PropTypes.string.isRequired,
-    tags: PropTypes.arrayOf(PropTypes.shape(Tag.propTypes)),
+    tags: PropTypes.arrayOf(PropTypes.string),
     colorOpen: PropTypes.bool,
     color: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     toggleColor: PropTypes.func,
@@ -72,7 +71,7 @@ TagGroup.propTypes = {
 export default connect(
     (state, props) => ({
         colorOpen: state.tagGroups[getColorOpenPropName(props.name)] || false,
-        color: state.tagGroups[getColorPropName(props.name)] || "",
+        color: state.tagGroups[getColorPropName(props.name)] || props.color || "",
     }),
     (dispatch, props) => ({
         toggleColor: () => dispatch(toggleColor(props.name)),

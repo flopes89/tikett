@@ -10,7 +10,7 @@ import { catchLoadingError } from "./util";
 const TagGroups = ({ tagGroups }) => (
     <div id="tag_groups">
         {tagGroups.map((group, index) => (
-            <TagGroup key={index} name={group.name} tags={group.tags} />
+            <TagGroup key={index} {...group} />
         ))}
         <hr />
         <Row>

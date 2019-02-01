@@ -5,7 +5,7 @@ const _ = require("lodash");
 const config = require("./config");
 
 const getConfig = () => ({
-    root: config.getRoot,
+    root: config.getRoot(),
 });
 
 const changeRoot = (args) => {
@@ -69,7 +69,17 @@ const files = ({ current, showDescendants }) => {
 
         if (file.tags) {
             const tagObjects = [];
-            file.tags.forEach((tag) => tagObjects.push(db.getOrCreateTag(tag)));
+
+            file.tags.forEach((tag) => {
+                const color = db.getColorOfTag(tag);
+                const tagName = db.getOrCreateTag(tag);
+
+                tagObjects.push({
+                    name: tagName,
+                    color,
+                });
+            });
+
             file.tags = tagObjects;
         }
 

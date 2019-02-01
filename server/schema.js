@@ -15,7 +15,7 @@ module.exports = buildSchema(`
     type TagGroup {
         name: String!
         color: String!
-        tags: [Tag]!
+        tags: [String]!
     }
 
     type Tag {
