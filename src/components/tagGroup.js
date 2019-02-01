@@ -9,6 +9,8 @@ import { catchLoadingError } from "./util";
 import queries from "../queries";
 import { Droppable } from "react-beautiful-dnd";
 import ColorPicker from "./colorPicker";
+import { connect } from "react-redux";
+import { changeColor, toggleColor, getColorOpenPropName, getColorPropName } from "../state/tagGroups";
 
 const TagGroup = (props) => (
     <Droppable droppableId={"tagGroup|" + props.name}>
@@ -21,7 +23,8 @@ const TagGroup = (props) => (
                 <Row>
                     <Col>
                         <strong>{props.name}</strong>
-                        <ColorPicker />
+                        <a href="#" onClick={props.toggleColor}>Choose color</a>
+                        {props.colorOpen && (<ColorPicker onChange={props.changeColor} color={props.color} />)}
                     </Col>
                     {props.name !== "Ungrouped" && (
                         <Col>
@@ -55,6 +58,10 @@ const TagGroupContainer = (props) => (
 TagGroupContainer.propTypes = {
     name: PropTypes.string.isRequired,
     tags: PropTypes.arrayOf(PropTypes.shape(Tag.propTypes)),
+    colorOpen: PropTypes.bool,
+    color: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    toggleColor: PropTypes.func,
+    changeColor: PropTypes.func,
 };
 
 TagGroup.propTypes = {
@@ -62,4 +69,13 @@ TagGroup.propTypes = {
     remove: PropTypes.func,
 };
 
-export default TagGroupContainer;
+export default connect(
+    (state, props) => ({
+        colorOpen: state.tagGroups[getColorOpenPropName(props.name)] || false,
+        color: state.tagGroups[getColorPropName(props.name)] || "",
+    }),
+    (dispatch, props) => ({
+        toggleColor: () => dispatch(toggleColor(props.name)),
+        changeColor: (color) => dispatch(changeColor(props.name, color)),
+    }),
+)(TagGroupContainer);

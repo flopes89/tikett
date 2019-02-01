@@ -1,5 +1,7 @@
-export const NAME_TOGGLE = "NAME_TOGGLE";
-export const NAME_CHANGE = "NAME_CHANGE";
+const NAME_TOGGLE = "NAME_TOGGLE";
+const NAME_CHANGE = "NAME_CHANGE";
+const COLOR_TOGGLE = "COLOR_TOGGLE";
+const COLOR_CHANGE = "COLOR_CHANGE";
 
 export const toggleName = (groupName) => ({
     type: NAME_TOGGLE,
@@ -12,8 +14,21 @@ export const changeName = (groupName, newName) => ({
     newName
 });
 
-export const getOpenPropName = (groupName) => (groupName + "_open");
+export const toggleColor = (groupName) => ({
+    type: COLOR_TOGGLE,
+    groupName,
+});
+
+export const changeColor = (groupName, color) => ({
+    type: COLOR_CHANGE,
+    groupName,
+    color,
+});
+
+export const getNameOpenPropName = (groupName) => (groupName + "_name_open");
 export const getNamePropName = (groupName) => (groupName + "_name");
+export const getColorOpenPropName = (groupName) => (groupName + "_color_open");
+export const getColorPropName = (groupName) => (groupName + "_color");
 
 export default (state = {}, action) => {
     const newState = Object.assign({}, state);
@@ -26,13 +41,30 @@ export default (state = {}, action) => {
         case NAME_TOGGLE:
             return {
                 ...newState,
-                [getOpenPropName(action.groupName)]: !newState[getOpenPropName(action.groupName)],
+                [getNameOpenPropName(action.groupName)]: !newState[getNameOpenPropName(action.groupName)],
             };
 
         case NAME_CHANGE:
             return {
                 ...newState,
                 [getNamePropName(action.groupName)]: action.newName,
+            };
+
+        case COLOR_TOGGLE:
+            return {
+                ...newState,
+                [getColorOpenPropName(action.groupName)]: !newState[getColorOpenPropName(action.groupName)],
+            };
+
+        case COLOR_CHANGE:
+            let color = action.color;
+            if (typeof action.color === "object") {
+                color = action.color.hex;
+            }
+
+            return {
+                ...newState,
+                [getColorPropName(action.groupName)]: color,
             };
     }
 

@@ -4,7 +4,7 @@ import Octicon, { Plus } from "@githubprimer/octicons-react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Mutation } from "react-apollo";
-import { toggleName, changeName, getNamePropName, getOpenPropName } from "../state/tagGroups";
+import { toggleName, changeName, getNamePropName, getNameOpenPropName } from "../state/tagGroups";
 import queries from "../queries";
 import { catchLoadingError } from "./util";
 import { CONFIRM_KEYS } from "../const";
@@ -65,7 +65,7 @@ const CreateTagGroupContainer = (props) => (
 
 export default connect(
     (state) => ({
-        isOpen: state.tagGroups[getOpenPropName("createNew")] || false,
+        isOpen: state.tagGroups[getNameOpenPropName("createNew")] || false,
         name: state.tagGroups[getNamePropName("createNew")] || "",
     }),
     (dispatch) => ({
