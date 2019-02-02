@@ -75,9 +75,10 @@ const reloadFiles = () => {
     DB.files = [];
 
     files.forEach((file) => {
-        LOG.info("Reading file [" + file + "]");
+        const filePath = path.resolve(file);
+        LOG.silly("Reading file [" + filePath + "]");
 
-        const basename = path.basename(file);
+        const basename = path.basename(filePath);
         const name = basename.replace(/\[[^\]]*\]/, "");
         let tags = /\[([^\]]*)\]/.exec(basename);
         tags = tags ? tags[1].split(" ") : [];
@@ -85,8 +86,8 @@ const reloadFiles = () => {
         DB.files.push({
             name,
             tags,
-            path: path.resolve(file),
-            isFile: fs.statSync(file).isFile(),
+            path: filePath,
+            isFile: fs.statSync(filePath).isFile(),
         });
 
         if (tags) {
@@ -147,16 +148,18 @@ const createTagGroup = (name) => {
 
     const newGroup = {
         name,
-        color: "#ccc",
+        color: "#333",
         tags: [],
     };
 
+    LOG.silly("Creating new tagGroup [" + name + "]");
     DB.tagGroups.push(newGroup);
 
     return newGroup;
 };
 
 const removeTagGroup = (name) => {
+    LOG.silly("Removing tagGroup [" + name + "]");
     _.remove(DB.tagGroups, { name });
 };
 
@@ -167,6 +170,7 @@ const addTagToFile = (filePath, tagName) => {
     const newTag = getOrCreateTag(tagName);
 
     if (file.tags.indexOf(newTag.name) === -1) {
+        LOG.silly("Adding tag [" + tagName + "] to file [" + file + "]");
         file.tags.push(newTag.name);
     }
 
@@ -175,6 +179,7 @@ const addTagToFile = (filePath, tagName) => {
 
 const removeTagFromFile = (filePath, tagName) => {
     const file = getFile(filePath);
+    LOG.silly("Removing tag [" + tagName + "] from file [" + file + "]");
     _.remove(file.tags, (tag) => tag === tagName);
     updateFilePath(file);
 };
@@ -200,10 +205,22 @@ const moveTag = (tagName, groupName) => {
         group.tags = group.tags.filter((tag) => tag.name !== tagName);
 
         if (group.name === groupName) {
+            LOG.silly("Moving tag [" + tagName + "] to tagGroup [" + group.name + "]");
             group.tags.push({
                 name: tagName,
             });
         }
+    });
+};
+
+const changeColor = (tagGroup, color) => {
+    DB.tagGroups.forEach((group) => {
+        if (group.name !== tagGroup) {
+            return;
+        }
+
+        LOG.silly("Changing color of tagGroup [" + group.name + "] to [" + color + "]");
+        group.color = color;
     });
 };
 
@@ -223,4 +240,5 @@ module.exports = {
     removeTagFromFile,
     moveTag,
     getColorOfTag,
+    changeColor,
 };

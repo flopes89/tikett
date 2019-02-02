@@ -81,5 +81,10 @@ module.exports = buildSchema(`
             tag: String!
             group: String!
         ): Boolean!
+
+        changeColor(
+            group: String!
+            color: String!
+        ): Boolean!
     }
 `);

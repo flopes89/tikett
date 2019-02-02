@@ -149,6 +149,11 @@ const moveTag = (args) => {
     return true;
 };
 
+const changeColor = (args) => {
+    db.changeColor(args.group, args.color);
+    return true;
+};
+
 module.exports = {
     config: getConfig,
     changeRoot,
@@ -161,4 +166,5 @@ module.exports = {
     addTag,
     removeTag,
     moveTag,
+    changeColor,
 };
