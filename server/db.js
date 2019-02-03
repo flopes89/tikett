@@ -179,7 +179,7 @@ const addTagToFile = (filePath, tagName) => {
 
 const removeTagFromFile = (filePath, tagName) => {
     const file = getFile(filePath);
-    LOG.silly("Removing tag [" + tagName + "] from file [" + file + "]");
+    LOG.silly("Removing tag [" + tagName + "] from file [" + file.path + "]");
     _.remove(file.tags, (tag) => tag === tagName);
     updateFilePath(file);
 };

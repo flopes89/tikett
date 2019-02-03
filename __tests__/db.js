@@ -92,15 +92,11 @@ describe("database", () => {
         const tagGroups = db.getTagGroups();
 
         expect(tagGroups).toHaveLength(1);
-        expect(tagGroups).toEqual(
-            expect.arrayContaining([
-                expect.objectContaining({
-                    name: "Ungrouped",
-                    color: "#333",
-                    tags: expect.arrayContaining(["tag1", "tag2", "moretag", "tag5", "new_-ta%.g"]),
-                }),
-            ]),
-        );
+        expect(tagGroups).toContainEqual({
+            name: "Ungrouped",
+            color: "#333",
+            tags: expect.arrayContaining(["tag1", "tag2", "moretag", "tag5", "new_-ta%.g"]),
+        });
     });
 
     it("creates new tagGroup", () => {
@@ -128,6 +124,65 @@ describe("database", () => {
             }
 
             expect(group.color).toBe("#fff");
+        });
+    });
+
+    it("moves a tag to another group", () => {
+        expect.assertions(2);
+
+        db.moveTag("tag1", "new_group");
+
+        const tagGroups = db.getTagGroups();
+
+        expect(tagGroups).toContainEqual({
+            name: "Ungrouped",
+            color: "#333",
+            tags: expect.arrayContaining(["tag2", "moretag", "tag5", "new_-ta%.g"]),
+        });
+        expect(tagGroups).toContainEqual({
+            name: "new_group",
+            color: "#fff",
+            tags: expect.arrayContaining(["tag1"]),
+        });
+    });
+
+    it("adds a tag to a file", () => {
+        db.addTagToFile(path.resolve(filesDir, "file1.txt"), "tag1");
+
+        const files = db.getFiles();
+
+        expect(files).toContainEqual({
+            name: "file1.txt",
+            path: path.resolve(filesDir, "file1[tag1].txt"),
+            isFile: true,
+            tags: ["tag1"],
+        });
+    });
+
+    it("removes a tag from a file", () => {
+        db.removeTagFromFile(path.resolve(filesDir, "file1[tag1].txt"), "tag1");
+
+        const files = db.getFiles();
+
+        expect(files).toContainEqual({
+            name: "file1.txt",
+            path: path.resolve(filesDir, "file1.txt"),
+            isFile: true,
+            tags: [],
+        });
+    });
+
+    it("removes a tagGroup", () => {
+        expect.assertions(2);
+
+        db.removeTagGroup("new_group");
+        const groups = db.getTagGroups();
+
+        expect(groups).toHaveLength(1);
+        expect(groups).not.toContainEqual({
+            name: "new_group",
+            color: "#333",
+            tags: []
         });
     });
 });
