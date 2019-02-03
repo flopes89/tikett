@@ -6,7 +6,7 @@ export const toggleRoot = () => ({
 });
 
 export const changeRoot = (newRoot) => ({
-    type: NEWTAG_CHANGE,
+    type: ROOT_CHANGE,
     newRoot
 });
 

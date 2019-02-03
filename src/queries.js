@@ -101,4 +101,16 @@ export default {
             )
         }
     `,
+
+    CHANGE_COLOR: gql`
+        mutation changeColor(
+            $group: String!
+            $color: String!
+        ) {
+            changeColor(
+                group: $group
+                color: $color
+            )
+        }
+    `,
 };

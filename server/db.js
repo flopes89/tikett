@@ -169,9 +169,9 @@ const addTagToFile = (filePath, tagName) => {
     const file = getFile(filePath);
     const newTag = getOrCreateTag(tagName);
 
-    if (file.tags.indexOf(newTag.name) === -1) {
-        LOG.silly("Adding tag [" + tagName + "] to file [" + file + "]");
-        file.tags.push(newTag.name);
+    if (file.tags.indexOf(newTag) === -1) {
+        LOG.silly("Adding tag [" + newTag + "] to file [" + file.path + "]");
+        file.tags.push(newTag);
     }
 
     updateFilePath(file);

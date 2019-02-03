@@ -25,8 +25,8 @@ export const onDragEnd = (client_, store_) => (dropResult_) => {
                 {
                     query: queries.GET_FILES,
                     variables: {
-                        current: state.files.current,
-                        showDescendants: state.files.showDescendants,
+                        current: state.fileBrowser.currentFolder,
+                        showDescendants: state.fileBrowser.showDescendants,
                     }
                 }
             ]
