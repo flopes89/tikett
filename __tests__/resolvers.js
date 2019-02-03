@@ -96,4 +96,82 @@ describe("resolvers", () => {
             }
         ]));
     });
+
+    it("create new tagGroup", () => {
+        expect.assertions(2);
+
+        resolvers.createTagGroup({
+            name: "new_group",
+        });
+
+        const tagGroups = resolvers.tagGroups();
+
+        expect(tagGroups).toHaveLength(2);
+        expect(tagGroups).toContainEqual({
+            name: "new_group",
+            color: "#333",
+            tags: [],
+        });
+    });
+
+    it("changes tagGroup color", () => {
+        expect.assertions(1);
+
+        resolvers.changeColor({
+            group: "new_group",
+            color: "#fff"
+        });
+
+        expect(resolvers.tagGroups()).toContainEqual({
+            name: "new_group",
+            color: "#fff",
+            tags: [],
+        });
+    });
+
+    it("moves tag to other group", () => {
+        expect.assertions(1);
+
+        resolvers.moveTag({
+            tag: "tag1",
+            group: "new_group",
+        });
+
+        const tagGroups = resolvers.tagGroups();
+
+        expect(tagGroups).toEqual(expect.arrayContaining([
+            {
+                name: "Ungrouped",
+                color: "#333",
+                tags: ["tag2", "moretag", "tag5", "new_-ta%.g"],
+            },
+            {
+                name: "new_group",
+                color: "#fff",
+                tags: ["tag1"],
+            }
+        ]));
+    });
+
+    it("resolves tag colors", () => {
+        expect.assertions(1);
+
+        const files = resolvers.files({
+            current: "/",
+            showDescendants: false,
+        });
+
+        expect(files).toContainEqual({
+            name: "file1.txt",
+            path: path.resolve(filesDir, "file1[tag1 tag2].txt"),
+            isFile: true,
+            tags: [{
+                name: "tag1",
+                color: "#fff",
+            }, {
+                name: "tag2",
+                color: "#333",
+            }],
+        });
+    });
 });

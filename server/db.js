@@ -202,13 +202,11 @@ const updateFilePath = (file) => {
 
 const moveTag = (tagName, groupName) => {
     DB.tagGroups.forEach((group) => {
-        group.tags = group.tags.filter((tag) => tag.name !== tagName);
+        group.tags = group.tags.filter((tag) => tag !== tagName);
 
         if (group.name === groupName) {
             LOG.silly("Moving tag [" + tagName + "] to tagGroup [" + group.name + "]");
-            group.tags.push({
-                name: tagName,
-            });
+            group.tags.push(tagName);
         }
     });
 };
