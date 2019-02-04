@@ -51,11 +51,6 @@ module.exports = buildSchema(`
             name: String!
         ): Boolean!
 
-        renameTag(
-            tag: String!
-            name: String!
-        ): Boolean!
-
         createTag(
             name: String!
         ): Boolean!
@@ -65,11 +60,6 @@ module.exports = buildSchema(`
         ): Boolean!
 
         createTagGroup(
-            name: String!
-        ): Boolean!
-
-        renameTagGroup(
-            group: String!
             name: String!
         ): Boolean!
 

@@ -114,6 +114,47 @@ describe("resolvers", () => {
         });
     });
 
+    it("adds a tag to a file", () => {
+        resolvers.addTag({
+            path: path.resolve(filesDir, "file1.txt"),
+            name: "tag1"
+        });
+
+        const files = resolvers.files({
+            current: "/",
+            showDescendants: false,
+        });
+
+        expect(files).toContainEqual({
+            name: "file1.txt",
+            path: path.resolve(filesDir, "file1[tag1].txt"),
+            isFile: true,
+            tags: [{
+                name: "tag1",
+                color: "#333",
+            }],
+        });
+    });
+
+    it("removes a tag from a file", () => {
+        resolvers.removeTag({
+            path: path.resolve(filesDir, "file1[tag1].txt"),
+            name: "tag1"
+        });
+
+        const files = resolvers.files({
+            current: "/",
+            showDescendants: false,
+        });
+
+        expect(files).toContainEqual({
+            name: "file1.txt",
+            path: path.resolve(filesDir, "file1.txt"),
+            isFile: true,
+            tags: [],
+        });
+    });
+
     it("changes tagGroup color", () => {
         expect.assertions(1);
 
