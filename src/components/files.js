@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import queries from "../queries";
 import { catchLoadingError } from "./util";
 import { toggleShowDescendants, openFolder } from "../state/fileBrowser";
+import Filter from "./filter";
 
 const Files = (props) => (
     <div id="files_component">
@@ -22,7 +23,10 @@ const Files = (props) => (
                                 onChange={props.toggleShowDescendants}
                             />
                             Show descendants
-                            </Label>
+                        </Label>
+                    </FormGroup>
+                    <FormGroup>
+                        <Filter />
                     </FormGroup>
                 </Form>
             </Col>
@@ -61,6 +65,7 @@ const FilesContainer = (props) => (
         variables={{
             current: props.current,
             showDescendants: props.showDescendants,
+            filters: props.filters,
         }}
     >
         {(state) => catchLoadingError(state)(<Files {...props} files={state.data.files} />)}
@@ -69,8 +74,9 @@ const FilesContainer = (props) => (
 
 export default connect(
     (state) => ({
-        showDescendants: state.fileBrowser.showDescendants,
-        current: state.fileBrowser.currentFolder,
+        showDescendants: state.fileBrowser.showDescendants || false,
+        current: state.fileBrowser.currentFolder || "/",
+        filters: state.fileBrowser.filters || [],
     }),
     (dispatch) => ({
         toggleShowDescendants: () => dispatch(toggleShowDescendants()),

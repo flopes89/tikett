@@ -308,4 +308,13 @@ describe("resolvers", () => {
             }
         ]));
     });
+
+    it("resolves tags", () => {
+        expect.assertions(2);
+
+        const tags = resolvers.tags();
+
+        expect(tags).toHaveLength(5);
+        expect(tags).toEqual(expect.arrayContaining(["tag1", "tag2", "moretag", "tag5", "new_-ta%.g"]));
+    });
 });

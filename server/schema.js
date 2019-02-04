@@ -33,6 +33,8 @@ module.exports = buildSchema(`
             showDescendants: Boolean = false
             filters: [String]!
         ): [File]!
+
+        tags: [String]!
     }
 
     type Mutation {

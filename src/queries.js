@@ -115,4 +115,10 @@ export default {
             )
         }
     `,
+
+    GET_TAGS: gql`
+        query {
+            tags
+        }
+    `,
 };

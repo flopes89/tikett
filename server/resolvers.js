@@ -160,6 +160,16 @@ const changeColor = (args) => {
     return true;
 };
 
+const tags = () => {
+    let tags = [];
+
+    db.getTagGroups().forEach((group) => {
+        tags = tags.concat(group.tags);
+    });
+
+    return tags;
+};
+
 module.exports = {
     config: getConfig,
     changeRoot,
@@ -173,4 +183,5 @@ module.exports = {
     removeTag,
     moveTag,
     changeColor,
+    tags,
 };

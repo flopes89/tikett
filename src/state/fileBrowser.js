@@ -17,9 +17,9 @@ export const addFilter = (tag) => ({
     tag,
 });
 
-export const removeFilter = (tag) => ({
+export const removeFilter = (index) => ({
     type: REMOVE_FILTER,
-    tag,
+    index,
 });
 
 const INIT_STATE = {
@@ -63,12 +63,12 @@ export default (state = INIT_STATE, action) => {
         case ADD_FILTER:
             return {
                 ...newState,
-                filters: newState.filters.concat([action.tag]),
+                filters: [].concat(newState.filters, action.tag.name),
             };
 
         case REMOVE_FILTER:
             const filters = newState.filters.slice();
-            filters.splice(filters.indexOf(action.tag), 1);
+            filters.splice(action.index, 1);
 
             return {
                 ...newState,
