@@ -11,11 +11,13 @@ export default {
     GET_FILES: gql`
         query(
             $current: String = "/"
-            $showDescendants: Boolean = false 
+            $showDescendants: Boolean = false
+            $filters: [String] = []
         ) {
             files(
                 current: $current
                 showDescendants: $showDescendants
+                filters: $filters
             ) {
                 name
                 tags {

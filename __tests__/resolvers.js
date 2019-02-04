@@ -52,6 +52,7 @@ describe("resolvers", () => {
         const files = resolvers.files({
             current: "/",
             showDescendants: false,
+            filters: [],
         });
 
         expect(files).toHaveLength(5);
@@ -123,6 +124,7 @@ describe("resolvers", () => {
         const files = resolvers.files({
             current: "/",
             showDescendants: false,
+            filters: [],
         });
 
         expect(files).toContainEqual({
@@ -145,6 +147,7 @@ describe("resolvers", () => {
         const files = resolvers.files({
             current: "/",
             showDescendants: false,
+            filters: [],
         });
 
         expect(files).toContainEqual({
@@ -200,6 +203,7 @@ describe("resolvers", () => {
         const files = resolvers.files({
             current: "/",
             showDescendants: false,
+            filters: [],
         });
 
         expect(files).toContainEqual({
@@ -214,5 +218,94 @@ describe("resolvers", () => {
                 color: "#333",
             }],
         });
+    });
+
+    it("filters by tags", () => {
+        expect.assertions(2);
+
+        const files = resolvers.files({
+            current: "/",
+            showDescendants: false,
+            filters: ["tag1"],
+        });
+
+        expect(files).toHaveLength(4);
+        expect(files).toEqual(expect.arrayContaining([
+            {
+                name: "..",
+                path: path.resolve(filesDir, ".."),
+                isFile: false,
+                tags: [],
+            }, {
+                name: "folder1",
+                path: path.resolve(filesDir, "folder1"),
+                isFile: false,
+                tags: [],
+            }, {
+                name: "file1.txt",
+                path: path.resolve(filesDir, "file1[tag1 tag2].txt"),
+                isFile: true,
+                tags: [{
+                    name: "tag1",
+                    color: "#fff",
+                }, {
+                    name: "tag2",
+                    color: "#333",
+                }],
+            }, {
+                name: "file2",
+                path: path.resolve(filesDir, "file2[tag1 tag2]"),
+                isFile: true,
+                tags: [{
+                    name: "tag1",
+                    color: "#fff",
+                }, {
+                    name: "tag2",
+                    color: "#333",
+                }],
+            }
+        ]));
+    });
+
+    it("filters by tags with descendants", () => {
+        expect.assertions(2);
+
+        const files = resolvers.files({
+            current: "/",
+            showDescendants: true,
+            filters: ["tag1"],
+        });
+
+        expect(files).toHaveLength(3);
+        expect(files).toEqual(expect.arrayContaining([
+            {
+                name: "..",
+                path: path.resolve(filesDir, ".."),
+                isFile: false,
+                tags: [],
+            }, {
+                name: "." + path.sep + "file1.txt",
+                path: path.resolve(filesDir, "file1[tag1 tag2].txt"),
+                isFile: true,
+                tags: [{
+                    name: "tag1",
+                    color: "#fff",
+                }, {
+                    name: "tag2",
+                    color: "#333",
+                }],
+            }, {
+                name: "." + path.sep + "file2",
+                path: path.resolve(filesDir, "file2[tag1 tag2]"),
+                isFile: true,
+                tags: [{
+                    name: "tag1",
+                    color: "#fff",
+                }, {
+                    name: "tag2",
+                    color: "#333",
+                }],
+            }
+        ]));
     });
 });

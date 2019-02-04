@@ -28,7 +28,7 @@ const changeRoot = (args) => {
     return true;
 };
 
-const files = ({ current, showDescendants }) => {
+const files = ({ current, showDescendants, filters }) => {
     // Deep copy the files array to make sure changing
     // the tags on a file isn't persisted to the database
     const files = _.map(db.getFiles(), _.clone);
@@ -67,23 +67,29 @@ const files = ({ current, showDescendants }) => {
             return;
         }
 
-        if (file.tags) {
-            const tagObjects = [];
+        let matchesFilter = false;
+        filters.forEach((filter) => matchesFilter |= file.tags.indexOf(filter) !== -1);
 
-            file.tags.forEach((tag) => {
-                const color = db.getColorOfTag(tag);
-                const tagName = db.getOrCreateTag(tag);
+        // Files only have the tag names (string) attached, but for the
+        // resolver the color is also needed, so the tags must be converted to objects
+        // to get the color attached to them
+        const tagObjects = [];
 
-                tagObjects.push({
-                    name: tagName,
-                    color,
-                });
+        file.tags.forEach((tag) => {
+            const color = db.getColorOfTag(tag);
+            const tagName = db.getOrCreateTag(tag);
+
+            tagObjects.push({
+                name: tagName,
+                color,
             });
+        });
 
-            file.tags = tagObjects;
+        file.tags = tagObjects;
+
+        if (matchesFilter || !file.isFile || filters.length === 0) {
+            enhancedFiles.push(file);
         }
-
-        enhancedFiles.push(file);
     });
 
     enhancedFiles.unshift({

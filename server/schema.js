@@ -31,6 +31,7 @@ module.exports = buildSchema(`
         files(
             current: String = "/"
             showDescendants: Boolean = false
+            filters: [String]!
         ): [File]!
     }
 
