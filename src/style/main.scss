@@ -6,6 +6,14 @@
         &.folder {
             cursor: pointer;
         }
+
+        &.file {
+            cursor: zoom-in;
+
+            &.selected {
+                background-color: grey;
+            }
+        }
     }
 }
 

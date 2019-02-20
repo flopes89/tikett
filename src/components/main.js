@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import TagGroups from "./tagGroups";
 import Breadcrumbs from "./breadcrumbs";
 import Files from "./files";
+import FilePreview from "./filePreview";
 
 const Main = (props) => {
     if (!props.config.root) {
@@ -19,13 +20,14 @@ const Main = (props) => {
 
     return (
         <Row>
-            <Col xs={4}>
+            <Col xs={2}>
                 <TagGroups />
             </Col>
             <Col>
                 <Breadcrumbs />
                 <Files />
             </Col>
+            <FilePreview />
         </Row>
     );
 };

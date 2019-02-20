@@ -5,6 +5,8 @@ import Tag from "../layout/tag";
 import AddTag from "./addTag";
 import Tags from "./tags";
 import { Droppable } from "react-beautiful-dnd";
+import { connect } from "react-redux";
+import { selectFile } from "../state/files";
 
 const File = (props) => {
     if (!props.isFile) {
@@ -23,7 +25,8 @@ const File = (props) => {
                 <tr
                     ref={provided.innerRef}
                     {...provided.droppableProps}
-                    className="file"
+                    className={"file " + (props.isSelected ? "selected" : "")}
+                    onClick={() => props.select(props.path)}
                 >
                     <td>{<Octicon icon={FileIcon} />}</td>
                     <td>{props.name}</td>
@@ -44,6 +47,17 @@ File.propTypes = {
     isFile: PropTypes.bool.isRequired,
     openFolder: PropTypes.func,
     tags: PropTypes.arrayOf(PropTypes.shape(Tag.propTypes)),
+    select: PropTypes.func,
 };
 
-export default File;
+
+const FileContainer = connect(
+    (state, props) => ({
+        isSelected: state.files.selected === props.path,
+    }),
+    (dispatch) => ({
+        select: (path) => dispatch(selectFile(path)),
+    }),
+)(File);
+
+export default FileContainer;

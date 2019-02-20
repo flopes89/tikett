@@ -9,7 +9,7 @@ export default () => (
     <div>
         <header>
             <Navbar dark className="bg-dark mb-3">
-                <Container>
+                <Container fluid>
                     <NavbarBrand tag="a" href="/">
                         <h1><Octicon icon={Tag} size="medium" /> tikett</h1>
                     </NavbarBrand>
@@ -25,13 +25,13 @@ export default () => (
             </Navbar>
         </header>
         <main>
-            <Container>
+            <Container fluid>
                 <Main />
             </Container>
         </main>
         <hr />
         <footer className="text-center mb-3">
-            <Container>
+            <Container fluid>
                 <a href="https://github.com/flopes89/tikett">tikett</a> &copy; Florian Peschka
             </Container>
         </footer>

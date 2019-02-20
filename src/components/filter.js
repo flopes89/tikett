@@ -6,7 +6,6 @@ import { Query } from "react-apollo";
 import { connect } from "react-redux";
 import queries from "../queries";
 import { catchLoadingError } from "./util";
-import { Row, Col, Form, FormGroup, Label, Input } from "reactstrap";
 
 const Filter = (props) => {
     const filters = props.filters.map((filter) => ({
@@ -14,7 +13,7 @@ const Filter = (props) => {
         name: filter,
     }));
 
-    const suggestions = props.suggestions.map((tag, index) => ({
+    const suggestions = props.suggestions.map((tag) => ({
         id: tag,
         name: tag,
     }));
