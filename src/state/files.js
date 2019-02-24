@@ -30,6 +30,10 @@ export default (state = {}, action) => {
                 return newState;
             }
 
+            if (action.path === newState.selected) {
+                newState.selected = "";
+            }
+
             return {
                 ...newState,
                 [getAddTagOpenPropName(action.path)]: !newState[getAddTagOpenPropName(action.path)],

@@ -121,4 +121,10 @@ export default {
             tags
         }
     `,
+
+    GET_FILTERS: gql`
+        query {
+            filters
+        }
+    `,
 };

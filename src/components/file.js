@@ -26,10 +26,9 @@ const File = (props) => {
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                     className={"file " + (props.isSelected ? "selected" : "")}
-                    onClick={() => props.select(props.path)}
                 >
                     <td>{<Octicon icon={FileIcon} />}</td>
-                    <td>{props.name}</td>
+                    <td onClick={() => props.select(props.path)}>{props.name}</td>
                     <td>
                         <Tags path={props.path} tags={props.tags} />
                         {provided.placeholder}

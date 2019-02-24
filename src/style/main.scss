@@ -16,10 +16,16 @@ h1 {
         }
 
         &.file {
-            cursor: zoom-in;
-
             &.selected {
                 background-color: grey;
+            }
+
+            td:nth-child(2) {
+                cursor: zoom-in;
+            }
+
+            .add_tag {
+                cursor: pointer;
             }
         }
     }

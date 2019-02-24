@@ -30,7 +30,7 @@ const AddTag = (props) => {
     }
 
     return (
-        <Badge color="primary" onClick={() => props.open(props.path)}>
+        <Badge className="add_tag" color="primary" onClick={() => props.open(props.path)}>
             <Octicon icon={Plus} height={12} verticalAlign="text-top" />
         </Badge>
     );
@@ -63,6 +63,9 @@ const AddTagContainer = (props) => (
             },
             {
                 query: queries.GET_TAG_GROUPS,
+            },
+            {
+                query: queries.GET_TAGS,
             }
         ]}
         update={props.confirm}

@@ -74,6 +74,9 @@ const reloadFiles = () => {
 
     DB.files = [];
 
+    const ungrouped = _.find(DB.tagGroups, { name: "Ungrouped" });
+    ungrouped.tags = [];
+
     files.forEach((file) => {
         const filePath = path.resolve(file);
         LOG.silly("Reading file [" + filePath + "]");
