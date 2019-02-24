@@ -1,0 +1,173 @@
+{
+  "errors": [
+    "./src/index.js 23:4\nModule parse failed: Unexpected token (23:4)\nYou may need an appropriate loader to handle this file type.\n| const root = document.getElementById(\"react-root\");\r\n| ReactDOM.render(\r\n>     <ApolloProvider client={client}>\r\n|         <Provider store={store}>\r\n|             <DragDropContext onDragEnd={onDragEnd(client, store)}>\r"
+  ],
+  "warnings": [
+    "configuration\nThe 'mode' option has not been set, webpack will fallback to 'production' for this value. Set 'mode' option to 'development' or 'production' to enable defaults for each environment.\nYou can also set it to 'none' to disable any default behavior. Learn more: https://webpack.js.org/concepts/mode/"
+  ],
+  "version": "4.26.0",
+  "hash": "f0a41097a583a3fcb524",
+  "time": 430,
+  "builtAt": 1551002332807,
+  "publicPath": "",
+  "outputPath": "C:\\Users\\FloPes\\Development\\tikett\\dist",
+  "assetsByChunkName": {
+    "main": "main.js"
+  },
+  "assets": [
+    {
+      "name": "main.js",
+      "size": 1286,
+      "chunks": [
+        0
+      ],
+      "chunkNames": [
+        "main"
+      ]
+    }
+  ],
+  "filteredAssets": 0,
+  "entrypoints": {
+    "main": {
+      "chunks": [
+        0
+      ],
+      "assets": [
+        "main.js"
+      ],
+      "children": {},
+      "childAssets": {}
+    }
+  },
+  "namedChunkGroups": {
+    "main": {
+      "chunks": [
+        0
+      ],
+      "assets": [
+        "main.js"
+      ],
+      "children": {},
+      "childAssets": {}
+    }
+  },
+  "chunks": [
+    {
+      "id": 0,
+      "rendered": true,
+      "initial": true,
+      "entry": true,
+      "size": 359,
+      "names": [
+        "main"
+      ],
+      "files": [
+        "main.js"
+      ],
+      "hash": "6000a15777b6e41a8850",
+      "siblings": [],
+      "parents": [],
+      "children": [],
+      "childrenByOrder": {},
+      "modules": [
+        {
+          "id": 0,
+          "identifier": "C:\\Users\\FloPes\\Development\\tikett\\src\\index.js",
+          "name": "./src/index.js",
+          "index": 0,
+          "index2": 0,
+          "size": 359,
+          "cacheable": true,
+          "built": true,
+          "optional": false,
+          "prefetched": false,
+          "chunks": [
+            0
+          ],
+          "issuer": null,
+          "issuerId": null,
+          "issuerName": null,
+          "issuerPath": null,
+          "failed": true,
+          "errors": 1,
+          "warnings": 0,
+          "assets": [],
+          "reasons": [
+            {
+              "moduleId": null,
+              "moduleIdentifier": null,
+              "module": null,
+              "moduleName": null,
+              "type": "single entry",
+              "userRequest": "./src",
+              "loc": "main"
+            }
+          ],
+          "usedExports": true,
+          "providedExports": null,
+          "optimizationBailout": [
+            "ModuleConcatenation bailout: Module is not an ECMAScript module"
+          ],
+          "depth": 0,
+          "source": "throw new Error(\"Module parse failed: Unexpected token (23:4)\\nYou may need an appropriate loader to handle this file type.\\n| const root = document.getElementById(\\\"react-root\\\");\\r\\n| ReactDOM.render(\\r\\n>     <ApolloProvider client={client}>\\r\\n|         <Provider store={store}>\\r\\n|             <DragDropContext onDragEnd={onDragEnd(client, store)}>\\r\");"
+        }
+      ],
+      "filteredModules": 0,
+      "origins": [
+        {
+          "module": "",
+          "moduleIdentifier": "",
+          "moduleName": "",
+          "loc": "main",
+          "request": "./src",
+          "reasons": []
+        }
+      ]
+    }
+  ],
+  "modules": [
+    {
+      "id": 0,
+      "identifier": "C:\\Users\\FloPes\\Development\\tikett\\src\\index.js",
+      "name": "./src/index.js",
+      "index": 0,
+      "index2": 0,
+      "size": 359,
+      "cacheable": true,
+      "built": true,
+      "optional": false,
+      "prefetched": false,
+      "chunks": [
+        0
+      ],
+      "issuer": null,
+      "issuerId": null,
+      "issuerName": null,
+      "issuerPath": null,
+      "failed": true,
+      "errors": 1,
+      "warnings": 0,
+      "assets": [],
+      "reasons": [
+        {
+          "moduleId": null,
+          "moduleIdentifier": null,
+          "module": null,
+          "moduleName": null,
+          "type": "single entry",
+          "userRequest": "./src",
+          "loc": "main"
+        }
+      ],
+      "usedExports": true,
+      "providedExports": null,
+      "optimizationBailout": [
+        "ModuleConcatenation bailout: Module is not an ECMAScript module"
+      ],
+      "depth": 0,
+      "source": "throw new Error(\"Module parse failed: Unexpected token (23:4)\\nYou may need an appropriate loader to handle this file type.\\n| const root = document.getElementById(\\\"react-root\\\");\\r\\n| ReactDOM.render(\\r\\n>     <ApolloProvider client={client}>\\r\\n|         <Provider store={store}>\\r\\n|             <DragDropContext onDragEnd={onDragEnd(client, store)}>\\r\");"
+    }
+  ],
+  "filteredModules": 0,
+  "children": []
+}

@@ -1,6 +1,14 @@
 @import "custom";
 @import "~bootstrap/scss/bootstrap";
 
+h1 {
+    font-size: 2rem;
+}
+
+.tag {
+    margin-right: 5px;
+}
+
 #files_component {
     tr {
         &.folder {
@@ -17,10 +25,10 @@
     }
 }
 
-.tag {
-    margin-right: 5px;
-}
-
-h1 {
-    font-size: 2rem;
+#file_preview {
+    iframe {
+        width: 100%;
+        height: 100%;
+        border: 0;
+    }
 }

@@ -5,6 +5,7 @@ const db = require("./db");
 const bodyParser = require("body-parser");
 const net = require("net");
 const config = require("./config");
+const api = require("./api");
 
 const LOG = require("./logger")("server");
 
@@ -52,6 +53,8 @@ const run = async () => {
         db.reloadFiles();
         db.dump();
     });
+
+    app.use("/api", api);
 
     return port;
 };

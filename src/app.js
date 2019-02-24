@@ -6,7 +6,7 @@ import Main from "./components/main";
 import SetRoot from "./components/setRoot";
 
 export default () => (
-    <div>
+    <React.Fragment>
         <header>
             <Navbar dark className="bg-dark mb-3">
                 <Container fluid>
@@ -29,11 +29,11 @@ export default () => (
                 <Main />
             </Container>
         </main>
-        <hr />
         <footer className="text-center mb-3">
+            <hr />
             <Container fluid>
                 <a href="https://github.com/flopes89/tikett">tikett</a> &copy; Florian Peschka
             </Container>
         </footer>
-    </div>
+    </React.Fragment>
 );

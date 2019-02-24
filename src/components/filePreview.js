@@ -5,13 +5,29 @@ import PropTypes from "prop-types";
 import Octicon, { X } from "@githubprimer/octicons-react";
 import { selectFile } from "../state/files";
 
+const getHeight = () => window.innerHeight - 280;
+
+const adjustHeight = () => {
+    const ref = document.querySelector("#file_preview iframe");
+
+    if (!ref) {
+        return;
+    }
+
+    ref.style.height = getHeight + "px";
+};
+
+window.onresize = adjustHeight;
+
 const FilePreview = (props) => {
     if (!props.src) {
         return null;
     }
 
+    const height = getHeight();
+
     return (
-        <Col>
+        <Col id="file_preview">
             <Row>
                 <Col xs={11}>
                     <Breadcrumb>
@@ -28,7 +44,7 @@ const FilePreview = (props) => {
             </Row>
             <Row>
                 <Col>
-                    <iframe src={props.src} />
+                    <iframe src={`/api/file/` + props.src} style={{ height }} />
                 </Col>
             </Row>
         </Col>
