@@ -1,5 +1,5 @@
 import React from "react";
-import { Input } from "reactstrap";
+import { Input, Modal, ModalBody, ModalHeader } from "reactstrap";
 import PropTypes from "prop-types";
 import { Button } from "reactstrap";
 import Icon, { Inbox } from "@githubprimer/octicons-react";
@@ -9,31 +9,29 @@ import { Mutation } from "react-apollo";
 import queries from "../queries";
 import { catchLoadingError } from "./util";
 import { CONFIRM_KEYS } from "../const";
+import FolderSelection from "./folderSelection";
 
 const SetRoot = (props) => {
-    if (props.isOpen) {
-        const onKeyPress = (event) => {
-            if (CONFIRM_KEYS.indexOf(event.which) !== -1) {
-                props.confirm(props.root);
-            }
-        };
-
-        return (
-            <Input
-                innerRef={(ref) => ref && ref.focus()}
-                value={props.root}
-                onChange={(event) => props.change(event.target.value)}
-                onBlur={props.abort}
-                onKeyPress={onKeyPress}
-                placeholder="Press enter to confirm"
-            />
-        );
-    }
+    const onKeyPress = (event) => {
+        if (CONFIRM_KEYS.indexOf(event.which) !== -1) {
+            props.confirm(props.root);
+        }
+    };
 
     return (
-        <Button onClick={props.open}>
-            <Icon icon={Inbox} /> Change root
-        </Button>
+        <React.Fragment>
+            <Button onClick={props.open}>
+                <Icon icon={Inbox} /> Change root
+            </Button>
+            <Modal isOpen={props.isOpen} toggle={props.abort}>
+                <ModalHeader toggle={props.abort}>
+                    <Icon icon={Inbox} /> Select new root folder
+                    </ModalHeader>
+                <ModalBody>
+                    <FolderSelection />
+                </ModalBody>
+            </Modal>
+        </React.Fragment>
     );
 };
 

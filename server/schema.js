@@ -35,6 +35,10 @@ module.exports = buildSchema(`
         ): [File]!
 
         tags: [String]!
+
+        folders(
+            current: String = "/"
+        ): [String]!
     }
 
     type Mutation {

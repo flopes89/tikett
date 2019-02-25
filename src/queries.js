@@ -127,4 +127,14 @@ export default {
             filters
         }
     `,
+
+    GET_FOLDERS: gql`
+        query(
+            $current: String = "/"
+        ) {
+            folders(
+                current: $current
+            )
+        }
+    `,
 };

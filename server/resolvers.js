@@ -3,6 +3,7 @@ const fs = require("fs");
 const db = require("./db");
 const _ = require("lodash");
 const config = require("./config");
+const driveLetters = require("windows-drive-letters");
 
 const getConfig = () => ({
     root: config.getRoot(),
@@ -170,6 +171,36 @@ const tags = () => {
     return tags;
 };
 
+const isDir = (source) => {
+    try {
+        return fs.statSync(source).isDirectory();
+    } catch (err) {
+        return false;
+    }
+};
+
+const folders = (args) => {
+    let current = args.current;
+
+    if (!current) {
+        current = config.getRoot();
+    }
+
+    let dirs = [];
+
+    if (current === "/" && process.platform === "win32") {
+        dirs = driveLetters.usedLettersSync().map((letter) => letter + ":" + path.sep);
+    } else {
+        current = path.resolve(current);
+        dirs = fs.readdirSync(current)
+            .map((name) => path.join(current, name))
+            .filter((name) => isDir(name));
+        dirs.unshift(path.resolve(current, ".."));
+    }
+
+    return dirs;
+};
+
 module.exports = {
     config: getConfig,
     changeRoot,
@@ -184,4 +215,5 @@ module.exports = {
     moveTag,
     changeColor,
     tags,
+    folders,
 };
