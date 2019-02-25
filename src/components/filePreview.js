@@ -44,7 +44,7 @@ const FilePreview = (props) => {
             </Row>
             <Row>
                 <Col>
-                    <iframe src={`/api/file/` + props.src} style={{ height }} />
+                    <iframe src={`/api/file/` + encodeURIComponent(props.src)} style={{ height }} />
                 </Col>
             </Row>
         </Col>
