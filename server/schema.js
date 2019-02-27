@@ -23,6 +23,11 @@ module.exports = buildSchema(`
         color: String!
     }
 
+    type Folder {
+        name: String!
+        path: String!
+    }
+
     type Query {
         config: Config!
 
@@ -38,7 +43,7 @@ module.exports = buildSchema(`
 
         folders(
             current: String = "/"
-        ): [String]!
+        ): [Folder]!
     }
 
     type Mutation {

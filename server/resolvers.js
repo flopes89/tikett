@@ -5,6 +5,8 @@ const _ = require("lodash");
 const config = require("./config");
 const driveLetters = require("windows-drive-letters");
 
+const LOG = require("./logger")("resolver");
+
 const getConfig = () => ({
     root: config.getRoot(),
 });
@@ -173,7 +175,9 @@ const tags = () => {
 
 const isDir = (source) => {
     try {
-        return fs.statSync(source).isDirectory();
+        const isDir = fs.statSync(source).isDirectory();
+        fs.readdirSync(source);
+        return isDir;
     } catch (err) {
         return false;
     }
@@ -189,13 +193,40 @@ const folders = (args) => {
     let dirs = [];
 
     if (current === "/" && process.platform === "win32") {
-        dirs = driveLetters.usedLettersSync().map((letter) => letter + ":" + path.sep);
+        driveLetters.usedLettersSync().forEach((letter) => {
+            try {
+                fs.readdirSync(letter + ":");
+
+                dirs.push({
+                    name: letter,
+                    path: letter + ":" + path.sep
+                });
+            } catch (e) {
+                // Ignore and don't provide the letter as an option for selection
+                LOG.info(`Skipping drive ${letter} because it's unreadable`);
+            }
+        });
     } else {
         current = path.resolve(current);
         dirs = fs.readdirSync(current)
-            .map((name) => path.join(current, name))
-            .filter((name) => isDir(name));
-        dirs.unshift(path.resolve(current, ".."));
+            .map((name) => ({
+                name,
+                path: path.join(current, name)
+            }))
+            .filter(({ path }) => isDir(path));
+
+        dirs.unshift({
+            name: "..",
+            path: path.resolve(current, "..")
+        });
+
+        // Add a "back to root" option for windows to get back to the drive selection
+        if (/^[a-z]:\\$/i.test(current) && process.platform === "win32") {
+            dirs.unshift({
+                name: "Drives",
+                path: "/",
+            });
+        }
     }
 
     return dirs;

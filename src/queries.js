@@ -134,7 +134,10 @@ export default {
         ) {
             folders(
                 current: $current
-            )
+            ) {
+                name
+                path
+            }
         }
     `,
 };

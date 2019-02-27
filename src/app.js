@@ -2,8 +2,11 @@ import React from "react";
 import { Container, Navbar, NavbarBrand, Row, Col } from "reactstrap";
 import ReloadButton from "./components/reloadButton";
 import Octicon, { Tag } from "@githubprimer/octicons-react";
-import Main from "./components/main";
 import SetRoot from "./components/setRoot";
+import TagGroups from "./components/tagGroups";
+import Breadcrumbs from "./components/breadcrumbs";
+import Files from "./components/files";
+import FilePreview from "./components/filePreview";
 
 export default () => (
     <React.Fragment>
@@ -26,7 +29,16 @@ export default () => (
         </header>
         <main>
             <Container fluid>
-                <Main />
+                <Row>
+                    <Col xs={2}>
+                        <TagGroups />
+                    </Col>
+                    <Col>
+                        <Breadcrumbs />
+                        <Files />
+                    </Col>
+                    <FilePreview />
+                </Row>
             </Container>
         </main>
         <footer className="text-center mb-3">
