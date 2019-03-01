@@ -198,7 +198,7 @@ const folders = (args) => {
                 fs.readdirSync(letter + ":");
 
                 dirs.push({
-                    name: letter,
+                    name: letter + ":",
                     path: letter + ":" + path.sep
                 });
             } catch (e) {
@@ -215,16 +215,16 @@ const folders = (args) => {
             }))
             .filter(({ path }) => isDir(path));
 
-        dirs.unshift({
-            name: "..",
-            path: path.resolve(current, "..")
-        });
-
         // Add a "back to root" option for windows to get back to the drive selection
         if (/^[a-z]:\\$/i.test(current) && process.platform === "win32") {
             dirs.unshift({
-                name: "Drives",
+                name: "Select different drive",
                 path: "/",
+            });
+        } else {
+            dirs.unshift({
+                name: "..",
+                path: path.resolve(current, "..")
             });
         }
     }

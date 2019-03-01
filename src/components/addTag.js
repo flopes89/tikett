@@ -31,7 +31,7 @@ const AddTag = (props) => {
 
     return (
         <Badge className="add_tag" color="primary" onClick={() => props.open(props.path)}>
-            <Octicon icon={Plus} height={12} verticalAlign="text-top" />
+            <Octicon icon={Plus} height={12} verticalAlign="middle" />
         </Badge>
     );
 };

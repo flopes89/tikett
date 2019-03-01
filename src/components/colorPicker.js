@@ -17,7 +17,9 @@ const ColorPicker = (props) => {
 
     return (
         <React.Fragment>
-            <a href="#" onClick={props.toggle} id={"colorPicker-" + props.group}><Octicon icon={Paintcan} /></a>
+            <a className="ml-2" href="#" onClick={props.toggle} id={"colorPicker-" + props.group}>
+                <Octicon icon={Paintcan} verticalAlign="middle" />
+            </a>
             <Popover isOpen={props.isOpen} target={"colorPicker-" + props.group} toggle={props.toggle}>
                 <PopoverBody>
                     <SketchPicker disableAlpha={true} onChangeComplete={props.onChange} color={props.color} />

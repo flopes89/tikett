@@ -5,6 +5,10 @@ h1 {
     font-size: 2rem;
 }
 
+a, a:hover {
+    color: inherit;
+}
+
 .tag {
     margin-right: 5px;
 }
@@ -26,6 +30,9 @@ h1 {
 
             .add_tag {
                 cursor: pointer;
+                display: inline-block;
+                font-size: 100%;
+                vertical-align: middle;
             }
         }
     }
