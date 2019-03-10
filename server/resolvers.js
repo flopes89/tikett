@@ -71,7 +71,10 @@ const files = ({ current, showDescendants, filters }) => {
         }
 
         let matchesFilter = false;
-        filters.forEach((filter) => matchesFilter |= file.tags.indexOf(filter) !== -1);
+        filters.forEach((filter) => {
+            const name = filter.split("#")[0];
+            return matchesFilter |= file.tags.indexOf(name) !== -1;
+        });
 
         // Files only have the tag names (string) attached, but for the
         // resolver the color is also needed, so the tags must be converted to objects

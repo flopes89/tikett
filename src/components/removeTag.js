@@ -4,7 +4,7 @@ import queries from "../queries";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { catchLoadingError } from "./util";
-import Octicon, { X } from "@githubprimer/octicons-react";
+import Octicon, { Trashcan } from "@githubprimer/octicons-react";
 import { selectFile } from "../state/files";
 
 const RemoveTag = (props) => {
@@ -32,7 +32,7 @@ const RemoveTag = (props) => {
         >
             {(mutate, state) => catchLoadingError(state)(
                 <a className="remove_tag ml-2" href="#" onClick={() => remove(mutate)}>
-                    <Octicon icon={X} size={12} verticalAlign="middle" />
+                    <Octicon icon={Trashcan} size={12} verticalAlign="middle" />
                 </a>
             )}
         </Mutation>

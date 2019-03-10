@@ -4,46 +4,38 @@ import LayoutTag from "../layout/tag";
 import PropTypes from "prop-types";
 import RemoveTag from "./removeTag";
 
-const Tag = (props) => (
-    <LayoutTag color={props.color}>
-        {props.name}
-        {props.path && (<RemoveTag name={props.name} path={props.path} />)}
-    </LayoutTag>
-);
+const TagsContainer = (props) => props.tags.map((tag, index) => {
+    let color = props.color;
+    let path = "";
+    let name = tag;
 
-const TagsContainer = (props) => {
-    return props.tags.map((tag, index) => {
-        let tagObject = tag;
+    if (typeof tag === "object") {
+        color = tag.color;
+        name = tag.name;
+    }
 
-        if (typeof tagObject === "string") {
-            tagObject = {
-                name: tag,
-                color: props.color,
-            };
-        }
+    path = props.path;
 
-        tagObject.path = props.path;
+    const id = `${name}|${color}|${path}`;
 
-        return (
-            <Draggable draggableId={"tag|" + props.path + "|" + tagObject.name} index={index} key={index}>
-                {(provided, snapshot) => (
-                    <React.Fragment>
-                        <span
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                        >
-                            <Tag {...tagObject} />
-                        </span>
-                        {snapshot.isDragging && (<Tag {...tagObject} />)}
-                    </React.Fragment>
-                )}
-            </Draggable>
-        )
-    });
-};
-
-Tag.propTypes = LayoutTag.propTypes;
+    return (
+        <Draggable draggableId={id} index={index} key={index}>
+            {(provided) => (
+                <div
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    className="tag"
+                >
+                    <LayoutTag color={color}>
+                        {name}
+                        {path && (<RemoveTag name={name} path={path} />)}
+                    </LayoutTag>
+                </div>
+            )}
+        </Draggable>
+    )
+});
 
 TagsContainer.propTypes = {
     path: PropTypes.string,

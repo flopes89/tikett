@@ -1,7 +1,14 @@
 import queries from "./queries";
+import { startTagDrag, endTagDrag } from "./state/global";
+import { addFilter } from "./state/fileBrowser";
+
+export const onBeforeDragStart = (store_) => () => {
+    store_.dispatch(startTagDrag());
+};
 
 export const onDragEnd = (client_, store_) => (dropResult_) => {
     if (!dropResult_.destination) {
+        store_.dispatch(endTagDrag());
         return;
     }
 
@@ -10,7 +17,8 @@ export const onDragEnd = (client_, store_) => (dropResult_) => {
     const destName = destParts[1];
 
     const tagParts = dropResult_.draggableId.split("|");
-    const tagName = tagParts[2];
+    const tagName = tagParts[0];
+    const tagColor = tagParts[1];
 
     const state = store_.getState();
 
@@ -44,5 +52,9 @@ export const onDragEnd = (client_, store_) => (dropResult_) => {
                 }
             ]
         })
+    } else if (destType === "filter") {
+        store_.dispatch(addFilter(`${tagName}${tagColor}`));
     }
+
+    store_.dispatch(endTagDrag());
 };

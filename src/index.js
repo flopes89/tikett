@@ -9,7 +9,7 @@ import { Provider } from "react-redux";
 import { createStore } from "redux";
 import reducer from "./state";
 import { DragDropContext } from "react-beautiful-dnd";
-import { onDragEnd } from "./responders";
+import { onBeforeDragStart, onDragEnd } from "./responders";
 
 const client = new ApolloClient({
     uri: "/graphql",
@@ -22,7 +22,7 @@ const root = document.getElementById("react-root");
 ReactDOM.render(
     <ApolloProvider client={client}>
         <Provider store={store}>
-            <DragDropContext onDragEnd={onDragEnd(client, store)}>
+            <DragDropContext onBeforeDragStart={onBeforeDragStart(store)} onDragEnd={onDragEnd(client, store)}>
                 <App />
             </DragDropContext>
         </Provider>

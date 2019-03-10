@@ -14,26 +14,25 @@ const Files = (props) => (
     <div id="files_component">
         <Row>
             <Col>
-                <Form>
-                    <FormGroup check>
-                        <Label check className="pl-2">
-                            <Input
-                                type="checkbox"
-                                checked={props.showDescendants}
-                                onChange={props.toggleShowDescendants}
-                            />
-                            Show descendants
-                        </Label>
-                    </FormGroup>
-                    <FormGroup>
-                        <Filter />
-                    </FormGroup>
-                </Form>
+                <Filter />
+            </Col>
+            <Col xs={2}>
+                <Label check className="pl-2">
+                    <Input
+                        type="checkbox"
+                        checked={props.showDescendants}
+                        onChange={props.toggleShowDescendants}
+                    />
+                    Show descendants
+                </Label>
             </Col>
         </Row>
-        <Row>
+        <Row className="mt-5">
             <Col>
-                <Table hover>
+                <Table>
+                    <colgroup>
+                        <col width="40%" />
+                    </colgroup>
                     <tbody>
                         {props.files.map((file, index) => (
                             <File

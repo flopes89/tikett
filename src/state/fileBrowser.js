@@ -63,7 +63,7 @@ export default (state = INIT_STATE, action) => {
         case ADD_FILTER:
             return {
                 ...newState,
-                filters: [].concat(newState.filters, action.tag.name),
+                filters: [].concat(newState.filters, action.tag),
             };
 
         case REMOVE_FILTER:

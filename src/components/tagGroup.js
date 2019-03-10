@@ -10,33 +10,35 @@ import { Droppable } from "react-beautiful-dnd";
 import ColorPicker from "./colorPicker";
 
 const TagGroup = (props) => (
-    <Droppable droppableId={"tagGroup|" + props.name}>
-        {(provided) => (
-            <div
-                className="tag_group"
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-            >
-                <Row>
-                    <Col>
-                        <strong>{props.name}</strong>
-                        <ColorPicker group={props.name} />
-                    </Col>
-                    {props.name !== "Ungrouped" && (
-                        <Col>
-                            <a href="#" onClick={props.remove}><Octicon icon={Trashcan} /></a>
-                        </Col>
+    <React.Fragment>
+        <Row>
+            <Col>
+                <strong>{props.name}</strong>
+                <ColorPicker group={props.name} />
+            </Col>
+            {props.name !== "Ungrouped" && (
+                <Col>
+                    <a href="#" onClick={props.remove}><Octicon icon={Trashcan} /></a>
+                </Col>
+            )}
+        </Row>
+        <Row>
+            <Col>
+                <Droppable droppableId={"tagGroup|" + props.name}>
+                    {(provided) => (
+                        <div
+                            ref={provided.innerRef}
+                            {...provided.droppableProps}
+                            className="tag_group"
+                        >
+                            <Tags tags={props.tags} color={props.color} />
+                            {provided.placeholder}
+                        </div>
                     )}
-                </Row>
-                <Row>
-                    <Col>
-                        <Tags tags={props.tags} color={props.color} />
-                        {provided.placeholder}
-                    </Col>
-                </Row>
-            </div>
-        )}
-    </Droppable>
+                </Droppable>
+            </Col>
+        </Row>
+    </React.Fragment>
 );
 
 const TagGroupContainer = (props) => (

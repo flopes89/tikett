@@ -1,63 +1,67 @@
 import React from "react";
-import { addFilter, removeFilter } from "../state/fileBrowser";
-import ReactTags from "react-tag-autocomplete";
-import PropTypes from "prop-types";
-import { Query } from "react-apollo";
+import { Droppable } from "react-beautiful-dnd";
 import { connect } from "react-redux";
-import queries from "../queries";
-import { catchLoadingError } from "./util";
+import Tag from "../layout/tag";
+import { Row, Col } from "reactstrap";
+import classnames from "classnames";
+import Octicon, { Trashcan } from "@githubprimer/octicons-react";
+import { removeFilter } from "../state/fileBrowser";
 
-const Filter = (props) => {
-    const filters = props.filters.map((filter) => ({
-        id: filter,
-        name: filter,
-    }));
+const renderFilter = (provided, snapshot, props) => {
+    const classes = classnames({
+        "drop_ready": props.isDragging,
+        "drag_over": snapshot.isDraggingOver,
+    });
 
-    const suggestions = props.suggestions.map((tag) => ({
-        id: tag,
-        name: tag,
-    }));
+    const renderTag = (tag, index) => {
+        const parts = tag.split("#");
+        const name = parts[0];
+        const color = parts[1];
+
+        return (
+            <div key={name} className="tag">
+                <Tag color={color}>
+                    {name}
+                    <a className="remove_tag ml-2" href="#" onClick={() => props.removeFilter(index)}>
+                        <Octicon icon={Trashcan} size={12} verticalAlign="middle" />
+                    </a>
+                </Tag>
+            </div>
+        );
+    };
 
     return (
-        <ReactTags
-            tags={filters}
-            suggestions={suggestions}
-            handleAddition={props.addFilter}
-            handleDelete={props.removeFilter}
-            placeholder="Tag filters"
-            autoresize={false}
-            delimiters={[32]}
-        />
+        <div
+            id="filter"
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+            className={classes}
+        >
+            {props.filters.map(renderTag)}
+            {provided.placeholder}
+        </div>
     );
 };
 
-Filter.propTypes = {
-    filters: PropTypes.arrayOf(PropTypes.string),
-    addFilter: PropTypes.func,
-    removeFilter: PropTypes.func,
-    suggestions: PropTypes.arrayOf(PropTypes.string),
-};
-
-const FilterContainer = (props) => (
-    <Query
-        query={queries.GET_TAGS}
-    >
-        {(state) => catchLoadingError(state)(<Filter {...props} suggestions={state.data.tags} />)}
-    </Query>
+const Filter = (props) => (
+    <Row>
+        <Col xs={1}>
+            <strong>Filters</strong>
+        </Col>
+        <Col>
+            <Droppable droppableId="filter">
+                {(provided, snapshot) => renderFilter(provided, snapshot, props)}
+            </Droppable>
+        </Col>
+    </Row>
 );
-
-FilterContainer.propTypes = {
-    filters: PropTypes.arrayOf(PropTypes.string),
-    addFilter: PropTypes.func,
-    removeFilter: PropTypes.func,
-};
 
 export default connect(
     (state) => ({
-        filters: state.fileBrowser.filters || [],
+        isDragging: state.global.isDraggingTag,
+        filters: state.fileBrowser.filters,
     }),
     (dispatch) => ({
-        addFilter: (filter) => dispatch(addFilter(filter)),
         removeFilter: (index) => dispatch(removeFilter(index)),
-    }),
-)(FilterContainer);
+    })
+)(Filter);

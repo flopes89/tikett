@@ -13,6 +13,25 @@ a, a:hover {
     margin-right: 5px;
 }
 
+[data-react-beautiful-dnd-droppable] {
+    border: 3px solid transparent;
+}
+
+.drop_ready {
+    border: 3px dashed $gray-300;
+    background: $gray-100;
+}
+
+.drag_over {
+    background: $gray-200;
+}
+
+#filter {
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 26px;
+}
+
 #files_component {
     tr {
         &.folder {
@@ -21,11 +40,16 @@ a, a:hover {
 
         &.file {
             &.selected {
-                background-color: grey;
+                background-color: $gray-300;
             }
 
-            td:nth-child(2) {
+            td:nth-child(1) {
                 cursor: zoom-in;
+            }
+
+            .file_tags {
+                display: flex;
+                flex-wrap: wrap;
             }
 
             .add_tag {
@@ -35,6 +59,16 @@ a, a:hover {
                 vertical-align: middle;
             }
         }
+    }
+}
+
+.tag_group {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+
+    .tag {
+        margin-bottom: 5px;
     }
 }
 

@@ -2,7 +2,7 @@ import React from "react";
 import { Badge } from "reactstrap";
 import PropTypes from "prop-types";
 
-const HEX_COLOR_PATTERN = new RegExp(/#(\w{2})(\w{2})(\w{2})/);
+const HEX_COLOR_PATTERN = new RegExp(/#?(\w{2})(\w{2})(\w{2})/);
 
 const getFontColor = (background) => {
     const rgb = HEX_COLOR_PATTERN.exec(background);
@@ -19,7 +19,7 @@ const getFontColor = (background) => {
 };
 
 const Tag = ({ children, color }) => (
-    <Badge className="tag" style={{ backgroundColor: color, color: getFontColor(color) }}>
+    <Badge style={{ backgroundColor: color, color: getFontColor(color) }}>
         {children}
     </Badge>
 );

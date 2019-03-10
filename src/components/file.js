@@ -7,36 +7,44 @@ import Tags from "./tags";
 import { Droppable } from "react-beautiful-dnd";
 import { connect } from "react-redux";
 import { selectFile } from "../state/files";
+import classnames from "classnames";
+
+const renderFile = (provided, snapshot, props) => {
+    const classes = classnames("file_tags", {
+        "drop_ready": props.isDragging,
+        "drag_over": snapshot.isDraggingOver,
+    });
+
+    return (
+        <div ref={provided.innerRef} {...provided.droppableProps} className={classes}>
+            <Tags path={props.path} tags={props.tags} />
+            <AddTag path={props.path} />
+            {provided.placeholder}
+        </div>
+    );
+};
 
 const File = (props) => {
     if (!props.isFile) {
         return (
             <tr className="folder" onClick={() => props.openFolder(props.name)}>
-                <td><Octicon icon={FileDirectory} /></td>
-                <td>[{props.name}]</td>
+                <td><Octicon icon={FileDirectory} /> [{props.name}]</td>
                 <td>&nbsp;</td>
             </tr>
         );
     }
 
     return (
-        <Droppable droppableId={"file|" + props.path}>
-            {(provided) => (
-                <tr
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                    className={"file " + (props.isSelected ? "selected" : "")}
-                >
-                    <td>{<Octicon icon={FileIcon} />}</td>
-                    <td onClick={() => props.select(props.path)}>{props.name}</td>
-                    <td>
-                        <Tags path={props.path} tags={props.tags} />
-                        {provided.placeholder}
-                        <AddTag path={props.path} />
-                    </td>
-                </tr>
-            )}
-        </Droppable>
+        <tr className={"file " + (props.isSelected ? "selected" : "")}>
+            <td onClick={() => props.select(props.path)}>
+                <Octicon icon={FileIcon} /> {props.name}
+            </td>
+            <td>
+                <Droppable droppableId={"file|" + props.path} direction="horizontal">
+                    {(provided, snapshot) => renderFile(provided, snapshot, props)}
+                </Droppable>
+            </td>
+        </tr>
     );
 };
 
@@ -52,6 +60,7 @@ File.propTypes = {
 
 const FileContainer = connect(
     (state, props) => ({
+        isDragging: state.global.isDraggingTag,
         isSelected: state.files.selected === props.path,
     }),
     (dispatch) => ({
