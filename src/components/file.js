@@ -9,21 +9,6 @@ import { connect } from "react-redux";
 import { selectFile } from "../state/files";
 import classnames from "classnames";
 
-const renderFile = (provided, snapshot, props) => {
-    const classes = classnames("file_tags", {
-        "drop_ready": props.isDragging,
-        "drag_over": snapshot.isDraggingOver,
-    });
-
-    return (
-        <div ref={provided.innerRef} {...provided.droppableProps} className={classes}>
-            <Tags path={props.path} tags={props.tags} />
-            <AddTag path={props.path} />
-            {provided.placeholder}
-        </div>
-    );
-};
-
 const File = (props) => {
     if (!props.isFile) {
         return (
@@ -34,29 +19,38 @@ const File = (props) => {
         );
     }
 
+    const renderFile = (provided, snapshot) => {
+        const classes = classnames("file_tags", {
+            "drop_ready": props.isDragging,
+            "drag_over": snapshot.isDraggingOver,
+        });
+
+        return (
+            <div ref={provided.innerRef} {...provided.droppableProps} className={classes}>
+                <Tags path={props.path} tags={props.tags} />
+                <AddTag path={props.path} />
+                {provided.placeholder}
+            </div>
+        );
+    };
+
+    const classes = classnames("file", {
+        "selected": props.isSelected,
+    });
+
     return (
-        <tr className={"file " + (props.isSelected ? "selected" : "")}>
+        <tr className={classes}>
             <td onClick={() => props.select(props.path)}>
                 <Octicon icon={FileIcon} /> {props.name}
             </td>
             <td>
                 <Droppable droppableId={"file|" + props.path} direction="horizontal">
-                    {(provided, snapshot) => renderFile(provided, snapshot, props)}
+                    {renderFile}
                 </Droppable>
             </td>
         </tr>
     );
 };
-
-File.propTypes = {
-    name: PropTypes.string.isRequired,
-    path: PropTypes.string.isRequired,
-    isFile: PropTypes.bool.isRequired,
-    openFolder: PropTypes.func,
-    tags: PropTypes.arrayOf(PropTypes.shape(Tag.propTypes)),
-    select: PropTypes.func,
-};
-
 
 const FileContainer = connect(
     (state, props) => ({
@@ -65,7 +59,15 @@ const FileContainer = connect(
     }),
     (dispatch) => ({
         select: (path) => dispatch(selectFile(path)),
+        openFolder: (folder) => dispatch(openFolder(folder)),
     }),
 )(File);
+
+FileContainer.propTypes = {
+    name: PropTypes.string.isRequired,
+    path: PropTypes.string.isRequired,
+    isFile: PropTypes.bool.isRequired,
+    tags: PropTypes.arrayOf(PropTypes.shape(Tag.propTypes)),
+};
 
 export default FileContainer;

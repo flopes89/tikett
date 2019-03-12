@@ -1,13 +1,11 @@
 import React from "react";
 import { Table } from "reactstrap";
-import { Row, Col, Form, FormGroup, Label, Input, } from "reactstrap";
-import PropTypes from "prop-types";
+import { Row, Col, Label, Input, } from "reactstrap";
 import File from "./file";
-import { Query } from "react-apollo";
+import { Query } from "./util";
 import { connect } from "react-redux";
 import queries from "../queries";
-import { catchLoadingError } from "./util";
-import { toggleShowDescendants, openFolder } from "../state/fileBrowser";
+import { toggleShowDescendants } from "../state/fileBrowser";
 import Filter from "./filter";
 
 const Files = (props) => (
@@ -39,9 +37,8 @@ const Files = (props) => (
                                 key={index}
                                 name={file.name}
                                 isFile={file.isFile}
-                                tags={file.tags}
-                                openFolder={props.openFolder}
                                 path={file.path}
+                                tags={file.tags}
                             />
                         ))}
                     </tbody>
@@ -51,14 +48,7 @@ const Files = (props) => (
     </div >
 );
 
-Files.propTypes = {
-    files: PropTypes.arrayOf(PropTypes.shape(File.propTypes)),
-    showDescendants: PropTypes.bool,
-    toggleShowDescendants: PropTypes.func,
-    openFolder: PropTypes.func,
-};
-
-const FilesContainer = (props) => (
+let FilesContainer = (props) => (
     <Query
         query={queries.GET_FILES}
         variables={{
@@ -67,11 +57,17 @@ const FilesContainer = (props) => (
             filters: props.filters,
         }}
     >
-        {(state) => catchLoadingError(state)(<Files {...props} files={state.data.files} />)}
+        {(state) => (
+            <Files
+                showDescendants={props.showDescendants}
+                toggleShowDescendants={props.toggleShowDescendants}
+                files={state.data.files}
+            />
+        )}
     </Query>
 );
 
-export default connect(
+FilesContainer = connect(
     (state) => ({
         showDescendants: state.fileBrowser.showDescendants || false,
         current: state.fileBrowser.currentFolder || "/",
@@ -79,6 +75,7 @@ export default connect(
     }),
     (dispatch) => ({
         toggleShowDescendants: () => dispatch(toggleShowDescendants()),
-        openFolder: (folder) => dispatch(openFolder(folder)),
     }),
 )(FilesContainer);
+
+export default FilesContainer;

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Row, Col, ButtonGroup, Button, Modal, ModalBody, ModalHeader } from "reactstrap";
-import Icon, { Inbox } from "@githubprimer/octicons-react";
+import Octicon, { Inbox } from "@githubprimer/octicons-react";
 import queries from "../queries";
 import { Query, Mutation } from "./util";
 
@@ -69,11 +69,11 @@ const SetRoot = ({ initialFolder, forceOpen }) => {
     return (
         <React.Fragment>
             <Button onClick={() => setIsOpen(true)}>
-                <Icon icon={Inbox} /> Change root
+                <Octicon icon={Inbox} /> Change root
             </Button>
             <Modal isOpen={isOpen} toggle={close}>
                 <ModalHeader toggle={close}>
-                    <Icon icon={Inbox} /> Select root folder
+                    <Octicon icon={Inbox} verticalAlign="middle" /> Select root folder
                 </ModalHeader>
                 <ModalBody>
                     <FolderSelection initialFolder={initialFolder} close={() => setIsOpen(false)} />
