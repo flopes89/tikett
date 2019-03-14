@@ -3,11 +3,10 @@ import { Button, Input } from "reactstrap";
 import Octicon, { Plus } from "@githubprimer/octicons-react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Mutation } from "react-apollo";
-import { toggleName, changeName, getNamePropName, getNameOpenPropName } from "../state/tagGroups";
-import queries from "../queries";
-import { catchLoadingError } from "./util";
-import { CONFIRM_KEYS } from "../const";
+import { Mutation } from "../util";
+import { toggleName, changeName, getNamePropName, getNameOpenPropName } from "../../state/tagGroups";
+import queries from "../../queries";
+import { CONFIRM_KEYS } from "../../const";
 
 const CreateTagGroup = (props) => {
     const onKeyPress = (event) => {
@@ -55,11 +54,9 @@ const CreateTagGroupContainer = (props) => (
         }}
         update={props.confirm}
         refetchQueries={[
-            {
-                query: queries.GET_TAG_GROUPS,
-            }
+            { query: queries.GET_TAG_GROUPS },
         ]}>
-        {(createGroup, state) => catchLoadingError(state)(<CreateTagGroup {...props} confirm={createGroup} />)}
+        {(mutate) => (<CreateTagGroup {...props} confirm={mutate} />)}
     </Mutation>
 );
 

@@ -1,11 +1,17 @@
 import React, { useState } from "react";
 import { Button, Badge, Input, Modal, ModalHeader, ModalBody } from "reactstrap";
 import Octicon, { Plus } from "@githubprimer/octicons-react";
-import { Mutation } from "./util";
-import queries from "../queries";
+import { Mutation } from "../util";
+import queries from "../../queries";
 import { connect } from "react-redux";
-import { CONFIRM_KEYS } from "../const";
+import { CONFIRM_KEYS } from "../../const";
 import PropTypes from "prop-types";
+
+const TagList = (props) => {
+    return (
+        null
+    );
+};
 
 const AddTag = (props) => {
     const [isOpen, setIsOpen] = useState(false);

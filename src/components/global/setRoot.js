@@ -1,16 +1,25 @@
 import React, { useState } from "react";
 import { Row, Col, ButtonGroup, Button, Modal, ModalBody, ModalHeader } from "reactstrap";
 import Octicon, { Inbox } from "@githubprimer/octicons-react";
-import queries from "../queries";
-import { Query, Mutation } from "./util";
+import queries from "../../queries";
+import { Query, Mutation } from "../util";
 
-const FolderList = ({ current, onSelect }) => (
-    <Query query={queries.GET_FOLDERS} variables={{ current }}>
-        {({ data: { folders } }) => (
+const FolderList = (props) => (
+    <Query
+        query={queries.GET_FOLDERS}
+        variables={{ current: props.current }}
+    >
+        {(data) => (
             <ButtonGroup vertical className="d-flex">
-                {folders.map(({ name, path }) => (
-                    <Button outline size="sm" className="text-left" key={path} onClick={() => onSelect(path)}>
-                        {name}
+                {data.folders.map((folder) => (
+                    <Button
+                        outline
+                        size="sm"
+                        className="text-left"
+                        key={folder.path}
+                        onClick={() => props.onSelect(folder.path)}
+                    >
+                        {folder.name}
                     </Button>
                 ))}
             </ButtonGroup>
@@ -18,23 +27,23 @@ const FolderList = ({ current, onSelect }) => (
     </Query>
 );
 
-const ConfirmButton = ({ current, close }) => (
+const ConfirmButton = (props) => (
     <Mutation
         mutation={queries.CHANGE_ROOT}
-        update={close}
-        variables={{ folder: current }}
+        update={props.close}
+        variables={{ folder: props.current }}
         refetchQueries={[
             { query: queries.GET_FILES },
             { query: queries.GET_TAG_GROUPS },
             { query: queries.GET_CONFIG }
         ]}
     >
-        {(setRoot) => (<Button block color="primary" onClick={setRoot}>Confirm</Button>)}
+        {(mutate) => (<Button block color="primary" onClick={mutate}>Confirm</Button>)}
     </Mutation>
 );
 
-const FolderSelection = ({ initialFolder, close }) => {
-    const [current, setCurrent] = useState(initialFolder || "/");
+const FolderSelection = (props) => {
+    const [current, setCurrent] = useState(props.initialFolder || "/");
 
     return (
         <React.Fragment>
@@ -50,18 +59,18 @@ const FolderSelection = ({ initialFolder, close }) => {
             </Row>
             <Row className="mt-3">
                 <Col>
-                    <ConfirmButton current={current} close={close} />
+                    <ConfirmButton current={current} close={props.close} />
                 </Col>
             </Row>
         </React.Fragment>
     );
 };
 
-const SetRoot = ({ initialFolder, forceOpen }) => {
-    const [isOpen, setIsOpen] = useState(forceOpen);
+let SetRoot = (props) => {
+    const [isOpen, setIsOpen] = useState(props.forceOpen);
 
     const close = () => {
-        if (!forceOpen) {
+        if (!props.forceOpen) {
             setIsOpen(false);
         }
     };
@@ -76,17 +85,17 @@ const SetRoot = ({ initialFolder, forceOpen }) => {
                     <Octicon icon={Inbox} verticalAlign="middle" /> Select root folder
                 </ModalHeader>
                 <ModalBody>
-                    <FolderSelection initialFolder={initialFolder} close={() => setIsOpen(false)} />
+                    <FolderSelection initialFolder={props.initialFolder} close={() => setIsOpen(false)} />
                 </ModalBody>
             </Modal>
         </React.Fragment>
     );
 };
 
-const SetRootContainer = () => (
+SetRoot = () => (
     <Query query={queries.GET_CONFIG}>
-        {({ data }) => (<SetRoot initialFolder={data.config.root} forceOpen={!data.config.root} />)}
+        {(data) => (<SetRoot initialFolder={data.config.root} />)}
     </Query>
 );
 
-export default SetRootContainer;
+export default SetRoot;

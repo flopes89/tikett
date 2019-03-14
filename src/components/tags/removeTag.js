@@ -1,11 +1,10 @@
 import React from "react";
-import { Mutation } from "react-apollo";
-import queries from "../queries";
+import { Mutation } from "../util";
+import queries from "../../queries";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { catchLoadingError } from "./util";
 import Octicon, { Trashcan } from "@githubprimer/octicons-react";
-import { selectFile } from "../state/files";
+import { selectFile } from "../../state/files";
 
 const RemoveTag = (props) => {
     const remove = (mutate) => {
@@ -30,7 +29,7 @@ const RemoveTag = (props) => {
                 }
             ]}
         >
-            {(mutate, state) => catchLoadingError(state)(
+            {(mutate) => (
                 <a className="remove_tag ml-2" href="#" onClick={() => remove(mutate)}>
                     <Octicon icon={Trashcan} size={12} verticalAlign="middle" />
                 </a>
@@ -42,9 +41,6 @@ const RemoveTag = (props) => {
 RemoveTag.propTypes = {
     name: PropTypes.string.isRequired,
     path: PropTypes.string.isRequired,
-    current: PropTypes.string.isRequired,
-    showDescendants: PropTypes.bool.isRequired,
-    resetSelectedFile: PropTypes.func,
 };
 
 export default connect(

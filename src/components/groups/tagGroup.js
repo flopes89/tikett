@@ -2,23 +2,24 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Row, Col } from "reactstrap";
 import Octicon, { Trashcan } from "@githubprimer/octicons-react";
-import Tags from "./tags";
-import { Mutation } from "react-apollo";
-import { catchLoadingError } from "./util";
-import queries from "../queries";
+import Tags from "../tags";
+import { Mutation } from "../util";
+import queries from "../../queries";
 import { Droppable } from "react-beautiful-dnd";
 import ColorPicker from "./colorPicker";
 
-const TagGroup = (props) => (
+let TagGroup = (props) => (
     <React.Fragment>
         <Row>
             <Col>
                 <strong>{props.name}</strong>
-                <ColorPicker group={props.name} />
+                <ColorPicker group={props.name} color={props.color} />
             </Col>
             {props.name !== "Ungrouped" && (
                 <Col>
-                    <a href="#" onClick={props.remove}><Octicon icon={Trashcan} /></a>
+                    <a href="#" onClick={props.remove}>
+                        <Octicon icon={Trashcan} />
+                    </a>
                 </Col>
             )}
         </Row>
@@ -41,28 +42,21 @@ const TagGroup = (props) => (
     </React.Fragment>
 );
 
-const TagGroupContainer = (props) => (
+TagGroup = (props) => (
     <Mutation
         mutation={queries.REMOVE_TAG_GROUP}
         variables={{ group: props.name }}
-        refetchQueries={[{
-            query: queries.GET_TAG_GROUPS,
-        }]}
+        refetchQueries={[
+            { query: queries.GET_TAG_GROUPS },
+        ]}
     >
-        {(remove, state) => catchLoadingError(state)(<TagGroup {...props} remove={remove} />)}
+        {(mutate) => (<TagGroup name={props.name} tags={props.tags} remove={mutate} />)}
     </Mutation>
 );
 
-TagGroupContainer.propTypes = {
+TagGroup.propTypes = {
     name: PropTypes.string.isRequired,
     tags: PropTypes.arrayOf(PropTypes.string),
-    toggleColor: PropTypes.func,
-    changeColor: PropTypes.func,
 };
 
-TagGroup.propTypes = {
-    ...TagGroupContainer.propTypes,
-    remove: PropTypes.func,
-};
-
-export default TagGroupContainer;
+export default TagGroup;

@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Row, Col, Breadcrumb, BreadcrumbItem } from "reactstrap";
 import { connect } from "react-redux";
-import { openFolder } from "../state/fileBrowser";
+import { openFolder } from "../../state/fileBrowser";
 
 const CrumbItem = (props) => {
     let inner = props.name;

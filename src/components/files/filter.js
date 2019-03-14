@@ -1,11 +1,11 @@
 import React from "react";
 import { Droppable } from "react-beautiful-dnd";
 import { connect } from "react-redux";
-import Tag from "../layout/tag";
+import { Tag } from "../tags";
 import { Row, Col } from "reactstrap";
 import classnames from "classnames";
 import Octicon, { Trashcan } from "@githubprimer/octicons-react";
-import { removeFilter } from "../state/fileBrowser";
+import { removeFilter } from "../../state/fileBrowser";
 
 const renderFilter = (provided, snapshot, props) => {
     const classes = classnames({

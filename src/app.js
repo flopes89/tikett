@@ -1,12 +1,12 @@
 import React from "react";
 import { Container, Navbar, NavbarBrand, Row, Col } from "reactstrap";
-import ReloadButton from "./components/reloadButton";
+import ReloadButton from "./components/global/reloadButton";
 import Octicon, { Tag } from "@githubprimer/octicons-react";
-import SetRoot from "./components/setRoot";
-import TagGroups from "./components/tagGroups";
-import Breadcrumbs from "./components/breadcrumbs";
+import SetRoot from "./components/global/setRoot";
+import TagGroups from "./components/groups";
+import Breadcrumbs from "./components/files/breadcrumbs";
 import Files from "./components/files";
-import FilePreview from "./components/filePreview";
+import FilePreview from "./components/files/filePreview";
 
 export default () => (
     <React.Fragment>

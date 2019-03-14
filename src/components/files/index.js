@@ -2,10 +2,10 @@ import React from "react";
 import { Table } from "reactstrap";
 import { Row, Col, Label, Input, } from "reactstrap";
 import File from "./file";
-import { Query } from "./util";
+import { Query } from "../util";
 import { connect } from "react-redux";
-import queries from "../queries";
-import { toggleShowDescendants } from "../state/fileBrowser";
+import queries from "../../queries";
+import { toggleShowDescendants } from "../../state/fileBrowser";
 import Filter from "./filter";
 
 const Files = (props) => (
@@ -57,11 +57,11 @@ let FilesContainer = (props) => (
             filters: props.filters,
         }}
     >
-        {(state) => (
+        {(data) => (
             <Files
                 showDescendants={props.showDescendants}
                 toggleShowDescendants={props.toggleShowDescendants}
-                files={state.data.files}
+                files={data.files}
             />
         )}
     </Query>

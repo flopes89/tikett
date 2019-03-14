@@ -1,12 +1,11 @@
 import React from "react";
 import Octicon, { FileDirectory, File as FileIcon } from "@githubprimer/octicons-react";
 import PropTypes from "prop-types";
-import Tag from "../layout/tag";
 import AddTag from "./addTag";
-import Tags from "./tags";
+import Tags from "../tags";
 import { Droppable } from "react-beautiful-dnd";
 import { connect } from "react-redux";
-import { selectFile } from "../state/files";
+import { selectFile } from "../../state/files";
 import classnames from "classnames";
 
 const File = (props) => {
@@ -67,7 +66,6 @@ FileContainer.propTypes = {
     name: PropTypes.string.isRequired,
     path: PropTypes.string.isRequired,
     isFile: PropTypes.bool.isRequired,
-    tags: PropTypes.arrayOf(PropTypes.shape(Tag.propTypes)),
 };
 
 export default FileContainer;

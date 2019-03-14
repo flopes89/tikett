@@ -19,8 +19,7 @@ export const Query = (props) => (
         {(state) => {
             if (state.loading) return (<Loading />);
             if (state.error) return (<Error />);
-
-            return props.children(state);
+            return props.children(state.data);
         }}
     </ApolloQuery>
 );
@@ -40,22 +39,3 @@ export const Mutation = (props) => (
 );
 
 Mutation.displayName = "MutationStateBoundary";
-
-export const catchLoadingError = (state = {}, showIfError = false) => (component) => {
-    if (state.error) {
-        return (
-            <div>
-                <Error />
-                {showIfError && component}
-            </div>
-        );
-    }
-
-    // In case of queries, data will always be an object, just empty: render loading
-    // in case of mutations, data will be undefined and therefore not an object: don't render loading
-    if (state.loading || typeof state.data === "object" && !state.data) {
-        return (<Loading />);
-    }
-
-    return component;
-}
