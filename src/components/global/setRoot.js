@@ -66,7 +66,7 @@ const FolderSelection = (props) => {
     );
 };
 
-let SetRoot = (props) => {
+const SetRoot = (props) => {
     const [isOpen, setIsOpen] = useState(props.forceOpen);
 
     const close = () => {
@@ -92,10 +92,8 @@ let SetRoot = (props) => {
     );
 };
 
-SetRoot = () => (
+export default () => (
     <Query query={queries.GET_CONFIG}>
         {(data) => (<SetRoot initialFolder={data.config.root} />)}
     </Query>
 );
-
-export default SetRoot;

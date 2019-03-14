@@ -2,6 +2,7 @@ import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import PropTypes from "prop-types";
 import RemoveTag from "./removeTag";
+import { Badge } from "reactstrap";
 
 const HEX_COLOR_PATTERN = new RegExp(/#?(\w{2})(\w{2})(\w{2})/);
 

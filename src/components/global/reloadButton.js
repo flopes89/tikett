@@ -5,14 +5,7 @@ import { Mutation } from "../util";
 import queries from "../../queries";
 import { connect } from "react-redux";
 
-let ReloadButton = (props) => (
-    <Button onClick={props.onClick}>
-        <Octicon icon={Sync} className="mr-1" />
-        Reload files
-    </Button>
-);
-
-ReloadButton = (props) => (
+const ReloadButton = (props) => (
     <Mutation
         mutation={queries.RELOAD_FILES}
         refetchQueries={[
@@ -26,7 +19,12 @@ ReloadButton = (props) => (
             },
         ]}
     >
-        {(mutate) => (<ReloadButton onClick={mutate} />)}
+        {(mutate) => (
+            <Button onClick={mutate}>
+                <Octicon icon={Sync} className="mr-1" />
+                Reload files
+            </Button>
+        )}
     </Mutation>
 );
 

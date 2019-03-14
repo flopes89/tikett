@@ -8,41 +8,7 @@ import queries from "../../queries";
 import { Droppable } from "react-beautiful-dnd";
 import ColorPicker from "./colorPicker";
 
-let TagGroup = (props) => (
-    <React.Fragment>
-        <Row>
-            <Col>
-                <strong>{props.name}</strong>
-                <ColorPicker group={props.name} color={props.color} />
-            </Col>
-            {props.name !== "Ungrouped" && (
-                <Col>
-                    <a href="#" onClick={props.remove}>
-                        <Octicon icon={Trashcan} />
-                    </a>
-                </Col>
-            )}
-        </Row>
-        <Row>
-            <Col>
-                <Droppable droppableId={"tagGroup|" + props.name}>
-                    {(provided) => (
-                        <div
-                            ref={provided.innerRef}
-                            {...provided.droppableProps}
-                            className="tag_group"
-                        >
-                            <Tags tags={props.tags} color={props.color} />
-                            {provided.placeholder}
-                        </div>
-                    )}
-                </Droppable>
-            </Col>
-        </Row>
-    </React.Fragment>
-);
-
-TagGroup = (props) => (
+const TagGroup = (props) => (
     <Mutation
         mutation={queries.REMOVE_TAG_GROUP}
         variables={{ group: props.name }}
@@ -50,7 +16,39 @@ TagGroup = (props) => (
             { query: queries.GET_TAG_GROUPS },
         ]}
     >
-        {(mutate) => (<TagGroup name={props.name} tags={props.tags} remove={mutate} />)}
+        {(mutate) => (
+            <React.Fragment>
+                <Row>
+                    <Col>
+                        <strong>{props.name}</strong>
+                        <ColorPicker group={props.name} color={props.color} />
+                    </Col>
+                    {props.name !== "Ungrouped" && (
+                        <Col>
+                            <a href="#" onClick={mutate}>
+                                <Octicon icon={Trashcan} />
+                            </a>
+                        </Col>
+                    )}
+                </Row>
+                <Row>
+                    <Col>
+                        <Droppable droppableId={"tagGroup|" + props.name}>
+                            {(provided) => (
+                                <div
+                                    ref={provided.innerRef}
+                                    {...provided.droppableProps}
+                                    className="tag_group"
+                                >
+                                    <Tags tags={props.tags} color={props.color} />
+                                    {provided.placeholder}
+                                </div>
+                            )}
+                        </Droppable>
+                    </Col>
+                </Row>
+            </React.Fragment>
+        )}
     </Mutation>
 );
 
