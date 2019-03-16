@@ -6,19 +6,36 @@ import queries from "../../queries";
 import { connect } from "react-redux";
 import { CONFIRM_KEYS } from "../../const";
 import PropTypes from "prop-types";
+import { Tag } from "../tags";
 
 const TagList = (props) => {
+    if (props.current.length < 3) {
+        return null;
+    }
+
+    const renderTag = (tag, index) => {
+        const split = tag.split("#");
+        const name = split[0];
+        const color = split[1];
+
+        if (name.indexOf(props.current) === -1) {
+            return null;
+        }
+
+        return (
+            <Button outline size="sm" className="text-left" key={index} onClick={() => props.onSelect(name)}>
+                <Tag color={color}>
+                    {name}
+                </Tag>
+            </Button>
+        );
+    };
+
     return (
-        <Query
-            query={queries.GET_TAGS}
-        >
+        <Query query={queries.GET_TAGS}>
             {(data) => (
-                <ButtonGroup vertical className="d-flex">
-                    {data.tags.map((tag, index) => (
-                        <Button key={index}>
-                            {tag}
-                        </Button>
-                    ))}
+                <ButtonGroup vertical className="mt-3 d-flex">
+                    {data.tags.map(renderTag)}
                 </ButtonGroup>
             )}
         </Query>
@@ -69,7 +86,7 @@ const AddTag = (props) => {
                         onChange={(event) => setTag(event.target.value)}
                         onKeyPress={onKeyPress}
                     />
-                    <TagList />
+                    <TagList current={tag} onSelect={setTag} />
                     <Button className="mt-3" color="primary" block onClick={confirm}>
                         Add tag
                     </Button>
