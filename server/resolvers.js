@@ -77,21 +77,18 @@ const files = ({ current, showDescendants, filters }) => {
         });
 
         // Files only have the tag names (string) attached, but for the
-        // resolver the color is also needed, so the tags must be converted to objects
-        // to get the color attached to them
-        const tagObjects = [];
+        // resolver the color is also needed, so the tags must get the group color attached
+        // to them for proper display
+        const tags = [];
 
         file.tags.forEach((tag) => {
             const color = db.getColorOfTag(tag);
             const tagName = db.getOrCreateTag(tag);
 
-            tagObjects.push({
-                name: tagName,
-                color,
-            });
+            tags.push(tagName + color);
         });
 
-        file.tags = tagObjects;
+        file.tags = tags;
 
         if (matchesFilter || !file.isFile || filters.length === 0) {
             enhancedFiles.push(file);
@@ -170,7 +167,9 @@ const tags = () => {
     let tags = [];
 
     db.getTagGroups().forEach((group) => {
-        tags = tags.concat(group.tags);
+        group.tags.forEach((tag) => {
+            tags = tags.concat(tag + group.color);
+        });
     });
 
     return tags;

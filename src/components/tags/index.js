@@ -39,9 +39,10 @@ const Tags = (props) => props.tags.map((tag, index) => {
     let path = "";
     let name = tag;
 
-    if (typeof tag === "object") {
-        color = tag.color;
-        name = tag.name;
+    if (tag.indexOf("#") !== -1) {
+        const split = tag.split("#");
+        name = split[0];
+        color = split[1];
     }
 
     path = props.path;

@@ -7,7 +7,7 @@ module.exports = buildSchema(`
 
     type File {
         name: String!
-        tags: [Tag]!
+        tags: [String]!
         path: String!
         isFile: Boolean
     }
@@ -16,11 +16,6 @@ module.exports = buildSchema(`
         name: String!
         color: String!
         tags: [String]!
-    }
-
-    type Tag {
-        name: String!
-        color: String!
     }
 
     type Folder {

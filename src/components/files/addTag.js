@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Button, Badge, Input, Modal, ModalHeader, ModalBody } from "reactstrap";
+import { Button, Badge, Input, Modal, ModalHeader, ModalBody, ButtonGroup } from "reactstrap";
 import Octicon, { Plus } from "@githubprimer/octicons-react";
-import { Mutation } from "../util";
+import { Mutation, Query } from "../util";
 import queries from "../../queries";
 import { connect } from "react-redux";
 import { CONFIRM_KEYS } from "../../const";
@@ -9,11 +9,24 @@ import PropTypes from "prop-types";
 
 const TagList = (props) => {
     return (
-        null
+        <Query
+            query={queries.GET_TAGS}
+        >
+            {(data) => (
+                <ButtonGroup vertical className="d-flex">
+                    {data.tags.map((tag, index) => (
+                        <Button key={index}>
+                            {tag}
+                        </Button>
+                    ))}
+                </ButtonGroup>
+            )}
+        </Query>
     );
 };
 
 const AddTag = (props) => {
+    let inputRef = null;
     const [isOpen, setIsOpen] = useState(false);
     const [tag, setTag] = useState("");
 
@@ -29,6 +42,14 @@ const AddTag = (props) => {
         }
     };
 
+    const setRef = (ref) => {
+        inputRef = ref;
+    }
+
+    if (isOpen && inputRef) {
+        inputRef.focus();
+    }
+
     return (
         <React.Fragment>
             <Badge className="add_tag" color="primary" onClick={() => setIsOpen(true)}>
@@ -43,11 +64,12 @@ const AddTag = (props) => {
                         {props.path}
                     </p>
                     <Input
-                        innerRef={(ref) => ref && ref.focus()}
+                        innerRef={setRef}
                         value={tag}
                         onChange={(event) => setTag(event.target.value)}
                         onKeyPress={onKeyPress}
                     />
+                    <TagList />
                     <Button className="mt-3" color="primary" block onClick={confirm}>
                         Add tag
                     </Button>

@@ -20,10 +20,7 @@ export default {
                 filters: $filters
             ) {
                 name
-                tags {
-                    name
-                    color
-                }
+                tags
                 path
                 isFile
             }

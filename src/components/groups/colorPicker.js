@@ -13,7 +13,7 @@ const ColorPicker = (props) => {
 
     const onConfirm = () => {
         setIsOpen(false);
-        props.onConfirm();
+        props.onConfirm(color.hex);
     };
 
     return (
@@ -34,10 +34,6 @@ const ColorPicker = (props) => {
 const ColorPickerContainer = (props) => (
     <Mutation
         mutation={queries.CHANGE_COLOR}
-        variables={{
-            group: props.group,
-            color: props.color,
-        }}
         refetchQueries={[
             { query: queries.GET_TAG_GROUPS, },
             {
@@ -49,7 +45,18 @@ const ColorPickerContainer = (props) => (
             }
         ]}
     >
-        {(mutate) => (<ColorPicker group={props.group} color={props.color} onConfirm={mutate} />)}
+        {(mutate) => {
+            const confirm = (color) => {
+                mutate({
+                    variables: {
+                        group: props.group,
+                        color,
+                    }
+                })
+            };
+
+            return (<ColorPicker group={props.group} color={props.color} onConfirm={confirm} />);
+        }}
     </Mutation>
 );
 
