@@ -5,7 +5,7 @@ import AddTag from "./addTag";
 import Tags from "../tags";
 import { Droppable } from "react-beautiful-dnd";
 import { connect } from "react-redux";
-import { selectFile } from "../../state/files";
+import { selectFile } from "../../state/fileBrowser";
 import classnames from "classnames";
 
 const File = (props) => {

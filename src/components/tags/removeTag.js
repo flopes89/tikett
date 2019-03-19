@@ -4,7 +4,7 @@ import queries from "../../queries";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Octicon, { Trashcan } from "@githubprimer/octicons-react";
-import { selectFile } from "../../state/files";
+import { selectFile } from "../../state/fileBrowser";
 
 const RemoveTag = (props) => {
     const remove = (mutate) => {

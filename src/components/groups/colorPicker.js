@@ -36,6 +36,7 @@ const ColorPickerContainer = (props) => (
         mutation={queries.CHANGE_COLOR}
         refetchQueries={[
             { query: queries.GET_TAG_GROUPS, },
+            { query: queries.GET_TAGS, },
             {
                 query: queries.GET_FILES,
                 variables: {

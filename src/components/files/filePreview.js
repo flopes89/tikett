@@ -3,7 +3,7 @@ import { Row, Col, Button, Breadcrumb, BreadcrumbItem } from "reactstrap";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Octicon, { X } from "@githubprimer/octicons-react";
-import { selectFile } from "../../state/files";
+import { selectFile } from "../../state/fileBrowser";
 
 const getHeight = () => window.innerHeight - 280;
 

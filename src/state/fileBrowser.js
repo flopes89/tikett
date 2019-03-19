@@ -2,6 +2,7 @@ const SHOWDESC_TOGGLE = "SHOWDESC_TOGGLE";
 const OPEN_FOLDER = "OPEN_FOLDER";
 const ADD_FILTER = "ADD_FILTER";
 const REMOVE_FILTER = "REMOVE_FILTER";
+const SELECT_FILE = "SELECT_FILE";
 
 export const toggleShowDescendants = () => ({
     type: SHOWDESC_TOGGLE,
@@ -22,10 +23,16 @@ export const removeFilter = (index) => ({
     index,
 });
 
+export const selectFile = (path) => ({
+    type: SELECT_FILE,
+    path,
+});
+
 const INIT_STATE = {
     currentFolder: "/",
     showDescendants: false,
-    filters: []
+    filters: [],
+    selectedFile: "",
 };
 
 export default (state = INIT_STATE, action) => {
@@ -73,6 +80,12 @@ export default (state = INIT_STATE, action) => {
             return {
                 ...newState,
                 filters,
+            };
+
+        case SELECT_FILE:
+            return {
+                ...newState,
+                selected: action.path,
             };
     }
 
