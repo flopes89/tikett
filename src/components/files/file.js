@@ -66,6 +66,7 @@ FileContainer.propTypes = {
     name: PropTypes.string.isRequired,
     path: PropTypes.string.isRequired,
     isFile: PropTypes.bool.isRequired,
+    tags: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default FileContainer;

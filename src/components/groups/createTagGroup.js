@@ -3,14 +3,13 @@ import { Button, Input } from "reactstrap";
 import Octicon, { Plus } from "@githubprimer/octicons-react";
 import { Mutation } from "../util";
 import queries from "../../queries";
-import { CONFIRM_KEYS } from "../../const";
 
 const CreateTagGroup = (props) => {
     const [isOpen, setIsOpen] = useState(false);
     const [name, setName] = useState("");
 
     const onKeyPress = (event) => {
-        if (CONFIRM_KEYS.indexOf(event.which) !== -1) {
+        if (event.which === 13) {
             props.confirm({
                 variables: {
                     name,

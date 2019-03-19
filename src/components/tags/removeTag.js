@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import Octicon, { Trashcan } from "@githubprimer/octicons-react";
 import { selectFile } from "../../state/fileBrowser";
 
-const RemoveTag = (props) => {
+let RemoveTag = (props) => {
     const remove = (mutate) => {
         props.resetSelectedFile();
         mutate();
@@ -38,12 +38,7 @@ const RemoveTag = (props) => {
     );
 };
 
-RemoveTag.propTypes = {
-    name: PropTypes.string.isRequired,
-    path: PropTypes.string.isRequired,
-};
-
-export default connect(
+RemoveTag = connect(
     (state) => ({
         current: state.fileBrowser.currentFolder,
         showDescendants: state.fileBrowser.showDescendants,
@@ -52,3 +47,10 @@ export default connect(
         resetSelectedFile: () => dispatch(selectFile("")),
     })
 )(RemoveTag);
+
+RemoveTag.propTypes = {
+    name: PropTypes.string.isRequired,
+    path: PropTypes.string.isRequired,
+};
+
+export default RemoveTag;

@@ -4,7 +4,6 @@ import Octicon, { Plus } from "@githubprimer/octicons-react";
 import { Mutation, Query } from "../util";
 import queries from "../../queries";
 import { connect } from "react-redux";
-import { CONFIRM_KEYS } from "../../const";
 import PropTypes from "prop-types";
 import { Tag } from "../tags";
 
@@ -54,7 +53,7 @@ const AddTag = (props) => {
     };
 
     const onKeyPress = (event) => {
-        if (CONFIRM_KEYS.indexOf(event.which) !== -1) {
+        if (event.which === 13) {
             confirm();
         }
     };

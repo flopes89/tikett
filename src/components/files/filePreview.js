@@ -1,7 +1,6 @@
 import React from "react";
 import { Row, Col, Button, Breadcrumb, BreadcrumbItem } from "reactstrap";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import Octicon, { X } from "@githubprimer/octicons-react";
 import { selectFile } from "../../state/fileBrowser";
 
@@ -49,10 +48,6 @@ const FilePreview = (props) => {
             </Row>
         </Col>
     );
-};
-
-FilePreview.propTypes = {
-    src: PropTypes.string,
 };
 
 const FilePreviewContainer = connect(

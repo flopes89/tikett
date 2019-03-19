@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Row, Col, Breadcrumb, BreadcrumbItem } from "reactstrap";
 import { connect } from "react-redux";
 import { openFolder } from "../../state/fileBrowser";
@@ -59,18 +58,6 @@ const BreadcrumbsContainer = (props) => {
     });
 
     return (<Crumbs breadcrumbs={breadcrumbs} openFolder={props.openFolder} />);
-};
-
-CrumbItem.propTypes = {
-    name: PropTypes.string.isRequired,
-    path: PropTypes.string.isRequired,
-    isClickable: PropTypes.bool,
-    openFolder: PropTypes.func,
-};
-
-Crumbs.propTypes = {
-    breadcrumbs: PropTypes.arrayOf(PropTypes.shape(CrumbItem.propTypes)),
-    openFolder: PropTypes.func.isRequired,
 };
 
 export default connect(

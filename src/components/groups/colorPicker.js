@@ -31,7 +31,7 @@ const ColorPicker = (props) => {
     )
 };
 
-const ColorPickerContainer = (props) => (
+let ColorPickerContainer = (props) => (
     <Mutation
         mutation={queries.CHANGE_COLOR}
         refetchQueries={[
@@ -61,14 +61,16 @@ const ColorPickerContainer = (props) => (
     </Mutation>
 );
 
-ColorPickerContainer.propTypes = {
-    group: PropTypes.string.isRequired,
-    color: PropTypes.string.isRequired,
-};
-
-export default connect(
+ColorPickerContainer = connect(
     (state) => ({
         currentFolder: state.fileBrowser.currentFolder,
         showDescendants: state.fileBrowser.showDescendants,
     }),
 )(ColorPickerContainer);
+
+ColorPickerContainer.propTypes = {
+    group: PropTypes.string.isRequired,
+    color: PropTypes.string.isRequired,
+};
+
+export default ColorPickerContainer;
