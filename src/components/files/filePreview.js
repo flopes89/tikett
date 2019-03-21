@@ -52,7 +52,7 @@ const FilePreview = (props) => {
 
 const FilePreviewContainer = connect(
     (state) => ({
-        src: state.files.selected,
+        src: state.fileBrowser.selectedFile,
     }),
     (dispatch) => ({
         close: () => dispatch(selectFile("")),

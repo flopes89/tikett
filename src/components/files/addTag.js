@@ -42,7 +42,6 @@ const TagList = (props) => {
 };
 
 const AddTag = (props) => {
-    let inputRef = null;
     const [isOpen, setIsOpen] = useState(false);
     const [tag, setTag] = useState("");
 
@@ -58,14 +57,6 @@ const AddTag = (props) => {
         }
     };
 
-    const setRef = (ref) => {
-        inputRef = ref;
-    }
-
-    if (isOpen && inputRef) {
-        inputRef.focus();
-    }
-
     return (
         <React.Fragment>
             <Badge className="add_tag" color="primary" onClick={() => setIsOpen(true)}>
@@ -80,7 +71,6 @@ const AddTag = (props) => {
                         {props.path}
                     </p>
                     <Input
-                        innerRef={setRef}
                         value={tag}
                         onChange={(event) => setTag(event.target.value)}
                         onKeyPress={onKeyPress}

@@ -54,7 +54,7 @@ const File = (props) => {
 const FileContainer = connect(
     (state, props) => ({
         isDragging: state.global.isDraggingTag,
-        isSelected: state.files.selected === props.path,
+        isSelected: state.fileBrowser.selectedFile === props.path,
     }),
     (dispatch) => ({
         select: (path) => dispatch(selectFile(path)),

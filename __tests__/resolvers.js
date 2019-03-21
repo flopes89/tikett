@@ -76,24 +76,12 @@ describe("resolvers", () => {
                 name: "file1.txt",
                 path: path.resolve(filesDir, "file1[tag1 tag2].txt"),
                 isFile: true,
-                tags: [{
-                    name: "tag1",
-                    color: "#333",
-                }, {
-                    name: "tag2",
-                    color: "#333",
-                }],
+                tags: ["tag1#333", "tag2#333"],
             }, {
                 name: "file2",
                 path: path.resolve(filesDir, "file2[tag1 tag2]"),
                 isFile: true,
-                tags: [{
-                    name: "tag1",
-                    color: "#333",
-                }, {
-                    name: "tag2",
-                    color: "#333",
-                }],
+                tags: ["tag1#333", "tag2#333"],
             }
         ]));
     });
@@ -131,10 +119,7 @@ describe("resolvers", () => {
             name: "file1.txt",
             path: path.resolve(filesDir, "file1[tag1].txt"),
             isFile: true,
-            tags: [{
-                name: "tag1",
-                color: "#333",
-            }],
+            tags: ["tag1#333"],
         });
     });
 
@@ -210,13 +195,7 @@ describe("resolvers", () => {
             name: "file1.txt",
             path: path.resolve(filesDir, "file1[tag1 tag2].txt"),
             isFile: true,
-            tags: [{
-                name: "tag1",
-                color: "#fff",
-            }, {
-                name: "tag2",
-                color: "#333",
-            }],
+            tags: ["tag1#fff", "tag2#333"],
         });
     });
 
@@ -245,24 +224,12 @@ describe("resolvers", () => {
                 name: "file1.txt",
                 path: path.resolve(filesDir, "file1[tag1 tag2].txt"),
                 isFile: true,
-                tags: [{
-                    name: "tag1",
-                    color: "#fff",
-                }, {
-                    name: "tag2",
-                    color: "#333",
-                }],
+                tags: ["tag1#fff", "tag2#333"],
             }, {
                 name: "file2",
                 path: path.resolve(filesDir, "file2[tag1 tag2]"),
                 isFile: true,
-                tags: [{
-                    name: "tag1",
-                    color: "#fff",
-                }, {
-                    name: "tag2",
-                    color: "#333",
-                }],
+                tags: ["tag1#fff", "tag2#333"],
             }
         ]));
     });
@@ -287,24 +254,12 @@ describe("resolvers", () => {
                 name: "." + path.sep + "file1.txt",
                 path: path.resolve(filesDir, "file1[tag1 tag2].txt"),
                 isFile: true,
-                tags: [{
-                    name: "tag1",
-                    color: "#fff",
-                }, {
-                    name: "tag2",
-                    color: "#333",
-                }],
+                tags: ["tag1#fff", "tag2#333"],
             }, {
                 name: "." + path.sep + "file2",
                 path: path.resolve(filesDir, "file2[tag1 tag2]"),
                 isFile: true,
-                tags: [{
-                    name: "tag1",
-                    color: "#fff",
-                }, {
-                    name: "tag2",
-                    color: "#333",
-                }],
+                tags: ["tag1#fff", "tag2#333"],
             }
         ]));
     });
@@ -315,6 +270,6 @@ describe("resolvers", () => {
         const tags = resolvers.tags();
 
         expect(tags).toHaveLength(5);
-        expect(tags).toEqual(expect.arrayContaining(["tag1", "tag2", "moretag", "tag5", "new_-ta%.g"]));
+        expect(tags).toEqual(expect.arrayContaining(["tag1#fff", "tag2#333", "moretag#333", "tag5#333", "new_-ta%.g#333"]));
     });
 });
