@@ -6,23 +6,72 @@ import queries from "../../queries";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Tag } from "../tags";
+import classnames from "classnames";
 
 const TagList = (props) => {
-    if (props.current.length < 3) {
-        return null;
+    const [typed, setTyped] = useState("");
+    const [selected, setSelected] = useState("");
+
+    const displayValue = (selected || typed).split("#")[0];
+
+    const tags = props.tags.filter((tag) => typed.length >= 3 && tag.indexOf(typed) !== -1);
+
+    const confirm = () => {
+        props.confirm(displayValue);
+        setTyped("");
+        setSelected("");
     }
+
+    const onKeyPress = (event) => {
+        if (event.which === 13) {
+            confirm();
+        }
+
+        if (selected) {
+            setTyped(selected);
+            setSelected("");
+        }
+    };
+
+    const onKeyDown = (event) => {
+        if (tags.length === 0) {
+            return;
+        }
+
+        if (event.which === 8 && selected) {
+            setTyped(selected);
+            setSelected("");
+        }
+
+        if (event.which === 38) {
+            if (selected === "") {
+                setSelected(tags[tags.length - 1]);
+            } else {
+                setSelected(tags[Math.max(tags.indexOf(selected) - 1, 0)]);
+            }
+        }
+
+        if (event.which === 40) {
+            if (selected === "") {
+                setSelected(tags[0]);
+            } else {
+                setSelected(tags[Math.min(tags.indexOf(selected) + 1, tags.length - 1)]);
+            }
+        }
+    };
 
     const renderTag = (tag, index) => {
         const split = tag.split("#");
         const name = split[0];
         const color = split[1];
 
-        if (name.indexOf(props.current) === -1) {
-            return null;
-        }
+        const classes = classnames({
+            "text-left": true,
+            "selected": tag === selected,
+        });
 
         return (
-            <Button outline size="sm" className="text-left" key={index} onClick={() => props.onSelect(name)}>
+            <Button outline size="sm" className={classes} key={index} onClick={confirm}>
                 <Tag color={color}>
                     {name}
                 </Tag>
@@ -31,30 +80,36 @@ const TagList = (props) => {
     };
 
     return (
-        <Query query={queries.GET_TAGS}>
-            {(data) => (
-                <ButtonGroup vertical className="mt-3 d-flex">
-                    {data.tags.map(renderTag)}
+        <React.Fragment>
+            <Input
+                value={displayValue}
+                onChange={(event) => setTyped(event.target.value)}
+                onKeyPress={onKeyPress}
+                onKeyDown={onKeyDown}
+            />
+            {tags.length > 0 && (
+                <ButtonGroup id="tag_suggestions" vertical className="mt-3 d-flex">
+                    {tags.map(renderTag)}
                 </ButtonGroup>
             )}
-        </Query>
+        </React.Fragment>
     );
 };
 
+const TagListContainer = (props) => (
+    <Query query={queries.GET_TAGS}>
+        {(data) => (
+            <TagList confirm={props.confirm} tags={data.tags} />
+        )}
+    </Query >
+);
+
 const AddTag = (props) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [tag, setTag] = useState("");
 
-    const confirm = () => {
+    const confirm = (tag) => {
         setIsOpen(false);
-        setTag("");
         props.confirm(tag);
-    };
-
-    const onKeyPress = (event) => {
-        if (event.which === 13) {
-            confirm();
-        }
     };
 
     return (
@@ -70,12 +125,7 @@ const AddTag = (props) => {
                     <p>
                         {props.path}
                     </p>
-                    <Input
-                        value={tag}
-                        onChange={(event) => setTag(event.target.value)}
-                        onKeyPress={onKeyPress}
-                    />
-                    <TagList current={tag} onSelect={setTag} />
+                    <TagListContainer confirm={confirm} />
                     <Button className="mt-3" color="primary" block onClick={confirm}>
                         Add tag
                     </Button>

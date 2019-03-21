@@ -79,3 +79,9 @@ a, a:hover {
         border: 0;
     }
 }
+
+#tag_suggestions {
+    button.selected {
+        background-color: $gray-300;
+    }
+}
