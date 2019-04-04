@@ -45,7 +45,7 @@ const renderFilter = (provided, snapshot, props) => {
 
 const Filter = (props) => (
     <Row>
-        <Col xs={1}>
+        <Col xs={3}>
             <strong>Filters</strong>
         </Col>
         <Col>

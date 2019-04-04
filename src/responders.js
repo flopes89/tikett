@@ -53,7 +53,7 @@ export const onDragEnd = (client_, store_) => (dropResult_) => {
             ]
         })
     } else if (destType === "filter") {
-        store_.dispatch(addFilter(`${tagName}${tagColor}`));
+        store_.dispatch(addFilter(`${tagName}#${tagColor}`));
     }
 
     store_.dispatch(endTagDrag());

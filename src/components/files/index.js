@@ -14,7 +14,7 @@ const Files = (props) => (
             <Col>
                 <Filter />
             </Col>
-            <Col xs={2}>
+            <Col xs={4} className="text-right">
                 <Label check className="pl-2">
                     <Input
                         type="checkbox"

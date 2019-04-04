@@ -7,8 +7,28 @@ import { Mutation } from "../util";
 import queries from "../../queries";
 import { Droppable } from "react-beautiful-dnd";
 import ColorPicker from "./colorPicker";
+import classnames from "classnames";
+import { connect } from "react-redux";
 
-const TagGroup = (props) => (
+const renderTagGroup = (provided, snapshot, props) => {
+    const classes = classnames("tag_group", {
+        "drop_ready": props.isDragging,
+        "drag_over": snapshot.isDraggingOver,
+    });
+
+    return (
+        <div
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+            className={classes}
+        >
+            <Tags tags={props.tags} color={props.color} />
+            {provided.placeholder}
+        </div>
+    );
+};
+
+let TagGroup = (props) => (
     <Mutation
         mutation={queries.REMOVE_TAG_GROUP}
         variables={{ group: props.name }}
@@ -21,29 +41,20 @@ const TagGroup = (props) => (
                 <Row>
                     <Col>
                         <strong>{props.name}</strong>
+                        &nbsp;
                         <ColorPicker group={props.name} color={props.color} />
-                    </Col>
-                    {props.name !== "Ungrouped" && (
-                        <Col>
+                        &nbsp;
+                        {props.name !== "Ungrouped" && (
                             <a href="#" onClick={mutate}>
                                 <Octicon icon={Trashcan} />
                             </a>
-                        </Col>
-                    )}
+                        )}
+                    </Col>
                 </Row>
                 <Row>
                     <Col>
                         <Droppable droppableId={"tagGroup|" + props.name}>
-                            {(provided) => (
-                                <div
-                                    ref={provided.innerRef}
-                                    {...provided.droppableProps}
-                                    className="tag_group"
-                                >
-                                    <Tags tags={props.tags} color={props.color} />
-                                    {provided.placeholder}
-                                </div>
-                            )}
+                            {(provided, snapshot) => renderTagGroup(provided, snapshot, props)}
                         </Droppable>
                     </Col>
                 </Row>
@@ -51,6 +62,12 @@ const TagGroup = (props) => (
         )}
     </Mutation>
 );
+
+TagGroup = connect(
+    (state) => ({
+        isDragging: state.global.isDraggingTag,
+    })
+)(TagGroup);
 
 TagGroup.propTypes = {
     name: PropTypes.string.isRequired,

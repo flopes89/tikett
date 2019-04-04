@@ -12,19 +12,18 @@ export default () => (
     <React.Fragment>
         <header>
             <Navbar dark className="bg-dark mb-3">
-                <Container fluid>
-                    <NavbarBrand tag="a" href="/">
-                        <h1><Octicon icon={Tag} size="medium" /> tikett</h1>
-                    </NavbarBrand>
-                    <Row>
-                        <Col>
-                            <ReloadButton />
-                        </Col>
-                        <Col>
-                            <SetRoot />
-                        </Col>
-                    </Row>
-                </Container>
+                <Row style={{ flexGrow: 1 }} className="align-items-center no-gutters">
+                    <Col>
+                        <NavbarBrand tag="a" href="/">
+                            <h1><Octicon icon={Tag} size="medium" /> tikett</h1>
+                        </NavbarBrand>
+                    </Col>
+                    <Col className="text-right">
+                        <ReloadButton />
+                        &nbsp;
+                        <SetRoot />
+                    </Col>
+                </Row>
             </Navbar>
         </header>
         <main>
