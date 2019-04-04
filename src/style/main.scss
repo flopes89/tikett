@@ -9,8 +9,19 @@ a, a:hover {
     color: inherit;
 }
 
+*:focus {
+}
+
 .tag {
     margin-right: 5px;
+
+    &:focus {
+        outline: none;
+        
+        span.badge {
+            box-shadow: 0 0 10px 0 black;
+        }
+    }
 }
 
 [data-react-beautiful-dnd-droppable] {
@@ -57,7 +68,17 @@ a, a:hover {
                 display: inline-block;
                 font-size: 100%;
                 vertical-align: middle;
+
+                &:focus {
+                    outline: none;
+                    box-shadow: 0 0 10px 0 black;
+                }
             }
+        }
+
+        &:focus {
+            outline: none;
+            box-shadow: 0 0 5px 0 $gray-600;
         }
     }
 }

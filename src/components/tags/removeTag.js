@@ -30,7 +30,7 @@ let RemoveTag = (props) => {
             ]}
         >
             {(mutate) => (
-                <a className="remove_tag ml-2" href="#" onClick={() => remove(mutate)}>
+                <a className="remove_tag ml-2" href="#" onClick={() => remove(mutate)} tabIndex="-1">
                     <Octicon icon={Trashcan} size={12} verticalAlign="middle" />
                 </a>
             )}

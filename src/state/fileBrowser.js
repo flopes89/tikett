@@ -32,7 +32,7 @@ const INIT_STATE = {
     currentFolder: "/",
     showDescendants: false,
     filters: [],
-    selectedFile: "",
+    selected: "",
 };
 
 export default (state = INIT_STATE, action) => {

@@ -112,9 +112,17 @@ const AddTag = (props) => {
         props.confirm(tag);
     };
 
+    const onKeyDown = (event) => {
+        if (event.key === "Enter") {
+            setIsOpen(true);
+            event.stopPropagation();
+            return false;
+        }
+    };
+
     return (
         <React.Fragment>
-            <Badge className="add_tag" color="primary" onClick={() => setIsOpen(true)}>
+            <Badge className="add_tag" color="primary" onClick={() => setIsOpen(true)} tabIndex="0" onKeyDown={onKeyDown}>
                 <Octicon icon={Plus} height={12} verticalAlign="middle" />
             </Badge>
             <Modal isOpen={isOpen} toggle={() => setIsOpen(false)}>
