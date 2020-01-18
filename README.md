@@ -6,13 +6,12 @@
 
 ## Installation
 
-Download the latest [Release](https://github.com/flopes89/tikett/releases) and start the file.
+Download the latest [Release](https://github.com/flopes89/tikett/releases) and run it.
 
-The server will start as a console application and your default browser will open the start page. Please note that you cannot bookmark this page, as the port will be randomly assigned on each startup (to always make sure an open port is used).
+## Usage
+
+// TODO
 
 ## Developing
 
-```
-$ npm install
-$ npm run dev-server & npm run dev-client
-```
+Run `npm run start-render-dev` first and then `npm run start-main-dev` in a second terminal.

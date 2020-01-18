@@ -1,35 +1,21 @@
+"use strict";
+
 const path = require("path");
 
 module.exports = {
-    entry: path.resolve(__dirname, "..", "src", "index.js"),
+    mode: "development",
     output: {
-        filename: "[name].js",
-        path: path.resolve(__dirname, "..", "public"),
+        path: path.resolve(__dirname, "..", "dist"),
+        filename: "[name].js"
     },
-    performance: {
-        hints: false,
+    node: {
+        __dirname: false,
+        __filename: false
     },
-    module: {
-        rules: [
-            {
-                test: /\.jsx?$/,
-                exclude: /node_modules/,
-                use: "babel-loader",
-            },
-            {
-                test: /\.scss$/,
-                use: [
-                    "style-loader",
-                    "css-loader",
-                    {
-                        loader: "postcss-loader",
-                        options: {
-                            plugins: () => [require("precss"), require("autoprefixer")]
-                        }
-                    },
-                    "sass-loader"
-                ]
-            }
-        ]
-    }
+    resolve: {
+        extensions: [".tsx", ".ts", ".js", ".json"]
+    },
+    devtool: "source-map",
+    plugins: [
+    ]
 };

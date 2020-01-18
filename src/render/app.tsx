@@ -1,12 +1,12 @@
-import React from "react";
+import * as React from "react";
 import { Container, Navbar, NavbarBrand, Row, Col } from "reactstrap";
-import ReloadButton from "./components/global/reloadButton";
-import Octicon, { Tag } from "@githubprimer/octicons-react";
-import SetRoot from "./components/global/setRoot";
-import TagGroups from "./components/groups";
-import Breadcrumbs from "./components/files/breadcrumbs";
-import Files from "./components/files";
-import FilePreview from "./components/files/filePreview";
+import Octicon, { Tag } from "@primer/octicons-react";
+// import ReloadButton from "./components/global/reloadButton";
+// import SetRoot from "./components/global/setRoot";
+// import TagGroups from "./components/groups";
+// import Breadcrumbs from "./components/files/breadcrumbs";
+// import Files from "./components/files";
+// import FilePreview from "./components/files/filePreview";
 
 export default () => (
     <React.Fragment>
@@ -19,9 +19,9 @@ export default () => (
                         </NavbarBrand>
                     </Col>
                     <Col className="text-right">
-                        <ReloadButton />
+                        {/*<ReloadButton />*/}
                         &nbsp;
-                        <SetRoot />
+                        {/*<SetRoot />*/}
                     </Col>
                 </Row>
             </Navbar>
@@ -30,13 +30,13 @@ export default () => (
             <Container fluid>
                 <Row>
                     <Col xs={2}>
-                        <TagGroups />
+                        {/* <TagGroups /> */}
                     </Col>
                     <Col>
-                        <Breadcrumbs />
-                        <Files />
+                        {/* <Breadcrumbs /> */}
+                        {/* <Files /> */}
                     </Col>
-                    <FilePreview />
+                    {/* <FilePreview /> */}
                 </Row>
             </Container>
         </main>
