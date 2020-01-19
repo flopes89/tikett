@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { Row, Col, ButtonGroup, Button, Modal, ModalBody, ModalHeader } from "reactstrap";
-import Octicon, { Inbox } from "@githubprimer/octicons-react";
-import queries from "../../queries";
-import { Query, Mutation } from "../util";
+import Octicon, { Inbox } from "@primer/octicons-react";
+import { useDb } from "../../db";
 
-const FolderList = (props) => (
+type FolderListProps = {
+    current: string;
+    onSelect: (folder: string) => void;
+};
+
+const FolderList: React.FC<FolderListProps> = (props) => (
     <Query
         query={queries.GET_FOLDERS}
         variables={{ current: props.current }}
@@ -27,7 +31,12 @@ const FolderList = (props) => (
     </Query>
 );
 
-const ConfirmButton = (props) => (
+type ConfirmButtonProps = {
+    current: string;
+    close: () => void;
+};
+
+const ConfirmButton: React.FC<ConfirmButtonProps> = (props) => (
     <Mutation
         mutation={queries.CHANGE_ROOT}
         update={props.close}
@@ -42,7 +51,12 @@ const ConfirmButton = (props) => (
     </Mutation>
 );
 
-const FolderSelection = (props) => {
+type FolderSelectionProps = {
+    initialFolder?: string;
+    close: () => void;
+};
+
+const FolderSelection: React.FC<FolderSelectionProps> = (props) => {
     const [current, setCurrent] = useState(props.initialFolder || "/");
 
     return (
@@ -66,8 +80,17 @@ const FolderSelection = (props) => {
     );
 };
 
-const SetRoot = (props) => {
+type SetRootProps = {
+    forceOpen: boolean;
+};
+
+export const SetRoot: React.FC<SetRootProps> = (props) => {
     const [isOpen, setIsOpen] = useState(props.forceOpen);
+    const config = useDb();
+
+    if (!config) {
+        return null;
+    }
 
     const close = () => {
         if (!props.forceOpen) {
@@ -85,15 +108,9 @@ const SetRoot = (props) => {
                     <Octicon icon={Inbox} verticalAlign="middle" /> Select root folder
                 </ModalHeader>
                 <ModalBody>
-                    <FolderSelection initialFolder={props.initialFolder} close={() => setIsOpen(false)} />
+                    <FolderSelection initialFolder={config.root} close={() => setIsOpen(false)} />
                 </ModalBody>
             </Modal>
         </React.Fragment>
     );
 };
-
-export default () => (
-    <Query query={queries.GET_CONFIG}>
-        {(data) => (<SetRoot initialFolder={data.config.root} />)}
-    </Query>
-);
