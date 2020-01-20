@@ -20,7 +20,7 @@ const LOG = createLogger("files");
 
 // Finds all files under a given root (which is always relative to the db.root)
 export const getFiles = async(
-    root: string, showDescendants: boolean, prefix = "", filters: string[] = []
+    root: string, showDescendants: boolean, filters: string[] = [], prefix = ""
 ): Promise<PathEntry[]> => {
     const db = await load();
 
@@ -47,7 +47,7 @@ export const getFiles = async(
         if (dirent.isDirectory()) {
             if (showDescendants) {
                 const relativePath = path.relative(db.root, absolutePath);
-                return getFiles(relativePath, showDescendants, relativePath + "\\", filters);
+                return getFiles(relativePath, showDescendants, filters, relativePath + "\\");
             }
 
             return [entry];
