@@ -88,12 +88,6 @@ export const removeGroup = async(name: string): Promise<void> => {
 // React hook to load the DB and return it
 export const useDb = (): Db|null => {
     const [db, setDb] = useState<Db|null>(null);
-
-    useEffect(() => {
-        (async() => {
-            setDb(await load());
-        })();
-    });
-
+    load().then(setDb);
     return db;
 };

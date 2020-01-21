@@ -23,11 +23,21 @@ describe("files", () => {
     });
     
     it("finds folders", async() => {
-        expect.assertions(1);
+        expect.assertions(2);
 
-        const actual = await files.getFolders("/");
+        const actual = await files.getFolders(filesDir);
 
-        expect(actual.length).toBeGreaterThan(0);
+        expect(actual.length).toEqual(2);
+        expect(actual).toEqual(expect.arrayContaining([
+            {
+                name: "..",
+                path: path.resolve(filesDir, "..")
+            },
+            {
+                name: "folder1",
+                path: path.resolve(filesDir, "folder1"),
+            }
+        ]));
     });
 
     it("finds files", async() => {

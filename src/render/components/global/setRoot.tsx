@@ -2,54 +2,43 @@ import React, { useState } from "react";
 import { Row, Col, ButtonGroup, Button, Modal, ModalBody, ModalHeader } from "reactstrap";
 import Octicon, { Inbox } from "@primer/octicons-react";
 import { useDb } from "../../db";
+import { useGetFolders } from "../../files";
 
 type FolderListProps = {
     current: string;
     onSelect: (folder: string) => void;
 };
 
-const FolderList: React.FC<FolderListProps> = (props) => (
-    <Query
-        query={queries.GET_FOLDERS}
-        variables={{ current: props.current }}
-    >
-        {(data) => (
-            <ButtonGroup vertical className="d-flex">
-                {data.folders.map((folder) => (
-                    <Button
-                        outline
-                        size="sm"
-                        className="text-left"
-                        key={folder.path}
-                        onClick={() => props.onSelect(folder.path)}
-                    >
-                        {folder.name}
-                    </Button>
-                ))}
-            </ButtonGroup>
-        )}
-    </Query>
-);
+const FolderList: React.FC<FolderListProps> = (props) => {
+    const folders = useGetFolders(props.current);
+
+    return (
+        <ButtonGroup vertical className="d-flex">
+            {folders.map(folder => (
+                <Button
+                    outline
+                    size="sm"
+                    className="text-left"
+                    key={folder.path}
+                    onClick={() => props.onSelect(folder.path)}
+                >
+                    {folder.name}
+                </Button>
+            ))}
+        </ButtonGroup>
+    );
+};
 
 type ConfirmButtonProps = {
     current: string;
     close: () => void;
 };
 
-const ConfirmButton: React.FC<ConfirmButtonProps> = (props) => (
-    <Mutation
-        mutation={queries.CHANGE_ROOT}
-        update={props.close}
-        variables={{ folder: props.current }}
-        refetchQueries={[
-            { query: queries.GET_FILES },
-            { query: queries.GET_TAG_GROUPS },
-            { query: queries.GET_CONFIG }
-        ]}
-    >
-        {(mutate) => (<Button block color="primary" onClick={mutate}>Confirm</Button>)}
-    </Mutation>
-);
+const ConfirmButton: React.FC<ConfirmButtonProps> = (props) => {
+    return (
+        <Button block color="primary">Confirm</Button>
+    );
+};
 
 type FolderSelectionProps = {
     initialFolder?: string;
@@ -81,14 +70,14 @@ const FolderSelection: React.FC<FolderSelectionProps> = (props) => {
 };
 
 type SetRootProps = {
-    forceOpen: boolean;
+    forceOpen?: boolean;
 };
 
 export const SetRoot: React.FC<SetRootProps> = (props) => {
     const [isOpen, setIsOpen] = useState(props.forceOpen);
-    const config = useDb();
+    const db = useDb();
 
-    if (!config) {
+    if (!db) {
         return null;
     }
 
@@ -108,7 +97,7 @@ export const SetRoot: React.FC<SetRootProps> = (props) => {
                     <Octicon icon={Inbox} verticalAlign="middle" /> Select root folder
                 </ModalHeader>
                 <ModalBody>
-                    <FolderSelection initialFolder={config.root} close={() => setIsOpen(false)} />
+                    <FolderSelection initialFolder={db.root} close={() => setIsOpen(false)} />
                 </ModalBody>
             </Modal>
         </React.Fragment>

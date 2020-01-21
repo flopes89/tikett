@@ -3,6 +3,7 @@ import path from "path";
 import { load } from "./db";
 import { createLogger } from "./logger";
 import { used } from "windows-drive-letters";
+import { useState, useEffect } from "react";
 
 export type PathEntry = {
     name: string;
@@ -105,18 +106,13 @@ export const getFolders = async(root: string): Promise<FolderEntry[]> => {
             }
         }));
     } else {
-        const dirents = await fs.readdir(root);
+        const dirents = await fs.readdir(root, { withFileTypes: true });
 
-        const entryPromises = dirents.map(name => ({
-                name,
-                path: path.join(root, name)
-            }))
-            .filter(async entry => {
-                const isDir = await fs.stat(entry.path);
-                return isDir.isDirectory();
-            });
-
-        dirs = await Promise.all(entryPromises);
+        dirs = dirents.filter(dirent => dirent.isDirectory())
+            .map(dirent => ({
+                name: dirent.name,
+                path: path.join(root, dirent.name)
+            }));
 
         // Add a "back to root" option for windows to get back to the drive selection
         if (/^[a-z]:\\$/i.test(root) && process.platform === "win32") {
@@ -134,3 +130,13 @@ export const getFolders = async(root: string): Promise<FolderEntry[]> => {
 
     return dirs;
 };
+
+export const useGetFolders = (current: string): FolderEntry[] => {
+    const [folders, setFolders] = useState<FolderEntry[]>([]);
+
+    useEffect(() => {
+        getFolders(current).then(setFolders);
+    }, [current]);
+
+    return folders;
+}
