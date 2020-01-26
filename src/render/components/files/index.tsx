@@ -4,7 +4,6 @@ import { Row, Col, Label, Input, } from "reactstrap";
 import { File } from "./file";
 import { useGetFiles } from "../../files";
 import { useFileBrowserState } from "../../state/fileBrowser";
-import { useDb } from "../../state/db";
 import { Loading, Error } from "../util";
 
 type FileListProps = {
@@ -74,7 +73,7 @@ const FileList: React.FC<FileListProps> = (props) => {
 };
 
 export const Files: React.FC = () => {
-    const { root } = useDb();
+    const { root } = useFileBrowserState();
 
     if (root) {
         return <FileList root={root} />;

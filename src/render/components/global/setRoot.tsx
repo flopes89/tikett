@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Row, Col, ButtonGroup, Button, Modal, ModalBody, ModalHeader, Alert } from "reactstrap";
+import { Row, Col, ButtonGroup, Button, Modal, ModalBody, ModalHeader } from "reactstrap";
 import Octicon, { Inbox } from "@primer/octicons-react";
-import { useDb } from "../../state/db";
 import { useGetFolders } from "../../files";
 import { Error } from "../util";
+import { useFileBrowserState } from "../../state/fileBrowser";
 
 type FolderListProps = {
     current: string;
@@ -43,10 +43,10 @@ type ConfirmButtonProps = {
 };
 
 const ConfirmButton: React.FC<ConfirmButtonProps> = (props) => {
-    const db = useDb();
+    const { setRoot } = useFileBrowserState();
 
     const onClick = () => {
-        db.setRoot(props.current);
+        setRoot(props.current);
         props.close();
     };
 
@@ -85,7 +85,7 @@ const FolderSelection: React.FC<FolderSelectionProps> = (props) => {
 };
 
 export const SetRoot: React.FC = () => {
-    const { root } = useDb();
+    const { root } = useFileBrowserState();
     const [isOpen, setIsOpen] = useState(!root);
 
     const close = () => {

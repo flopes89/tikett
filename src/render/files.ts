@@ -41,10 +41,6 @@ export const getFiles = async(opts: GetFilesOptions): Promise<PathEntry[]> => {
     const dirents = await fs.readdir(folder, { withFileTypes: true });
 
     const promises = dirents.map(async dirent => {
-        if (dirent.name === ".tikett.json") {
-            return;
-        }
-
         const absolutePath = path.join(folder, dirent.name);
 
         const entry: PathEntry = {
@@ -85,10 +81,12 @@ export const getFiles = async(opts: GetFilesOptions): Promise<PathEntry[]> => {
         if (matchesFilter || !dirent.isFile || filters.length === 0) {
             return [entry];
         }
+
+        return [];
     });
 
     const resolved = await Promise.all(promises);
-    const entries: PathEntry[] = Array.prototype.concat(...resolved).filter(entry => Boolean(entry));
+    const entries: PathEntry[] = Array.prototype.concat(...resolved);
 
     if (!showDescendants) {
         entries.push({
