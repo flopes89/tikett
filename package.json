@@ -2,7 +2,7 @@
     "private": true,
     "name": "tikett",
     "version": "2.0.0",
-    "main": "dist/index.js",
+    "main": "dist/main.js",
     "scripts": {
         "start-render-dev": "webpack-dev-server --progress --config webpack/render.dev.js",
         "start-main-dev": "webpack --config webpack/main.js && electron dist/main.js",
