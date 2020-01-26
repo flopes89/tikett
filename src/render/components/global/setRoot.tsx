@@ -80,16 +80,12 @@ const FolderSelection: React.FC<FolderSelectionProps> = (props) => {
     );
 };
 
-type SetRootProps = {
-    forceOpen?: boolean;
-};
-
-export const SetRoot: React.FC<SetRootProps> = (props) => {
-    const [isOpen, setIsOpen] = useState(props.forceOpen);
-    const db = useDb();
+export const SetRoot: React.FC = () => {
+    const { root } = useDb();
+    const [isOpen, setIsOpen] = useState(!root);
 
     const close = () => {
-        if (!props.forceOpen) {
+        if (root) {
             setIsOpen(false);
         }
     };
@@ -104,7 +100,7 @@ export const SetRoot: React.FC<SetRootProps> = (props) => {
                     <Octicon icon={Inbox} verticalAlign="middle" /> Select root folder
                 </ModalHeader>
                 <ModalBody>
-                    <FolderSelection initialFolder={db.root} close={() => setIsOpen(false)} />
+                    <FolderSelection initialFolder={root} close={() => setIsOpen(false)} />
                 </ModalBody>
             </Modal>
         </React.Fragment>

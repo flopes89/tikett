@@ -3,9 +3,7 @@ node_js:
   - "lts/*"
 cache: npm
 script:
-  - npm run test
-  - npm run build-client
-  - npm run build-server
+  - npm run test files
 deploy:
   provider: releases
   api_key:

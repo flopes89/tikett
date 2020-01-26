@@ -6,11 +6,14 @@ import { useGetFiles } from "../../files";
 import { useFileBrowserState } from "../../state/fileBrowser";
 import { useDb } from "../../state/db";
 
-export const Files: React.FC = () => {
-    const { root } = useDb();
+type FileListProps = {
+    root: string;
+};
+
+const FileList: React.FC<FileListProps> = (props) => {
     const { currentFolder, showDescendants, filters, toggleDescendants } = useFileBrowserState();
     const { err, pending, result } = useGetFiles({
-        root,
+        root: props.root,
         current: currentFolder,
         showDescendants,
         filters,
@@ -67,4 +70,14 @@ export const Files: React.FC = () => {
             </Row>
         </div >
     );
+};
+
+export const Files: React.FC = () => {
+    const { root } = useDb();
+
+    if (root) {
+        return <FileList root={root} />;
+    }
+
+    return <Alert alert="info">You need to select a root folder first!</Alert>;
 };

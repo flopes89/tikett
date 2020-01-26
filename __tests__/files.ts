@@ -39,7 +39,11 @@ describe("files", () => {
     it("finds files", async() => {
         expect.assertions(2);
 
-        const actual = await files.getFiles(filesDir, "/", false);
+        const actual = await files.getFiles({
+            root: filesDir,
+            current: "/",
+            showDescendants: false
+        });
 
         expect(actual).toHaveLength(5);
         expect(actual).toEqual(expect.arrayContaining([
@@ -75,7 +79,11 @@ describe("files", () => {
     it("finds descendants", async() => {
         expect.assertions(2);
 
-        const actual = await files.getFiles(filesDir, "/", true);
+        const actual = await files.getFiles({
+            root: filesDir,
+            current: "/",
+            showDescendants: true
+        });
 
         expect(actual).toHaveLength(6);
         expect(actual).toEqual(expect.arrayContaining([
@@ -116,7 +124,12 @@ describe("files", () => {
     it("filters by tags", async() => {
         expect.assertions(2);
 
-        const actual = await files.getFiles(filesDir, "/", false, ["tag1"]);
+        const actual = await files.getFiles({
+            root: filesDir,
+            current: "/",
+            showDescendants: false,
+            filters: ["tag1"]
+        });
 
         expect(actual).toHaveLength(4);
         expect(actual).toEqual(expect.arrayContaining([
@@ -147,7 +160,12 @@ describe("files", () => {
     it("filters by tags with descendants", async() => {
         expect.assertions(2);
 
-        const actual = await files.getFiles(filesDir, "/", true, ["tag2"]);
+        const actual = await files.getFiles({
+            root: filesDir,
+            current: "/",
+            showDescendants: true,
+            filters: ["tag2"]
+        });
 
         expect(actual).toHaveLength(3);
         expect(actual).toEqual(expect.arrayContaining([
