@@ -64,7 +64,7 @@ export const getFiles = async(opts: GetFilesOptions): Promise<PathEntry[]> => {
                     current: relativePath,
                     showDescendants,
                     filters,
-                    prefix: relativePath + "\\"
+                    prefix: relativePath + path.sep
                 });
             }
 
