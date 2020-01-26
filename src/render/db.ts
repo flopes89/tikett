@@ -1,10 +1,9 @@
-import { useState } from "react";
 import path from "path";
 import os from "os";
 import { promises as fs, constants } from "fs";
 import { createLogger } from "./logger";
-import { useEffect } from "react";
 import { TagGroup } from "./tags";
+import { asHook } from "./util";
 
 type Db = {
     root: string;
@@ -85,9 +84,4 @@ export const removeGroup = async(name: string): Promise<void> => {
     await persist();
 };
 
-// React hook to load the DB and return it
-export const useDb = (): Db|null => {
-    const [db, setDb] = useState<Db|null>(null);
-    load().then(setDb);
-    return db;
-};
+export const useDb = (root?: string) => asHook(load, root);

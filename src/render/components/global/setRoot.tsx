@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Row, Col, ButtonGroup, Button, Modal, ModalBody, ModalHeader } from "reactstrap";
+import { Row, Col, ButtonGroup, Button, Modal, ModalBody, ModalHeader, Alert } from "reactstrap";
 import Octicon, { Inbox } from "@primer/octicons-react";
-import { useDb } from "../../db";
+import { useDb } from "../../state/db";
 import { useGetFolders } from "../../files";
 
 type FolderListProps = {
@@ -10,22 +10,26 @@ type FolderListProps = {
 };
 
 const FolderList: React.FC<FolderListProps> = (props) => {
-    const folders = useGetFolders(props.current);
+    const { err, result } = useGetFolders(props.current);
+    const folders = result || [];
 
     return (
-        <ButtonGroup vertical className="d-flex">
-            {folders.map(folder => (
-                <Button
-                    outline
-                    size="sm"
-                    className="text-left"
-                    key={folder.path}
-                    onClick={() => props.onSelect(folder.path)}
-                >
-                    {folder.name}
-                </Button>
-            ))}
-        </ButtonGroup>
+        <>
+            {err && (<Alert color="danger">{err}</Alert>)}
+            <ButtonGroup vertical className="d-flex">
+                {folders.map(folder => (
+                    <Button
+                        outline
+                        size="sm"
+                        className="text-left"
+                        key={folder.path}
+                        onClick={() => props.onSelect(folder.path)}
+                    >
+                        {folder.name}
+                    </Button>
+                ))}
+            </ButtonGroup>
+        </>
     );
 };
 
@@ -35,8 +39,15 @@ type ConfirmButtonProps = {
 };
 
 const ConfirmButton: React.FC<ConfirmButtonProps> = (props) => {
+    const db = useDb();
+
+    const onClick = () => {
+        db.setRoot(props.current);
+        props.close();
+    };
+
     return (
-        <Button block color="primary">Confirm</Button>
+        <Button block color="primary" onClick={onClick}>Confirm</Button>
     );
 };
 
@@ -76,10 +87,6 @@ type SetRootProps = {
 export const SetRoot: React.FC<SetRootProps> = (props) => {
     const [isOpen, setIsOpen] = useState(props.forceOpen);
     const db = useDb();
-
-    if (!db) {
-        return null;
-    }
 
     const close = () => {
         if (!props.forceOpen) {

@@ -4,6 +4,7 @@ import { load } from "./db";
 import { createLogger } from "./logger";
 import { used } from "windows-drive-letters";
 import { useState, useEffect } from "react";
+import { asHook } from "./util";
 
 export type PathEntry = {
     name: string;
@@ -90,12 +91,12 @@ export const getFolders = async(root: string): Promise<FolderEntry[]> => {
     let dirs: FolderEntry[] = [];
 
     if (root === "/" && process.platform === "win32") {
+        LOG.debug("Searching for drive letters");
+
         const letters = await used();
         await Promise.all(letters.map(async letter => {
             try {
                 await fs.access(letter + ":", constants.R_OK);
-
-                LOG.debug("Found drive letter %s", letter);
 
                 dirs.push({
                     name: letter + ":",
@@ -106,6 +107,8 @@ export const getFolders = async(root: string): Promise<FolderEntry[]> => {
             }
         }));
     } else {
+        LOG.debug("Reading dir %s", root);
+
         const dirents = await fs.readdir(root, { withFileTypes: true });
 
         dirs = dirents.filter(dirent => dirent.isDirectory())
@@ -113,6 +116,8 @@ export const getFolders = async(root: string): Promise<FolderEntry[]> => {
                 name: dirent.name,
                 path: path.join(root, dirent.name)
             }));
+
+        LOG.debug("Found %i subdirs", dirs.length);
 
         // Add a "back to root" option for windows to get back to the drive selection
         if (/^[a-z]:\\$/i.test(root) && process.platform === "win32") {
@@ -131,12 +136,4 @@ export const getFolders = async(root: string): Promise<FolderEntry[]> => {
     return dirs;
 };
 
-export const useGetFolders = (current: string): FolderEntry[] => {
-    const [folders, setFolders] = useState<FolderEntry[]>([]);
-
-    useEffect(() => {
-        getFolders(current).then(setFolders);
-    }, [current]);
-
-    return folders;
-}
+export const useGetFolders = (current: string) => asHook(getFolders, current);
