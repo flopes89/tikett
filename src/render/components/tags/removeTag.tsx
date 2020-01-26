@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Octicon, { Trashcan } from "@githubprimer/octicons-react";
-import { useTagState } from "../../state/global";
+import { useDragState } from "../../state/drag";
 
 export const RemoveTag: React.FC = (props) => {
     const remove = (mutate) => {

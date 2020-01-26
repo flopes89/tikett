@@ -5,6 +5,7 @@ import { File } from "./file";
 import { useGetFiles } from "../../files";
 import { useFileBrowserState } from "../../state/fileBrowser";
 import { useDb } from "../../state/db";
+import { Loading, Error } from "../util";
 
 type FileListProps = {
     root: string;
@@ -20,15 +21,15 @@ const FileList: React.FC<FileListProps> = (props) => {
     });
 
     if (pending) {
-        return <Alert color="info">"Loading..."</Alert>;
+        return <Loading />;
     }
 
     if (!result) {
-        return <Alert color="danger">No data received!</Alert>;
+        return <Error err="No data received!" />;
     }
 
     if (err) {
-        return <Alert color="danger">{err}</Alert>;
+        return <Error err={err} />;
     }
 
     return (

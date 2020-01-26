@@ -1,13 +1,19 @@
-import { Dispatch, Reducer } from "redux";
+import { Reducer } from "redux";
 import { useSelector, useDispatch } from "react-redux";
 import { Store } from ".";
 
 export enum ACTION {
+    SET_ROOT,
     TOGGLE_DESCENDANTS,
     OPEN_FOLDER,
     ADD_FILTER,
     REMOVE_FILTER,
     SELECT_FILE,
+};
+
+export type SetRootAction = {
+    type: ACTION.SET_ROOT;
+    root: string;
 };
 
 export type ToggleDescendantsAction = {
@@ -35,47 +41,24 @@ export type SelectFileAction = {
 };
 
 export type FileBrowserAction = 
-    ToggleDescendantsAction
+    SetRootAction
+    | ToggleDescendantsAction
     | OpenFolderAction
     | AddFilterAction
     | RemoveFilterAction
     | SelectFileAction
     ;
 
-export const buildFileBrowserActions = (dispatch: Dispatch<FileBrowserAction>) => ({
-    toggleDescendants: () => dispatch({
-        type: ACTION.TOGGLE_DESCENDANTS,
-    }),
-
-    openFolder: (folder: string) => dispatch({
-        type: ACTION.OPEN_FOLDER,
-        folder,
-    }),
-
-    addFilter: (tag: string) => dispatch({
-        type: ACTION.ADD_FILTER,
-        tag,
-    }),
-
-    removeFilter: (tag: string) => dispatch({
-        type: ACTION.REMOVE_FILTER,
-        tag,
-    }),
-
-    selectFile: (path: string) => dispatch({
-        type: ACTION.SELECT_FILE,
-        path,
-    }),
-});
-
 export type FileBrowserState = {
+    root: string;
     currentFolder: string;
     showDescendants: boolean;
     filters: string[];
     selected: string;
 };
 
-const defaultFileBrowserState: FileBrowserState = {
+const defaultState: FileBrowserState = {
+    root: "",
     currentFolder: "/",
     showDescendants: false,
     filters: [],
@@ -83,9 +66,15 @@ const defaultFileBrowserState: FileBrowserState = {
 };
 
 export const fileBrowserReducer: Reducer<FileBrowserState, FileBrowserAction> = (prev, action) => {
-    const state = { ...defaultFileBrowserState, ...prev };
+    const state = { ...defaultState, ...prev };
 
     switch (action.type) {
+        case ACTION.SET_ROOT:
+            return {
+                ...state,
+                root: action.root,
+            };
+
         case ACTION.TOGGLE_DESCENDANTS:
             return {
                 ...state,
@@ -145,6 +134,33 @@ export const useFileBrowserState = () => {
     const dispatch = useDispatch();
     return {
         ...state,
-        ...buildFileBrowserActions(dispatch),
+        setRoot: (root: string): SetRootAction => dispatch({
+            type: ACTION.SET_ROOT,
+            root,
+        }),
+    
+        toggleDescendants: () => dispatch({
+            type: ACTION.TOGGLE_DESCENDANTS,
+        }),
+    
+        openFolder: (folder: string) => dispatch({
+            type: ACTION.OPEN_FOLDER,
+            folder,
+        }),
+    
+        addFilter: (tag: string) => dispatch({
+            type: ACTION.ADD_FILTER,
+            tag,
+        }),
+    
+        removeFilter: (tag: string) => dispatch({
+            type: ACTION.REMOVE_FILTER,
+            tag,
+        }),
+    
+        selectFile: (path: string) => dispatch({
+            type: ACTION.SELECT_FILE,
+            path,
+        }),
     };
 };

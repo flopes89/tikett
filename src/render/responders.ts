@@ -1,4 +1,4 @@
-import { startTagDrag, endTagDrag } from "./state/global";
+import { startTagDrag, endTagDrag } from "./state/drag";
 import { addFilter } from "./state/fileBrowser";
 
 export const onBeforeDragStart = (store_) => () => {

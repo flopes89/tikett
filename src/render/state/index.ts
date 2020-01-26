@@ -1,19 +1,19 @@
 import { combineReducers, createStore } from "redux";
 import { persistReducer, persistStore } from "redux-persist";
-import { DbState, dbReducer } from "./db";
 import createElectronStorage from "redux-persist-electron-storage";
-import { tagReducer, TagState } from "./global";
+import { dragReducer, DragState } from "./drag";
 import { FileBrowserState, fileBrowserReducer } from "./fileBrowser";
+import { TagsState, tagsReducer } from "./tags";
 
 export type Store = {
-    db: DbState;
-    tag: TagState,
+    tags: TagsState;
+    drag: DragState,
     fileBrowser: FileBrowserState,
 };
 
 const reducer = combineReducers({
-    db: dbReducer,
-    tag: tagReducer,
+    drag: dragReducer,
+    tags: tagsReducer,
     fileBrowser: fileBrowserReducer,
 });
 

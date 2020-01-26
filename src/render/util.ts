@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { TagGroup } from "./state/tags";
 
 type HookableFunc<T, P> = (param: P) => Promise<T|null>; 
 type HookedFuncResult<T> = {
@@ -26,4 +27,21 @@ export const asHook = <T, P>(func: HookableFunc<T, P>, param: P): HookedFuncResu
         err,
         pending,
     };
+};
+
+export const getColorOfTag = async(groups: TagGroup[], name: string): Promise<string> => {
+    let result = null;
+
+    groups.forEach(group => {
+        if (group.tags.find(tag => tag === name)) {
+            result = group.color;
+            return;
+        }
+    });
+
+    if (!result) {
+        result = "#efefef";
+    }
+
+    return result;
 };

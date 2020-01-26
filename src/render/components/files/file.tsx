@@ -4,7 +4,7 @@ import { Tags } from "../tags";
 import { Droppable, DroppableProps } from "react-beautiful-dnd";
 import classnames from "classnames";
 import { useFileBrowserState } from "../../state/fileBrowser";
-import { useTagState } from "../../state/global";
+import { useDragState } from "../../state/drag";
 
 type FileProps = {
     name: string;
@@ -15,7 +15,7 @@ type FileProps = {
 
 export const File: React.FC<FileProps> = (props) => {
     const { selectFile, selected, openFolder } = useFileBrowserState();
-    const { isDraggingTag } = useTagState();
+    const { isDraggingTag } = useDragState();
 
     const isSelected = selected === props.path;
 

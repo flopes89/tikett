@@ -3,6 +3,7 @@ import { Row, Col, ButtonGroup, Button, Modal, ModalBody, ModalHeader, Alert } f
 import Octicon, { Inbox } from "@primer/octicons-react";
 import { useDb } from "../../state/db";
 import { useGetFolders } from "../../files";
+import { Error } from "../util";
 
 type FolderListProps = {
     current: string;
@@ -13,9 +14,12 @@ const FolderList: React.FC<FolderListProps> = (props) => {
     const { err, result } = useGetFolders(props.current);
     const folders = result || [];
 
+    if (err) {
+        return <Error err={err} />;
+    }
+
     return (
         <>
-            {err && (<Alert color="danger">{err}</Alert>)}
             <ButtonGroup vertical className="d-flex">
                 {folders.map(folder => (
                     <Button
