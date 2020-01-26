@@ -1,7 +1,6 @@
 import path from "path";
 import fs from "fs-extra";
 import * as files from "../src/render/files";
-import * as db from "../src/render/db";
 import os from "os";
 import uuid from "uuid/v4";
 
@@ -17,9 +16,6 @@ describe("files", () => {
         await fs.ensureFile(path.resolve(filesDir, "folder1", "file11[moretag].exe"));
         await fs.ensureFile(path.resolve(filesDir, "folder1", "folder2", "file4[tag5 new_-ta%.g]"));
         await fs.ensureFile(path.resolve(filesDir, "folder1", "folder2", "file5[tag2]"));
-
-        await db.load(root);
-        await db.setRoot(filesDir);
     });
     
     it("finds folders", async() => {
@@ -43,7 +39,7 @@ describe("files", () => {
     it("finds files", async() => {
         expect.assertions(2);
 
-        const actual = await files.getFiles("/", false);
+        const actual = await files.getFiles(filesDir, "/", false);
 
         expect(actual).toHaveLength(5);
         expect(actual).toEqual(expect.arrayContaining([
@@ -79,7 +75,7 @@ describe("files", () => {
     it("finds descendants", async() => {
         expect.assertions(2);
 
-        const actual = await files.getFiles("/", true);
+        const actual = await files.getFiles(filesDir, "/", true);
 
         expect(actual).toHaveLength(6);
         expect(actual).toEqual(expect.arrayContaining([
@@ -120,7 +116,7 @@ describe("files", () => {
     it("filters by tags", async() => {
         expect.assertions(2);
 
-        const actual = await files.getFiles("/", false, ["tag1"]);
+        const actual = await files.getFiles(filesDir, "/", false, ["tag1"]);
 
         expect(actual).toHaveLength(4);
         expect(actual).toEqual(expect.arrayContaining([
@@ -151,7 +147,7 @@ describe("files", () => {
     it("filters by tags with descendants", async() => {
         expect.assertions(2);
 
-        const actual = await files.getFiles("/", true, ["tag2"]);
+        const actual = await files.getFiles(filesDir, "/", true, ["tag2"]);
 
         expect(actual).toHaveLength(3);
         expect(actual).toEqual(expect.arrayContaining([

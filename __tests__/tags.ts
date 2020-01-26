@@ -1,7 +1,6 @@
 import path from "path";
 import fs from "fs-extra";
 import * as tags from "../src/render/tags";
-import * as db from "../src/render/db";
 import os from "os";
 import uuid from "uuid/v4";
 

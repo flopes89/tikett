@@ -1,12 +1,10 @@
 import React from "react";
-import { Mutation } from "../util";
-import queries from "../../queries";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Octicon, { Trashcan } from "@githubprimer/octicons-react";
-import { selectFile } from "../../state/fileBrowser";
+import { useTagState } from "../../state/global";
 
-let RemoveTag = (props) => {
+export const RemoveTag: React.FC = (props) => {
     const remove = (mutate) => {
         props.resetSelectedFile();
         mutate();

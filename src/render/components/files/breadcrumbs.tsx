@@ -1,10 +1,21 @@
 import React from "react";
 import { Row, Col, Breadcrumb, BreadcrumbItem } from "reactstrap";
-import { connect } from "react-redux";
-import { openFolder } from "../../state/fileBrowser";
+import { useFileBrowserState } from "../../state/fileBrowser";
 
-const CrumbItem = (props) => {
-    let inner = props.name;
+type PathEntry = {
+    name: string;
+    path: string;
+};
+
+type CrumbItemProps = {
+    name: string;
+    path: string;
+    isClickable: boolean;
+    openFolder: (path: string) => void;
+};
+
+const CrumbItem: React.FC<CrumbItemProps> = (props) => {
+    let inner: React.ReactNode = props.name;
 
     if (props.isClickable) {
         inner = (
@@ -17,7 +28,12 @@ const CrumbItem = (props) => {
     return (<BreadcrumbItem>{inner}</BreadcrumbItem>);
 };
 
-const Crumbs = (props) => (
+type CrumbsProps = {
+    breadcrumbs: PathEntry[];
+    openFolder: CrumbItemProps["openFolder"];
+};
+
+const Crumbs: React.FC<CrumbsProps> = (props) => (
     <Row>
         <Col>
             <Breadcrumb>
@@ -35,11 +51,12 @@ const Crumbs = (props) => (
     </Row>
 );
 
-const BreadcrumbsContainer = (props) => {
-    const breadcrumbs = [];
+export const Breadcrumbs: React.FC = () => {
+    const { currentFolder, openFolder } = useFileBrowserState();
+    const breadcrumbs: PathEntry[] = [];
     let breadcrumbPath = "/";
 
-    props.current.split("/").forEach((crumb) => {
+    currentFolder.split("/").forEach((crumb) => {
         if (!crumb) {
             return;
         }
@@ -57,14 +74,5 @@ const BreadcrumbsContainer = (props) => {
         path: "/",
     });
 
-    return (<Crumbs breadcrumbs={breadcrumbs} openFolder={props.openFolder} />);
+    return (<Crumbs breadcrumbs={breadcrumbs} openFolder={openFolder} />);
 };
-
-export default connect(
-    (state) => ({
-        current: state.fileBrowser.currentFolder,
-    }),
-    (dispatch) => ({
-        openFolder: (folder) => dispatch(openFolder(folder)),
-    })
-)(BreadcrumbsContainer);

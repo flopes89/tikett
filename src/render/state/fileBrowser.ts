@@ -1,52 +1,99 @@
-const SHOWDESC_TOGGLE = "SHOWDESC_TOGGLE";
-const OPEN_FOLDER = "OPEN_FOLDER";
-const ADD_FILTER = "ADD_FILTER";
-const REMOVE_FILTER = "REMOVE_FILTER";
-const SELECT_FILE = "SELECT_FILE";
+import { Dispatch, Reducer } from "redux";
+import { useSelector, useDispatch } from "react-redux";
+import { Store } from ".";
 
-export const toggleShowDescendants = () => ({
-    type: SHOWDESC_TOGGLE,
+export enum ACTION {
+    TOGGLE_DESCENDANTS,
+    OPEN_FOLDER,
+    ADD_FILTER,
+    REMOVE_FILTER,
+    SELECT_FILE,
+};
+
+export type ToggleDescendantsAction = {
+    type: ACTION.TOGGLE_DESCENDANTS;
+};
+
+export type OpenFolderAction = {
+    type: ACTION.OPEN_FOLDER;
+    folder: string;
+};
+
+export type AddFilterAction = {
+    type: ACTION.ADD_FILTER;
+    tag: string;
+};
+
+export type RemoveFilterAction = {
+    type: ACTION.REMOVE_FILTER;
+    tag: string;
+};
+
+export type SelectFileAction = {
+    type: ACTION.SELECT_FILE;
+    path: string;
+};
+
+export type FileBrowserAction = 
+    ToggleDescendantsAction
+    | OpenFolderAction
+    | AddFilterAction
+    | RemoveFilterAction
+    | SelectFileAction
+    ;
+
+export const buildFileBrowserActions = (dispatch: Dispatch<FileBrowserAction>) => ({
+    toggleDescendants: () => dispatch({
+        type: ACTION.TOGGLE_DESCENDANTS,
+    }),
+
+    openFolder: (folder: string) => dispatch({
+        type: ACTION.OPEN_FOLDER,
+        folder,
+    }),
+
+    addFilter: (tag: string) => dispatch({
+        type: ACTION.ADD_FILTER,
+        tag,
+    }),
+
+    removeFilter: (tag: string) => dispatch({
+        type: ACTION.REMOVE_FILTER,
+        tag,
+    }),
+
+    selectFile: (path: string) => dispatch({
+        type: ACTION.SELECT_FILE,
+        path,
+    }),
 });
 
-export const openFolder = (folder) => ({
-    type: OPEN_FOLDER,
-    folder,
-});
+export type FileBrowserState = {
+    currentFolder: string;
+    showDescendants: boolean;
+    filters: string[];
+    selected: string;
+};
 
-export const addFilter = (tag) => ({
-    type: ADD_FILTER,
-    tag,
-});
-
-export const removeFilter = (index) => ({
-    type: REMOVE_FILTER,
-    index,
-});
-
-export const selectFile = (path) => ({
-    type: SELECT_FILE,
-    path,
-});
-
-const INIT_STATE = {
+const defaultFileBrowserState: FileBrowserState = {
     currentFolder: "/",
     showDescendants: false,
     filters: [],
     selected: "",
 };
 
-export default (state = INIT_STATE, action) => {
-    const newState = Object.assign({}, INIT_STATE, state);
+export const fileBrowserReducer: Reducer<FileBrowserState, FileBrowserAction> = (prev, action) => {
+    const state = { ...defaultFileBrowserState, ...prev };
 
     switch (action.type) {
-        case SHOWDESC_TOGGLE:
+        case ACTION.TOGGLE_DESCENDANTS:
             return {
-                ...newState,
-                showDescendants: !newState.showDescendants,
+                ...state,
+                showDescendants: !state.showDescendants,
             };
 
-        case OPEN_FOLDER:
-            let newCurrent = newState.currentFolder;
+        case ACTION.OPEN_FOLDER:
+            let newCurrent = state.currentFolder;
 
             if (action.folder.indexOf("/") === 0) {
                 newCurrent = action.folder;
@@ -63,31 +110,41 @@ export default (state = INIT_STATE, action) => {
             }
 
             return {
-                ...newState,
+                ...state,
                 currentFolder: newCurrent,
             };
 
-        case ADD_FILTER:
+        case ACTION.ADD_FILTER:
             return {
-                ...newState,
-                filters: [].concat(newState.filters, action.tag),
+                ...state,
+                filters: [...state.filters, action.tag],
             };
 
-        case REMOVE_FILTER:
-            const filters = newState.filters.slice();
-            filters.splice(action.index, 1);
+        case ACTION.REMOVE_FILTER:
+            const filters = state.filters.slice();
+            filters.splice(filters.indexOf(action.tag), 1);
 
             return {
-                ...newState,
+                ...state,
                 filters,
             };
 
-        case SELECT_FILE:
+        case ACTION.SELECT_FILE:
             return {
-                ...newState,
+                ...state,
                 selected: action.path,
             };
+        
+        default:
+            return state;
     }
+};
 
-    return newState;
+export const useFileBrowserState = () => {
+    const state = useSelector((state: Store) => state.fileBrowser);
+    const dispatch = useDispatch();
+    return {
+        ...state,
+        ...buildFileBrowserActions(dispatch),
+    };
 };

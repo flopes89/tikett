@@ -1,9 +1,7 @@
 import { promises as fs, constants } from "fs";
 import path from "path";
-import { load } from "./db";
 import { createLogger } from "./logger";
 import { used } from "windows-drive-letters";
-import { useState, useEffect } from "react";
 import { asHook } from "./util";
 
 export type PathEntry = {
@@ -20,14 +18,26 @@ export type FolderEntry = {
 
 const LOG = createLogger("files");
 
-// Finds all files under a given root (which is always relative to the db.root)
-export const getFiles = async(
-    root: string, showDescendants: boolean, filters: string[] = [], prefix = ""
-): Promise<PathEntry[]> => {
-    const db = await load();
+export type GetFilesOptions = {
+    root: string;
+    current: string;
+    showDescendants: boolean;
+    filters?: string[];
+    prefix?: string;
+};
 
-    // Resolve the given root to be a relative folder under db.root
-    const folder = path.resolve(path.join(db.root, root));
+// Finds all files under a given root (which is always relative to the db.root)
+export const getFiles = async(opts: GetFilesOptions): Promise<PathEntry[]> => {
+    const {
+        root,
+        current,
+        showDescendants,
+        filters = [],
+        prefix = ""
+    } = opts;
+
+    // Resolve the given root to be a relative folder under root
+    const folder = path.resolve(path.join(root, current));
     const dirents = await fs.readdir(folder, { withFileTypes: true });
 
     const promises = dirents.map(async dirent => {
@@ -48,8 +58,14 @@ export const getFiles = async(
 
         if (dirent.isDirectory()) {
             if (showDescendants) {
-                const relativePath = path.relative(db.root, absolutePath);
-                return getFiles(relativePath, showDescendants, filters, relativePath + "\\");
+                const relativePath = path.relative(root, absolutePath);
+                return getFiles({
+                    root,
+                    current: relativePath,
+                    showDescendants,
+                    filters,
+                    prefix: relativePath + "\\"
+                });
             }
 
             return [entry];
@@ -85,6 +101,8 @@ export const getFiles = async(
 
     return entries;
 };
+
+export const useGetFiles = (opts: GetFilesOptions) => asHook(getFiles, opts);
 
 // Fetch all folders under a given root
 export const getFolders = async(root: string): Promise<FolderEntry[]> => {

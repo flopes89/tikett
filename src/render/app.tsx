@@ -4,8 +4,8 @@ import Octicon, { Tag } from "@primer/octicons-react";
 // import ReloadButton from "./components/global/reloadButton";
 import { SetRoot } from "./components/global/setRoot";
 // import TagGroups from "./components/groups";
-// import Breadcrumbs from "./components/files/breadcrumbs";
-// import Files from "./components/files";
+import { Breadcrumbs } from "./components/files/breadcrumbs";
+import { Files } from "./components/files";
 // import FilePreview from "./components/files/filePreview";
 
 export default () => (
@@ -33,8 +33,8 @@ export default () => (
                         {/* <TagGroups /> */}
                     </Col>
                     <Col>
-                        {/* <Breadcrumbs /> */}
-                        {/* <Files /> */}
+                        <Breadcrumbs />
+                        <Files />
                     </Col>
                     {/* <FilePreview /> */}
                 </Row>

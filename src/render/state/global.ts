@@ -1,30 +1,70 @@
-const START_TAG_DRAG = "START_TAG_DRAG";
-const END_TAG_DRAG = "END_TAG_DRAG";
+import { Dispatch } from "redux";
+import { Reducer } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Store } from ".";
 
-export const startTagDrag = () => ({
-    type: START_TAG_DRAG,
+export enum ACTION {
+    START_TAG_DRAG,
+    END_TAG_DRAG,
+};
+
+export type StartTagDragAction = {
+    type: ACTION.START_TAG_DRAG;
+};
+
+export type EndTagDragAction = {
+    type: ACTION.END_TAG_DRAG;
+};
+
+export type TagAction =
+    StartTagDragAction
+    | EndTagDragAction
+    ;
+
+export type TagState = {
+    isDraggingTag: boolean;
+};
+
+const defaultTagState: TagState = {
+    isDraggingTag: false,
+};
+
+export const buildTagActions = (dispatch: Dispatch<TagAction>) => ({
+    startTagDrag: () => dispatch({
+        type: ACTION.START_TAG_DRAG,
+    }),
+    
+    endTagDrag: () => dispatch({
+        type: ACTION.END_TAG_DRAG,
+    }),
 });
 
-export const endTagDrag = () => ({
-    type: END_TAG_DRAG,
-});
-
-export default (state = {}, action) => {
-    const newState = Object.assign({}, state);
+export const tagReducer: Reducer<TagState, TagAction> = (prev, action) => {
+    const state = { ...defaultTagState, ...prev };
 
     switch (action.type) {
-        case START_TAG_DRAG:
+        case ACTION.START_TAG_DRAG:
             return {
-                ...newState,
+                ...state,
                 isDraggingTag: true,
             };
 
-        case END_TAG_DRAG:
+        case ACTION.END_TAG_DRAG:
             return {
-                ...newState,
+                ...state,
                 isDraggingTag: false,
             };
-    }
 
-    return newState;
+        default:
+            return state;
+    }
+};
+
+export const useTagState = () => {
+    const tagState = useSelector((state: Store) => state.tag);
+    const dispatch = useDispatch();
+    return {
+        ...tagState,
+        ...buildTagActions(dispatch)
+    }
 };
