@@ -10,6 +10,7 @@ const createMainWindow = () => {
         height: 768,
         webPreferences: {
             nodeIntegration: true,
+            webviewTag: true,
         },
     });
 

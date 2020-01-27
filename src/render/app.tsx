@@ -6,6 +6,7 @@ import { SetRoot } from "./components/global/setRoot";
 // import TagGroups from "./components/groups";
 import { Breadcrumbs } from "./components/files/breadcrumbs";
 import { Files } from "./components/files";
+import { FilePreview } from "./components/files/filePreview";
 // import FilePreview from "./components/files/filePreview";
 
 export default () => (
@@ -36,7 +37,7 @@ export default () => (
                         <Breadcrumbs />
                         <Files />
                     </Col>
-                    {/* <FilePreview /> */}
+                    <FilePreview />
                 </Row>
             </Container>
         </main>

@@ -20,7 +20,7 @@ export const asHook = <T, P>(func: HookableFunc<T, P>, param: P): HookedFuncResu
             .then(setResult)
             .catch(err => setErr(JSON.stringify(err)))
             .finally(() => setPending(false));
-    }, [param]);
+    }, [JSON.stringify(param)]);
 
     return {
         result,

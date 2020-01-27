@@ -1,13 +1,12 @@
 import React from "react";
 import { Row, Col, Button, Breadcrumb, BreadcrumbItem } from "reactstrap";
-import { connect } from "react-redux";
 import Octicon, { X } from "@githubprimer/octicons-react";
-import { selectFile } from "../../state/fileBrowser";
+import {  useFileBrowserState } from "../../state/fileBrowser";
 
 const getHeight = () => window.innerHeight - 280;
 
 const adjustHeight = () => {
-    const ref = document.querySelector("#file_preview iframe");
+    const ref: HTMLIFrameElement|null = document.querySelector("#file_preview iframe");
 
     if (!ref) {
         return;
@@ -18,8 +17,10 @@ const adjustHeight = () => {
 
 window.onresize = adjustHeight;
 
-const FilePreview = (props) => {
-    if (!props.src) {
+export const FilePreview = () => {
+    const { selected, selectFile } = useFileBrowserState();
+
+    if (!selected) {
         return null;
     }
 
@@ -31,32 +32,21 @@ const FilePreview = (props) => {
                 <Col xs={11}>
                     <Breadcrumb>
                         <BreadcrumbItem>
-                            {props.src}
+                            {selected}
                         </BreadcrumbItem>
                     </Breadcrumb>
                 </Col>
                 <Col xs={1} className="px-0 pt-2">
-                    <Button onClick={props.close}>
+                    <Button onClick={() => selectFile("")}>
                         <Octicon icon={X} />
                     </Button>
                 </Col>
             </Row>
             <Row>
                 <Col>
-                    <iframe src={`/api/file/` + encodeURIComponent(props.src)} style={{ height }} />
+                    <webview src={selected} style={{ height }} />
                 </Col>
             </Row>
         </Col>
     );
 };
-
-const FilePreviewContainer = connect(
-    (state) => ({
-        src: state.fileBrowser.selected,
-    }),
-    (dispatch) => ({
-        close: () => dispatch(selectFile("")),
-    }),
-)(FilePreview);
-
-export default FilePreviewContainer;

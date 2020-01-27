@@ -16,22 +16,24 @@ export type FolderEntry = {
     path: string;
 };
 
-const LOG = createLogger("files");
-
 export type GetFilesOptions = {
     root: string;
     current: string;
-    showDescendants: boolean;
+    showDescendants?: boolean;
     filters?: string[];
     prefix?: string;
 };
+
+const LOG = createLogger("files");
+
+// TODO File IO should probably be done in the main thread to not block the UI updates (?)
 
 // Finds all files under a given root (which is always relative to the db.root)
 export const getFiles = async(opts: GetFilesOptions): Promise<PathEntry[]> => {
     const {
         root,
         current,
-        showDescendants,
+        showDescendants = false,
         filters = [],
         prefix = ""
     } = opts;
@@ -89,12 +91,12 @@ export const getFiles = async(opts: GetFilesOptions): Promise<PathEntry[]> => {
     const entries: PathEntry[] = Array.prototype.concat(...resolved);
 
     if (!showDescendants) {
-        entries.push({
+        entries.unshift({
             name: "..",
             isFile: false,
             path: path.resolve(folder, ".."),
             tags: [],
-        });  
+        });
     }
 
     return entries;

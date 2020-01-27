@@ -1,25 +1,28 @@
-import { startTagDrag, endTagDrag } from "./state/drag";
-import { addFilter } from "./state/fileBrowser";
+import { useDragState } from "./state/drag";
+import { useFileBrowserState } from "./state/fileBrowser";
+import { DropResult, DragDropContextProps } from "react-beautiful-dnd";
 
-export const onBeforeDragStart = (store_) => () => {
-    store_.dispatch(startTagDrag());
+export const onBeforeDragStart: DragDropContextProps["onBeforeDragStart"] = () => {
+    const { startTagDrag } = useDragState();
+    startTagDrag();
 };
 
-export const onDragEnd = (store_) => (dropResult_) => {
-    if (!dropResult_.destination) {
-        store_.dispatch(endTagDrag());
+export const onDragEnd: DragDropContextProps["onDragEnd"] = (dropResult) => {
+    const { addFilter } = useFileBrowserState();
+    const { endTagDrag } = useDragState();
+
+    if (!dropResult.destination) {
+        endTagDrag();
         return;
     }
 
-    const destParts = dropResult_.destination.droppableId.split("|");
+    const destParts = dropResult.destination.droppableId.split("|");
     const destType = destParts[0];
     const destName = destParts[1];
 
-    const tagParts = dropResult_.draggableId.split("|");
+    const tagParts = dropResult.draggableId.split("|");
     const tagName = tagParts[0];
     const tagColor = tagParts[1];
-
-    const state = store_.getState();
 
     if (destType === "file") {
         // client_.mutate({
@@ -52,8 +55,8 @@ export const onDragEnd = (store_) => (dropResult_) => {
         //     ]
         // })
     } else if (destType === "filter") {
-        store_.dispatch(addFilter(`${tagName}#${tagColor}`));
+        addFilter(`${tagName}#${tagColor}`);
     }
 
-    store_.dispatch(endTagDrag());
+    endTagDrag();
 };

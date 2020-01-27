@@ -15,7 +15,7 @@ document.body.appendChild(appElement);
 ReactDOM.render(
     <Provider store={store}>
         <PersistGate persistor={persistor}>
-            <DragDropContext onBeforeDragStart={onBeforeDragStart(store)} onDragEnd={onDragEnd(store)}>
+            <DragDropContext onBeforeDragStart={onBeforeDragStart} onDragEnd={onDragEnd}>
                 <App />
             </DragDropContext>
         </PersistGate>
