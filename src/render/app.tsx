@@ -1,13 +1,11 @@
 import * as React from "react";
 import { Container, Navbar, NavbarBrand, Row, Col } from "reactstrap";
 import Octicon, { Tag } from "@primer/octicons-react";
-// import ReloadButton from "./components/global/reloadButton";
 import { SetRoot } from "./components/global/setRoot";
-// import TagGroups from "./components/groups";
+import { TagGroups } from "./components/groups";
 import { Breadcrumbs } from "./components/files/breadcrumbs";
 import { Files } from "./components/files";
 import { FilePreview } from "./components/files/filePreview";
-// import FilePreview from "./components/files/filePreview";
 
 export default () => (
     <React.Fragment>
@@ -20,8 +18,6 @@ export default () => (
                         </NavbarBrand>
                     </Col>
                     <Col className="text-right">
-                        {/*<ReloadButton />*/}
-                        &nbsp;
                         <SetRoot />
                     </Col>
                 </Row>
@@ -31,7 +27,7 @@ export default () => (
             <Container fluid>
                 <Row>
                     <Col xs={2}>
-                        {/* <TagGroups /> */}
+                        <TagGroups />
                     </Col>
                     <Col>
                         <Breadcrumbs />

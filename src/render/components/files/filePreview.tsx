@@ -1,6 +1,6 @@
 import React from "react";
 import { Row, Col, Button, Breadcrumb, BreadcrumbItem } from "reactstrap";
-import Octicon, { X } from "@githubprimer/octicons-react";
+import Octicon, { X } from "@primer/octicons-react";
 import {  useFileBrowserState } from "../../state/fileBrowser";
 
 const getHeight = () => window.innerHeight - 280;

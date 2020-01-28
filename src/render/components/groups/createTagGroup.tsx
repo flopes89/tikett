@@ -1,20 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, KeyboardEvent } from "react";
 import { Button, Input } from "reactstrap";
-import Octicon, { Plus } from "@githubprimer/octicons-react";
-import { Mutation } from "../util";
-import queries from "../../queries";
+import Octicon, { Plus } from "@primer/octicons-react";
+import { useTagsState } from "../../state/tags";
 
-const CreateTagGroup = (props) => {
+export const CreateTagGroup: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [name, setName] = useState("");
+    const { addGroup } = useTagsState();
 
-    const onKeyPress = (event) => {
+    const onKeyPress = (event: KeyboardEvent) => {
         if (event.which === 13) {
-            props.confirm({
-                variables: {
-                    name,
-                },
-            });
+            addGroup(name);
             setIsOpen(false);
         }
     };
@@ -39,15 +35,3 @@ const CreateTagGroup = (props) => {
         </div>
     );
 };
-
-const CreateTagGroupContainer = () => (
-    <Mutation
-        mutation={queries.CREATE_TAG_GROUP}
-        refetchQueries={[
-            { query: queries.GET_TAG_GROUPS },
-        ]}>
-        {(mutate) => (<CreateTagGroup confirm={mutate} />)}
-    </Mutation>
-);
-
-export default CreateTagGroupContainer;

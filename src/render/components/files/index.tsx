@@ -5,6 +5,7 @@ import { File } from "./file";
 import { useGetFiles } from "../../files";
 import { useFileBrowserState } from "../../state/fileBrowser";
 import { Loading, Error } from "../util";
+import { Filter } from "./filter";
 
 type FileListProps = {
     root: string;
@@ -35,7 +36,7 @@ const FileList: React.FC<FileListProps> = (props) => {
         <div id="files_component">
             <Row>
                 <Col>
-                    {/*<Filter />*/}
+                    <Filter />
                 </Col>
                 <Col xs={4} className="text-right">
                     <Label check className="pl-2">

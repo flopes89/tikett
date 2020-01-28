@@ -1,33 +1,58 @@
 import { Reducer } from "redux";
 import { useSelector, useDispatch } from "react-redux";
 import { Store } from ".";
+import { Color } from "react-color";
 
-export enum ACTION {
+enum ACTION {
     ADD_GROUP,
     REMOVE_GROUP,
     MOVE_TAG,
+    CHANGE_COLOR,
+    REMOVE_TAG,
+    ADD_TAG,
 };
 
-export type AddGroupAction = {
+type AddGroupAction = {
     type: ACTION.ADD_GROUP;
     name: string;
 };
 
-export type RemoveGroupAction = {
+type RemoveGroupAction = {
     type: ACTION.REMOVE_GROUP;
     name: string;
 };
 
-export type MoveTagAction = {
+type MoveTagAction = {
     type: ACTION.MOVE_TAG;
     tagName: string;
     groupName: string;
 };
 
-export type TagsAction =
+type ChangeColorAction = {
+    type: ACTION.CHANGE_COLOR;
+    name: string;
+    color: string;
+};
+
+type RemoveTagAction = {
+    type: ACTION.REMOVE_TAG;
+    name: string;
+    path: string;
+}
+
+type AddTagAction = {
+    type: ACTION.ADD_TAG;
+    name: string;
+    path: string;
+};
+
+type TagsAction =
     AddGroupAction
     | RemoveGroupAction
     | MoveTagAction
+    | ChangeColorAction
+    | RemoveTagAction
+    | AddTagAction
     ;
 
 export type TagGroup = {
@@ -66,7 +91,7 @@ export const tagsReducer: Reducer<TagsState, TagsAction> = (prev, action) => {
     }
 };
 
-export const useTags = () => {
+export const useTagsState = () => {
     const state = useSelector((state: Store) => state.tags);
     const dispatch = useDispatch();
     return {
@@ -86,5 +111,28 @@ export const useTags = () => {
             tagName,
             groupName,
         }),
+
+        changeColor: (name: string, color: string): ChangeColorAction => dispatch({
+            type: ACTION.CHANGE_COLOR,
+            name,
+            color,
+        }),
+
+        removeTag: (name: string, path: string): RemoveTagAction => dispatch({
+            type: ACTION.REMOVE_TAG,
+            name,
+            path,
+        }),
+
+        addTag: (name: string, path: string): AddTagAction => dispatch({
+            type: ACTION.ADD_TAG,
+            name,
+            path,
+        }),
     };
+};
+
+export const useFlatTagList = (): string[] => {
+    const { groups } = useTagsState();
+    return Array.prototype.concat(groups.map(group => group.tags));
 };

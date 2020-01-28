@@ -1,6 +1,7 @@
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { Badge } from "reactstrap";
+import { RemoveTag } from "./removeTag";
 
 const HEX_COLOR_PATTERN = new RegExp(/#?(\w{2})(\w{2})(\w{2})/);
 
@@ -33,7 +34,7 @@ export const Tag: React.FC<TagProps> = (props) => (
 );
 
 type TagsProps = {
-    path: string;
+    path?: string;
     tags: string[];
     color: string;
 };
@@ -42,7 +43,7 @@ export const Tags: React.FC<TagsProps> = (props) => (
     <>
         {props.tags.map((tag, index) => {
             let color = props.color;
-            let path = "";
+            let path = props.path;
             let name = tag;
 
             if (tag.indexOf("#") !== -1) {
@@ -50,8 +51,6 @@ export const Tags: React.FC<TagsProps> = (props) => (
                 name = split[0];
                 color = split[1];
             }
-
-            path = props.path;
 
             const id = `${name}|${color}|${path}`;
 
@@ -66,7 +65,7 @@ export const Tags: React.FC<TagsProps> = (props) => (
                         >
                             <Tag color={color}>
                                 {name}
-                                {/*path && (<RemoveTag name={name} path={path} />)*/}
+                                {path && (<RemoveTag name={name} path={path} />)}
                             </Tag>
                         </div>
                     )}

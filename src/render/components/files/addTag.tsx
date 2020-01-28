@@ -1,20 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, KeyboardEvent } from "react";
 import { Button, Badge, Input, Modal, ModalHeader, ModalBody, ButtonGroup } from "reactstrap";
-import Octicon, { Plus } from "@githubprimer/octicons-react";
-import { Mutation, Query } from "../util";
-import queries from "../../queries";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
+import Octicon, { Plus } from "@primer/octicons-react";
 import { Tag } from "../tags";
 import classnames from "classnames";
+import { useTagsState, useFlatTagList } from "../../state/tags";
 
-const TagList = (props) => {
+type TagListProps = {
+    confirm: (tag: string) => void;
+};
+
+const TagList: React.FC<TagListProps> = (props) => {
     const [typed, setTyped] = useState("");
     const [selected, setSelected] = useState("");
-
+    
     const displayValue = (selected || typed).split("#")[0];
-
-    const tags = props.tags.filter((tag) => typed.length >= 3 && tag.indexOf(typed) !== -1);
+    
+    let tags = useFlatTagList();
+    tags = tags.filter(tag => typed.length >= 3 && tag.indexOf(typed) !== -1);
 
     const confirm = () => {
         props.confirm(displayValue);
@@ -22,7 +24,7 @@ const TagList = (props) => {
         setSelected("");
     }
 
-    const onKeyPress = (event) => {
+    const onKeyPress = (event: KeyboardEvent) => {
         if (event.which === 13) {
             confirm();
         }
@@ -33,7 +35,7 @@ const TagList = (props) => {
         }
     };
 
-    const onKeyDown = (event) => {
+    const onKeyDown = (event: KeyboardEvent) => {
         if (tags.length === 0) {
             return;
         }
@@ -60,7 +62,7 @@ const TagList = (props) => {
         }
     };
 
-    const renderTag = (tag, index) => {
+    const renderTag = (tag: string, index: number) => {
         const split = tag.split("#");
         const name = split[0];
         const color = split[1];
@@ -96,23 +98,20 @@ const TagList = (props) => {
     );
 };
 
-const TagListContainer = (props) => (
-    <Query query={queries.GET_TAGS}>
-        {(data) => (
-            <TagList confirm={props.confirm} tags={data.tags} />
-        )}
-    </Query >
-);
+type AddTagProps = {
+    path: string;
+};
 
-const AddTag = (props) => {
+export const AddTag: React.FC<AddTagProps> = (props) => {
     const [isOpen, setIsOpen] = useState(false);
+    const { addTag } = useTagsState();
 
-    const confirm = (tag) => {
+    const confirm = (tag: string) => {
         setIsOpen(false);
-        props.confirm(tag);
+        addTag(tag, props.path);
     };
 
-    const onKeyDown = (event) => {
+    const onKeyDown = (event: KeyboardEvent) => {
         if (event.key === "Enter") {
             setIsOpen(true);
             event.stopPropagation();
@@ -122,7 +121,7 @@ const AddTag = (props) => {
 
     return (
         <React.Fragment>
-            <Badge className="add_tag" color="primary" onClick={() => setIsOpen(true)} tabIndex="0" onKeyDown={onKeyDown}>
+            <Badge className="add_tag" color="primary" onClick={() => setIsOpen(true)} tabIndex={0} onKeyDown={onKeyDown}>
                 <Octicon icon={Plus} height={12} verticalAlign="middle" />
             </Badge>
             <Modal isOpen={isOpen} toggle={() => setIsOpen(false)}>
@@ -133,56 +132,9 @@ const AddTag = (props) => {
                     <p>
                         {props.path}
                     </p>
-                    <TagListContainer confirm={confirm} />
-                    <Button className="mt-3" color="primary" block onClick={confirm}>
-                        Add tag
-                    </Button>
+                    <TagList confirm={confirm} />
                 </ModalBody>
             </Modal>
         </React.Fragment >
     );
 };
-
-let AddTagContainer = (props) => {
-    const refetch = [
-        {
-            query: queries.GET_FILES,
-            variables: {
-                current: props.current,
-                showDescendants: props.showDescendants,
-            }
-        },
-        { query: queries.GET_TAG_GROUPS },
-        { query: queries.GET_TAGS }
-    ];
-
-    const renderAddTag = (mutate) => {
-        const addTag = (tag) => mutate({
-            variables: {
-                path: props.path,
-                name: tag,
-            }
-        });
-
-        return (<AddTag path={props.path} confirm={addTag} />);
-    }
-
-    return (
-        <Mutation mutation={queries.ADD_TAG} refetchQueries={refetch}>
-            {renderAddTag}
-        </Mutation>
-    );
-};
-
-AddTagContainer = connect(
-    (state) => ({
-        current: state.fileBrowser.currentFolder,
-        showDescendants: state.fileBrowser.showDescendants,
-    }),
-)(AddTagContainer);
-
-AddTagContainer.propTypes = {
-    path: PropTypes.string.isRequired,
-};
-
-export default AddTagContainer;

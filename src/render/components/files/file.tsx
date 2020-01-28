@@ -1,10 +1,11 @@
 import React, { KeyboardEvent } from "react";
-import Octicon, { FileDirectory, File as FileIcon } from "@githubprimer/octicons-react";
+import Octicon, { FileDirectory, File as FileIcon } from "@primer/octicons-react";
 import { Tags } from "../tags";
 import { Droppable, DroppableProps } from "react-beautiful-dnd";
 import classnames from "classnames";
 import { useFileBrowserState } from "../../state/fileBrowser";
 import { useDragState } from "../../state/drag";
+import { AddTag } from "./addTag";
 
 type FileProps = {
     name: string;
@@ -43,7 +44,7 @@ export const File: React.FC<FileProps> = (props) => {
         return (
             <div ref={provided.innerRef} {...provided.droppableProps} className={classes}>
                 <Tags path={props.path} tags={props.tags} color="" />
-                {/*<AddTag path={props.path} />*/}
+                <AddTag path={props.path} />
                 {provided.placeholder}
             </div>
         );
