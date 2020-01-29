@@ -3,12 +3,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { Store } from ".";
 
 export enum ACTION {
-    SET_ROOT,
-    TOGGLE_DESCENDANTS,
-    OPEN_FOLDER,
-    ADD_FILTER,
-    REMOVE_FILTER,
-    SELECT_FILE,
+    SET_ROOT = "SET_ROOT",
+    TOGGLE_DESCENDANTS = "TOGGLE_DESCENDANTS",
+    OPEN_FOLDER = "OPEN_FOLDER",
+    ADD_FILTER = "ADD_FILTER",
+    REMOVE_FILTER = "REMOVE_FILTER",
+    SELECT_FILE = "SELECT_FILE",
+    UPDATE_REFETCH = "UPDATE_REFETCH",
 };
 
 export type SetRootAction = {
@@ -40,6 +41,10 @@ export type SelectFileAction = {
     path: string;
 };
 
+export type UpdateRefetchAction = {
+    type: ACTION.UPDATE_REFETCH;
+};
+
 export type FileBrowserAction = 
     SetRootAction
     | ToggleDescendantsAction
@@ -47,6 +52,7 @@ export type FileBrowserAction =
     | AddFilterAction
     | RemoveFilterAction
     | SelectFileAction
+    | UpdateRefetchAction
     ;
 
 export type FileBrowserState = {
@@ -55,6 +61,7 @@ export type FileBrowserState = {
     showDescendants: boolean;
     filters: string[];
     selected: string;
+    lastRefetch: Date;
 };
 
 const defaultState: FileBrowserState = {
@@ -63,12 +70,19 @@ const defaultState: FileBrowserState = {
     showDescendants: false,
     filters: [],
     selected: "",
+    lastRefetch: new Date(),
 };
 
 export const fileBrowserReducer: Reducer<FileBrowserState, FileBrowserAction> = (prev, action) => {
     const state = { ...defaultState, ...prev };
 
     switch (action.type) {
+        case ACTION.UPDATE_REFETCH:
+            return {
+                ...state,
+                lastRefetch: new Date(),
+            };
+
         case ACTION.SET_ROOT:
             return {
                 ...state,
@@ -132,8 +146,14 @@ export const fileBrowserReducer: Reducer<FileBrowserState, FileBrowserAction> = 
 export const useFileBrowserState = () => {
     const state = useSelector((state: Store) => state.fileBrowser);
     const dispatch = useDispatch();
+    
     return {
         ...state,
+
+        updateRefetch: (): UpdateRefetchAction => dispatch({
+            type: ACTION.UPDATE_REFETCH,
+        }),
+
         setRoot: (root: string): SetRootAction => dispatch({
             type: ACTION.SET_ROOT,
             root,

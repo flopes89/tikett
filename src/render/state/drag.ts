@@ -3,8 +3,8 @@ import { Store } from ".";
 import { Reducer } from "redux";
 
 export enum ACTION {
-    START_TAG_DRAG,
-    END_TAG_DRAG,
+    START_TAG_DRAG = "START_TAG_DRAG",
+    END_TAG_DRAG = "END_TAG_DRAG",
 };
 
 export type StartTagDragAction = {

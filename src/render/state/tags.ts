@@ -1,15 +1,12 @@
 import { Reducer } from "redux";
 import { useSelector, useDispatch } from "react-redux";
 import { Store } from ".";
-import { Color } from "react-color";
 
 enum ACTION {
-    ADD_GROUP,
-    REMOVE_GROUP,
-    MOVE_TAG,
-    CHANGE_COLOR,
-    REMOVE_TAG,
-    ADD_TAG,
+    ADD_GROUP = "ADD_GROUP",
+    REMOVE_GROUP = "REMOVE_GROUP",
+    MOVE_TAG = "MOVE_TAG",
+    CHANGE_COLOR = "CHANGE_COLOR",
 };
 
 type AddGroupAction = {
@@ -34,25 +31,11 @@ type ChangeColorAction = {
     color: string;
 };
 
-type RemoveTagAction = {
-    type: ACTION.REMOVE_TAG;
-    name: string;
-    path: string;
-}
-
-type AddTagAction = {
-    type: ACTION.ADD_TAG;
-    name: string;
-    path: string;
-};
-
 type TagsAction =
     AddGroupAction
     | RemoveGroupAction
     | MoveTagAction
     | ChangeColorAction
-    | RemoveTagAction
-    | AddTagAction
     ;
 
 export type TagGroup = {
@@ -94,8 +77,10 @@ export const tagsReducer: Reducer<TagsState, TagsAction> = (prev, action) => {
 export const useTagsState = () => {
     const state = useSelector((state: Store) => state.tags);
     const dispatch = useDispatch();
+    
     return {
         ...state,
+
         addGroup: (name: string): AddGroupAction => dispatch({
             type: ACTION.ADD_GROUP,
             name,
@@ -116,18 +101,6 @@ export const useTagsState = () => {
             type: ACTION.CHANGE_COLOR,
             name,
             color,
-        }),
-
-        removeTag: (name: string, path: string): RemoveTagAction => dispatch({
-            type: ACTION.REMOVE_TAG,
-            name,
-            path,
-        }),
-
-        addTag: (name: string, path: string): AddTagAction => dispatch({
-            type: ACTION.ADD_TAG,
-            name,
-            path,
         }),
     };
 };

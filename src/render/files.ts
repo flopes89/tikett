@@ -24,9 +24,24 @@ export type GetFilesOptions = {
     prefix?: string;
 };
 
+export type AddTagOptions = {
+    name: string;
+    path: string;
+};
+
 const LOG = createLogger("files");
 
 // TODO File IO should probably be done in the main thread to not block the UI updates (?)
+
+export const getTagsFromPath = (path: string) => {
+    const matchTags = /\[([^\]]*)\]/.exec(path);
+
+    if (matchTags) {
+        return matchTags[1].split(" ");
+    }
+
+    return [];
+}
 
 // Finds all files under a given root (which is always relative to the db.root)
 export const getFiles = async(opts: GetFilesOptions): Promise<PathEntry[]> => {
@@ -155,3 +170,8 @@ export const getFolders = async(root: string): Promise<FolderEntry[]> => {
 };
 
 export const useGetFolders = (current: string) => asHook(getFolders, current);
+
+export const addTagToFile = async(name: string, path: string) => {
+    const tags = getTagsFromPath(path);
+    tags.push(name);
+};

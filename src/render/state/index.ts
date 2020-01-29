@@ -11,18 +11,16 @@ export type Store = {
     fileBrowser: FileBrowserState,
 };
 
-const reducer = combineReducers({
-    drag: dragReducer,
-    tags: tagsReducer,
-    fileBrowser: fileBrowserReducer,
-});
-
 const persistConfig = {
     key: "root",
     storage: createElectronStorage(),
 };
 
-const persistedReducer = persistReducer(persistConfig, reducer);
+const reducer = combineReducers({
+    drag: dragReducer,
+    tags: persistReducer(persistConfig, tagsReducer),
+    fileBrowser: persistReducer(persistConfig, fileBrowserReducer),
+});
 
-export const store = createStore(persistedReducer);
+export const store = createStore(reducer);
 export const persistor = persistStore(store);

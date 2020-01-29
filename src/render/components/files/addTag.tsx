@@ -3,7 +3,9 @@ import { Button, Badge, Input, Modal, ModalHeader, ModalBody, ButtonGroup } from
 import Octicon, { Plus } from "@primer/octicons-react";
 import { Tag } from "../tags";
 import classnames from "classnames";
-import { useTagsState, useFlatTagList } from "../../state/tags";
+import { useFlatTagList } from "../../state/tags";
+import { useFileBrowserState } from "../../state/fileBrowser";
+import { addTagToFile } from "../../files";
 
 type TagListProps = {
     confirm: (tag: string) => void;
@@ -25,7 +27,7 @@ const TagList: React.FC<TagListProps> = (props) => {
     }
 
     const onKeyPress = (event: KeyboardEvent) => {
-        if (event.which === 13) {
+        if (event.key === "Enter") {
             confirm();
         }
 
@@ -40,12 +42,12 @@ const TagList: React.FC<TagListProps> = (props) => {
             return;
         }
 
-        if (event.which === 8 && selected) {
+        if (event.key === "Backspace" && selected) {
             setTyped(selected);
             setSelected("");
         }
 
-        if (event.which === 38) {
+        if (event.key === "ArrowUp") {
             if (selected === "") {
                 setSelected(tags[tags.length - 1]);
             } else {
@@ -53,7 +55,7 @@ const TagList: React.FC<TagListProps> = (props) => {
             }
         }
 
-        if (event.which === 40) {
+        if (event.key === "ArrowDown") {
             if (selected === "") {
                 setSelected(tags[0]);
             } else {
@@ -104,11 +106,12 @@ type AddTagProps = {
 
 export const AddTag: React.FC<AddTagProps> = (props) => {
     const [isOpen, setIsOpen] = useState(false);
-    const { addTag } = useTagsState();
-
-    const confirm = (tag: string) => {
+    const { updateRefetch } = useFileBrowserState();
+    
+    const confirm = async(tag: string) => {
         setIsOpen(false);
-        addTag(tag, props.path);
+        await addTagToFile(tag, props.path);
+        updateRefetch();
     };
 
     const onKeyDown = (event: KeyboardEvent) => {
