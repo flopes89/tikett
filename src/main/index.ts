@@ -4,10 +4,23 @@ import * as url from "url";
 
 let win: BrowserWindow|null = null;
 
-const createMainWindow = () => {
+const installDevExtensions = async() => {
+    const installer = require("electron-devtools-installer");
+    const extensions = ["REACT_DEVELOPER_TOOLS", "REDUX_DEVTOOLS"];
+
+    return Promise.all(
+        extensions.map(name => installer.default(installer[name], !!process.env.UPGRADE_EXTENSIONS))
+    ).catch(console.log);
+};
+
+const createMainWindow = async() => {
+    if (process.env.NODE_ENV !== "production") {
+        //await installDevExtensions();
+    }
+
     win = new BrowserWindow({
-        width: 1024,
-        height: 768,
+        width: 1280,
+        height: 920,
         webPreferences: {
             nodeIntegration: true,
             webviewTag: true,
@@ -16,7 +29,7 @@ const createMainWindow = () => {
 
     if (process.env.NODE_ENV !== "production") {
         process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = "1";
-        
+
         win.loadURL(`http://localhost:55668`);
 
         win.webContents.once("dom-ready", () => {

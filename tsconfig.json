@@ -9,5 +9,5 @@
         "jsx": "react",
         "lib": ["DOM", "DOM.Iterable"]
     },
-    "include": ["src"]
+    "include": ["@types", "src"]
 }

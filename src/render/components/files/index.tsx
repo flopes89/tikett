@@ -12,12 +12,13 @@ type FileListProps = {
 };
 
 const FileList: React.FC<FileListProps> = (props) => {
-    const { currentFolder, showDescendants, filters, toggleDescendants } = useFileBrowserState();
+    const { currentFolder, showDescendants, filters, toggleDescendants, lastRefetch } = useFileBrowserState();
     const { err, pending, result } = useGetFiles({
         root: props.root,
         current: currentFolder,
         showDescendants,
         filters,
+        refetch: lastRefetch,
     });
 
     if (pending) {
@@ -69,7 +70,7 @@ const FileList: React.FC<FileListProps> = (props) => {
                     </Table>
                 </Col>
             </Row>
-        </div >
+        </div>
     );
 };
 

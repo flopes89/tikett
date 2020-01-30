@@ -22,6 +22,7 @@ export type GetFilesOptions = {
     showDescendants?: boolean;
     filters?: string[];
     prefix?: string;
+    refetch?: Date;
 };
 
 export type AddTagOptions = {
@@ -50,7 +51,8 @@ export const getFiles = async(opts: GetFilesOptions): Promise<PathEntry[]> => {
         current,
         showDescendants = false,
         filters = [],
-        prefix = ""
+        prefix = "",
+        refetch = new Date(),
     } = opts;
 
     // Resolve the given root to be a relative folder under root
@@ -77,7 +79,8 @@ export const getFiles = async(opts: GetFilesOptions): Promise<PathEntry[]> => {
                     current: relativePath,
                     showDescendants,
                     filters,
-                    prefix: relativePath + path.sep
+                    prefix: relativePath + path.sep,
+                    refetch,
                 });
             }
 

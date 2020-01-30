@@ -1,4 +1,4 @@
-import { combineReducers, createStore } from "redux";
+import { combineReducers, createStore, compose } from "redux";
 import { persistReducer, persistStore } from "redux-persist";
 import createElectronStorage from "redux-persist-electron-storage";
 import { dragReducer, DragState } from "./drag";
@@ -22,5 +22,8 @@ const reducer = combineReducers({
     fileBrowser: persistReducer(persistConfig, fileBrowserReducer),
 });
 
-export const store = createStore(reducer);
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+export const store = createStore(reducer, composeEnhancers());
+
 export const persistor = persistStore(store);
