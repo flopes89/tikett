@@ -4,16 +4,14 @@ import { createLogger } from "./logger";
 import { used } from "windows-drive-letters";
 import { asHook } from "./util";
 
-export type PathEntry = {
-    name: string;
-    tags: string[];
-    isFile: boolean;
-    path: string;
-};
-
 export type FolderEntry = {
     name: string;
     path: string;
+};
+
+export type PathEntry = FolderEntry & {
+    tags: string[];
+    isFile: boolean;
 };
 
 export type GetFilesOptions = {
@@ -30,14 +28,20 @@ const LOG = createLogger("files");
 
 // TODO File IO should probably be done in the main thread to not block the UI updates (?)
 
-export const getTagsFromPath = (path: string) => {
-    const matchTags = /\[([^\]]*)]/.exec(path);
+// Split a filename into its "base" part (without tags) and the tags itself
+// and returns then [base, ext, tags[]]
+export const splitFilename = (filename: string): [string, string, string[]] => {
+    let tags: string[] = [];
+    const ext = path.extname(filename);
+    let name = filename.replace(ext, "");
 
+    const matchTags = /\[([^\]]*)]/.exec(name);
     if (matchTags) {
-        return matchTags[1].split(" ");
+        tags = matchTags[1].split(" ").sort();
+        name = name.replace(matchTags[0], "");
     }
 
-    return [];
+    return [name, ext, tags];
 };
 
 // Finds all files under a given root (which is always relative to the db.root)
@@ -85,13 +89,9 @@ export const getFiles = async(opts: GetFilesOptions): Promise<PathEntry[]> => {
             return [entry];
         }
 
-        const matchTags = /\[([^\]]*)]/.exec(dirent.name);
-        if (matchTags) {
-            entry.tags = matchTags[1].split(" ");
-            entry.name = entry.name.replace(matchTags[0], "");
-        }
-
-        entry.tags = entry.tags.map(tag => tag + "#" + (tagColorMap.get(tag) || ""));
+        const [name, ext, tags] = splitFilename(entry.name);
+        entry.name = name + ext;
+        entry.tags = tags.map(tag => tag + "#" + (tagColorMap.get(tag) || ""));
         
         let matchesFilter = false;
         filters.forEach(filter => {
@@ -174,7 +174,30 @@ export const getFolders = async(root: string): Promise<FolderEntry[]> => {
 
 export const useGetFolders = (current: string) => asHook(getFolders, current);
 
-export const addTagToFile = async(name: string, path: string) => {
-    const tags = getTagsFromPath(path);
+// Add a tag to a file
+export const addTagToFile = async(name: string, filePath: string) => {
+    const [filename, ext, tags] = splitFilename(filePath);
     tags.push(name);
+
+    const newName = filename + "[" + tags.join(" ") + "]" + ext;
+
+    const dir = path.basename(filePath);
+    return fs.rename(filePath, path.resolve(dir, newName));
+};
+
+// Remove a tag from a file
+export const removeTag = async(name: string, filePath: string) => {
+    const [filename, ext, tags] = splitFilename(filePath);
+    const newTags = tags.splice(tags.indexOf(name), 1);
+
+    let newName = filename;
+
+    if (newTags.length > 0) {
+        newName += "[" + tags.join(" ") + "]";
+    }
+
+    newName += ext;
+
+    const dir = path.basename(filePath);
+    return fs.rename(filePath, path.resolve(dir, newName))
 };
