@@ -42,7 +42,10 @@ describe("files", () => {
         const actual = await files.getFiles({
             root: filesDir,
             current: "/",
-            showDescendants: false
+            showDescendants: false,
+            filters: [],
+            refetch: new Date(),
+            tagColorMap: new Map<string, string>(),
         });
 
         expect(actual).toHaveLength(5);
@@ -82,7 +85,10 @@ describe("files", () => {
         const actual = await files.getFiles({
             root: filesDir,
             current: "/",
-            showDescendants: true
+            showDescendants: true,
+            filters: [],
+            refetch: new Date(),
+            tagColorMap: new Map<string, string>(),
         });
 
         expect(actual).toHaveLength(6);
@@ -128,7 +134,9 @@ describe("files", () => {
             root: filesDir,
             current: "/",
             showDescendants: false,
-            filters: ["tag1"]
+            filters: ["tag1"],
+            refetch: new Date(),
+            tagColorMap: new Map<string, string>(),
         });
 
         expect(actual).toHaveLength(4);
@@ -164,7 +172,9 @@ describe("files", () => {
             root: filesDir,
             current: "/",
             showDescendants: true,
-            filters: ["tag2"]
+            filters: ["tag2"],
+            refetch: new Date(),
+            tagColorMap: new Map<string, string>(),
         });
 
         expect(actual).toHaveLength(3);

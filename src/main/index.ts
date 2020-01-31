@@ -10,12 +10,15 @@ const installDevExtensions = async() => {
 
     return Promise.all(
         extensions.map(name => installer.default(installer[name], !!process.env.UPGRADE_EXTENSIONS))
-    ).catch(console.log);
+    ).catch(err => {
+        console.error("Could not install dev extensions");
+        console.error(err);
+    });
 };
 
 const createMainWindow = async() => {
     if (process.env.NODE_ENV !== "production") {
-        //await installDevExtensions();
+        await installDevExtensions();
     }
 
     win = new BrowserWindow({

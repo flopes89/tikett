@@ -19,15 +19,11 @@ export type FolderEntry = {
 export type GetFilesOptions = {
     root: string;
     current: string;
-    showDescendants?: boolean;
-    filters?: string[];
+    showDescendants: boolean;
+    filters: string[];
+    refetch: Date;
+    tagColorMap: Map<string, string>;
     prefix?: string;
-    refetch?: Date;
-};
-
-export type AddTagOptions = {
-    name: string;
-    path: string;
 };
 
 const LOG = createLogger("files");
@@ -35,24 +31,25 @@ const LOG = createLogger("files");
 // TODO File IO should probably be done in the main thread to not block the UI updates (?)
 
 export const getTagsFromPath = (path: string) => {
-    const matchTags = /\[([^\]]*)\]/.exec(path);
+    const matchTags = /\[([^\]]*)]/.exec(path);
 
     if (matchTags) {
         return matchTags[1].split(" ");
     }
 
     return [];
-}
+};
 
 // Finds all files under a given root (which is always relative to the db.root)
 export const getFiles = async(opts: GetFilesOptions): Promise<PathEntry[]> => {
     const {
         root,
         current,
-        showDescendants = false,
-        filters = [],
+        showDescendants,
+        filters,
+        tagColorMap,
+        refetch,
         prefix = "",
-        refetch = new Date(),
     } = opts;
 
     // Resolve the given root to be a relative folder under root
@@ -79,19 +76,22 @@ export const getFiles = async(opts: GetFilesOptions): Promise<PathEntry[]> => {
                     current: relativePath,
                     showDescendants,
                     filters,
-                    prefix: relativePath + path.sep,
                     refetch,
+                    tagColorMap,
+                    prefix: relativePath + path.sep,
                 });
             }
 
             return [entry];
         }
 
-        const matchTags = /\[([^\]]*)\]/.exec(dirent.name);
+        const matchTags = /\[([^\]]*)]/.exec(dirent.name);
         if (matchTags) {
             entry.tags = matchTags[1].split(" ");
             entry.name = entry.name.replace(matchTags[0], "");
         }
+
+        entry.tags = entry.tags.map(tag => tag + "#" + (tagColorMap.get(tag) || ""));
         
         let matchesFilter = false;
         filters.forEach(filter => {

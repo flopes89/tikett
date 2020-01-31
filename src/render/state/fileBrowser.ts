@@ -10,7 +10,7 @@ export enum ACTION {
     REMOVE_FILTER = "REMOVE_FILTER",
     SELECT_FILE = "SELECT_FILE",
     UPDATE_REFETCH = "UPDATE_REFETCH",
-};
+}
 
 export type SetRootAction = {
     type: ACTION.SET_ROOT;

@@ -6,6 +6,7 @@
     "scripts": {
         "start-render-dev": "webpack-dev-server --progress --config webpack/render.dev.js",
         "start-main-dev": "webpack --config webpack/main.js && electron dist/main.js",
+        "validate-types": "tsc --noEmit",
         "test": "jest"
     },
     "devDependencies": {

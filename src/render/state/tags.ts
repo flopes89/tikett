@@ -7,7 +7,7 @@ enum ACTION {
     REMOVE_GROUP = "REMOVE_GROUP",
     MOVE_TAG = "MOVE_TAG",
     CHANGE_COLOR = "CHANGE_COLOR",
-};
+}
 
 type AddGroupAction = {
     type: ACTION.ADD_GROUP;
@@ -105,7 +105,17 @@ export const useTagsState = () => {
     };
 };
 
+// Get a flat list of all tags in all groups
 export const useFlatTagList = (): string[] => {
     const { groups } = useTagsState();
     return Array.prototype.concat(groups.map(group => group.tags));
+};
+
+// Get a map between tagname => color
+// based on the current tag groups and their colors
+export const useTagColorMap = (): Map<string, string> => {
+    const { groups } = useTagsState();
+    const map = new Map<string, string>();
+    groups.forEach(group => group.tags.forEach(tag => map.set(tag, group.color)));
+    return map;
 };

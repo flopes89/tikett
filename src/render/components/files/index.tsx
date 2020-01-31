@@ -6,6 +6,7 @@ import { useGetFiles } from "../../files";
 import { useFileBrowserState } from "../../state/fileBrowser";
 import { Loading, Error } from "../util";
 import { Filter } from "./filter";
+import { useTagColorMap } from "../../state/tags";
 
 type FileListProps = {
     root: string;
@@ -13,12 +14,14 @@ type FileListProps = {
 
 const FileList: React.FC<FileListProps> = (props) => {
     const { currentFolder, showDescendants, filters, toggleDescendants, lastRefetch } = useFileBrowserState();
+    const tagColorMap = useTagColorMap();
     const { err, pending, result } = useGetFiles({
         root: props.root,
         current: currentFolder,
         showDescendants,
         filters,
         refetch: lastRefetch,
+        tagColorMap,
     });
 
     if (pending) {

@@ -1,6 +1,6 @@
 import React from "react";
 import Octicon, { Trashcan } from "@primer/octicons-react";
-import { useTagsState } from "../../state/tags";
+//import { useTagsState } from "../../state/tags";
 import { useFileBrowserState } from "../../state/fileBrowser";
 
 type RemoveTagProps = {
@@ -8,12 +8,12 @@ type RemoveTagProps = {
     path: string;
 };
 
-export const RemoveTag: React.FC<RemoveTagProps> = (props) => {
-    const { removeTag } = useTagsState();
+export const RemoveTag: React.FC<RemoveTagProps> = () => {
+    //const { removeTag } = useTagsState();
     const { selectFile } = useFileBrowserState();
 
     const remove = () => {
-        removeTag(props.name, props.path);
+        //removeTag(props.name, props.path);
         selectFile("");
     };
 

@@ -3,6 +3,7 @@ node_js:
   - "lts/*"
 cache: npm
 script:
+  - npm run validate-types
   - npm test
 deploy:
   provider: releases
