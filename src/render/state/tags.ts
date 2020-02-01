@@ -2,7 +2,7 @@ import { Reducer } from "redux";
 import { useSelector, useDispatch } from "react-redux";
 import { Store } from ".";
 
-enum ACTION {
+export enum ACTION {
     ADD_GROUP = "ADD_GROUP",
     REMOVE_GROUP = "REMOVE_GROUP",
     MOVE_TAG = "MOVE_TAG",

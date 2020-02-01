@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Row, Col, ButtonGroup, Button, Modal, ModalBody, ModalHeader } from "reactstrap";
 import Octicon, { Inbox } from "@primer/octicons-react";
-import { useGetFolders } from "../../files";
+import { useGetFolders } from "../../operations/files";
 import { Error } from "../util";
 import { useFileBrowserState } from "../../state/fileBrowser";
 

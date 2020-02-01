@@ -29,8 +29,9 @@ export const asHook = <T, P>(func: HookableFunc<T, P>, param: P): HookedFuncResu
     };
 };
 
-export const getColorOfTag = async(groups: TagGroup[], name: string): Promise<string> => {
-    let result = null;
+// Get the color of a tag based on the given tag groups
+export const getColorOfTag = (groups: TagGroup[], name: string): string => {
+    let result = "";
 
     groups.forEach(group => {
         if (group.tags.find(tag => tag === name)) {
@@ -38,10 +39,6 @@ export const getColorOfTag = async(groups: TagGroup[], name: string): Promise<st
             return;
         }
     });
-
-    if (!result) {
-        result = "#efefef";
-    }
 
     return result;
 };

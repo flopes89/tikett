@@ -5,7 +5,7 @@ import { Tag } from "../tags";
 import classnames from "classnames";
 import { useFlatTagList } from "../../state/tags";
 import { useFileBrowserState } from "../../state/fileBrowser";
-import { addTagToFile } from "../../files";
+import { addTagToFile } from "../../operations/files";
 
 type TagListProps = {
     confirm: (tag: string) => void;

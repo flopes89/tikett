@@ -1,7 +1,9 @@
 import { ACTION as DRAG_ACTION } from "./state/drag";
 import { ACTION as FILE_ACTION } from "./state/fileBrowser";
+import { ACTION as TAG_ACTION } from "./state/tags";
 import { DragDropContextProps } from "react-beautiful-dnd";
 import { Store } from "redux";
+import { addTagToFile } from "./operations/files";
 
 export const onBeforeDragStart: (store: Store) => DragDropContextProps["onBeforeDragStart"] = (store) => () => {
     store.dispatch({
@@ -17,11 +19,6 @@ export const onDragEnd: (store: Store) => DragDropContextProps["onDragEnd"] = (s
         return;
     }
 
-    const addFilter = (tag: string) => store.dispatch({
-        type: FILE_ACTION.ADD_FILTER,
-        tag,
-    });
-
     const destParts = dropResult.destination.droppableId.split("|");
     const destType = destParts[0];
     const destName = destParts[1];
@@ -31,37 +28,23 @@ export const onDragEnd: (store: Store) => DragDropContextProps["onDragEnd"] = (s
     const tagColor = tagParts[1];
 
     if (destType === "file") {
-        // client_.mutate({
-        //     mutation: queries.ADD_TAG,
-        //     variables: {
-        //         path: destName,
-        //         name: tagName,
-        //     },
-        //     refetchQueries: [
-        //         {
-        //             query: queries.GET_FILES,
-        //             variables: {
-        //                 current: state.fileBrowser.currentFolder,
-        //                 showDescendants: state.fileBrowser.showDescendants,
-        //             }
-        //         }
-        //     ]
-        // })
+        addTagToFile(tagName, destName)
+            .then(() => {
+                store.dispatch({
+                type: FILE_ACTION.UPDATE_REFETCH,
+            })
+        });
     } else if (destType === "tagGroup") {
-        // client_.mutate({
-        //     mutation: queries.MOVE_TAG,
-        //     variables: {
-        //         tag: tagName,
-        //         group: destName,
-        //     },
-        //     refetchQueries: [
-        //         {
-        //             query: queries.GET_TAG_GROUPS
-        //         }
-        //     ]
-        // })
+        store.dispatch({
+            type: TAG_ACTION.MOVE_TAG,
+            tagName,
+            groupName: destName,
+        });
     } else if (destType === "filter") {
-        addFilter(`${tagName}#${tagColor}`);
+        store.dispatch({
+            type: FILE_ACTION.ADD_FILTER,
+            tag: tagName + "#" + tagColor,
+        });
     }
 
     store.dispatch({

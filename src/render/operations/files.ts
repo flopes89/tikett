@@ -1,8 +1,8 @@
-import { promises as fs, constants } from "fs";
+import * as fs from "fs-extra";
 import path from "path";
-import { createLogger } from "./logger";
+import { createLogger } from "../logger";
 import { used } from "windows-drive-letters";
-import { asHook } from "./util";
+import { asHook } from "../util";
 
 export type FolderEntry = {
     name: string;
@@ -58,21 +58,22 @@ export const getFiles = async(opts: GetFilesOptions): Promise<PathEntry[]> => {
 
     // Resolve the given root to be a relative folder under root
     const folder = path.resolve(path.join(root, current));
-    const dirents = await fs.readdir(folder, { withFileTypes: true });
+    const dirents = await fs.readdir(folder);
 
     const promises = dirents.map(async dirent => {
-        const absolutePath = path.join(folder, dirent.name);
+        const absolutePath = path.join(folder, dirent);
+        const stats = await fs.stat(absolutePath);
 
         const entry: PathEntry = {
-            name: prefix + dirent.name,
+            name: prefix + dirent,
             tags: [],
-            isFile: dirent.isFile(),
+            isFile: stats.isFile(),
             path: absolutePath,
         };
 
         LOG.silly("Creating PathEntry for %s", absolutePath);
 
-        if (dirent.isDirectory()) {
+        if (stats.isDirectory()) {
             if (showDescendants) {
                 const relativePath = path.relative(root, absolutePath);
                 return getFiles({
@@ -98,7 +99,7 @@ export const getFiles = async(opts: GetFilesOptions): Promise<PathEntry[]> => {
             matchesFilter = matchesFilter || entry.tags.indexOf(filter) !== -1;
         });
 
-        if (matchesFilter || !dirent.isFile || filters.length === 0) {
+        if (matchesFilter || !stats.isFile() || filters.length === 0) {
             return [entry];
         }
 
@@ -132,7 +133,7 @@ export const getFolders = async(root: string): Promise<FolderEntry[]> => {
         const letters = await used();
         await Promise.all(letters.map(async letter => {
             try {
-                await fs.access(letter + ":", constants.R_OK);
+                await fs.access(letter + ":", fs.constants.R_OK);
 
                 dirs.push({
                     name: letter + ":",
@@ -145,13 +146,20 @@ export const getFolders = async(root: string): Promise<FolderEntry[]> => {
     } else {
         LOG.debug("Reading dir %s", root);
 
-        const dirents = await fs.readdir(root, { withFileTypes: true });
+        const dirents = await fs.readdir(root);
 
-        dirs = dirents.filter(dirent => dirent.isDirectory())
-            .map(dirent => ({
-                name: dirent.name,
-                path: path.join(root, dirent.name)
-            }));
+        for (const dirent of dirents) {
+            const stats = await fs.stat(path.resolve(root, dirent));
+
+            if (!stats.isDirectory()) {
+                continue;
+            }
+
+            dirs.push({
+                name: dirent,
+                path: path.join(root, dirent)
+            });
+        }
 
         LOG.debug("Found %i subdirs", dirs.length);
 
@@ -188,16 +196,16 @@ export const addTagToFile = async(name: string, filePath: string) => {
 // Remove a tag from a file
 export const removeTag = async(name: string, filePath: string) => {
     const [filename, ext, tags] = splitFilename(filePath);
-    const newTags = tags.splice(tags.indexOf(name), 1);
+    tags.splice(tags.indexOf(name), 1);
 
     let newName = filename;
 
-    if (newTags.length > 0) {
+    if (tags.length > 0) {
         newName += "[" + tags.join(" ") + "]";
     }
 
     newName += ext;
 
     const dir = path.basename(filePath);
-    return fs.rename(filePath, path.resolve(dir, newName))
+    return fs.rename(filePath, path.resolve(dir, newName));
 };
