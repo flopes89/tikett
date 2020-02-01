@@ -61,46 +61,50 @@ export const getFiles = async(opts: GetFilesOptions): Promise<PathEntry[]> => {
     const dirents = await fs.readdir(folder);
 
     const promises = dirents.map(async dirent => {
-        const absolutePath = path.join(folder, dirent);
-        const stats = await fs.stat(absolutePath);
+        try {
+            const absolutePath = path.join(folder, dirent);
+            const stats = await fs.stat(absolutePath);
 
-        const entry: PathEntry = {
-            name: prefix + dirent,
-            tags: [],
-            isFile: stats.isFile(),
-            path: absolutePath,
-        };
+            const entry: PathEntry = {
+                name: prefix + dirent,
+                tags: [],
+                isFile: stats.isFile(),
+                path: absolutePath,
+            };
 
-        LOG.silly("Creating PathEntry for %s", absolutePath);
+            LOG.silly("Creating PathEntry for %s", absolutePath);
 
-        if (stats.isDirectory()) {
-            if (showDescendants) {
-                const relativePath = path.relative(root, absolutePath);
-                return getFiles({
-                    root,
-                    current: relativePath,
-                    showDescendants,
-                    filters,
-                    refetch,
-                    tagColorMap,
-                    prefix: relativePath + path.sep,
-                });
+            if (stats.isDirectory()) {
+                if (showDescendants) {
+                    const relativePath = path.relative(root, absolutePath);
+                    return getFiles({
+                        root,
+                        current: relativePath,
+                        showDescendants,
+                        filters,
+                        refetch,
+                        tagColorMap,
+                        prefix: relativePath + path.sep,
+                    });
+                }
+
+                return [entry];
             }
 
-            return [entry];
-        }
+            const [name, ext, tags] = splitFilename(entry.name);
+            entry.name = name + ext;
+            entry.tags = tags.map(tag => tag + "#" + (tagColorMap.get(tag) || ""));
+            
+            let matchesFilter = false;
+            filters.forEach(filter => {
+                matchesFilter = matchesFilter || entry.tags.indexOf(filter) !== -1;
+            });
 
-        const [name, ext, tags] = splitFilename(entry.name);
-        entry.name = name + ext;
-        entry.tags = tags.map(tag => tag + "#" + (tagColorMap.get(tag) || ""));
-        
-        let matchesFilter = false;
-        filters.forEach(filter => {
-            matchesFilter = matchesFilter || entry.tags.indexOf(filter) !== -1;
-        });
-
-        if (matchesFilter || !stats.isFile() || filters.length === 0) {
-            return [entry];
+            if (matchesFilter || !stats.isFile() || filters.length === 0) {
+                return [entry];
+            }
+        } catch (_) {
+            // np-op
         }
 
         return [];
@@ -139,7 +143,7 @@ export const getFolders = async(root: string): Promise<FolderEntry[]> => {
                     name: letter + ":",
                     path: letter + ":" + path.sep
                 });
-            } catch (e) {
+            } catch (_) {
                 LOG.debug("Skipping drive %s because it's unreadable", letter);
             }
         }));
@@ -149,16 +153,20 @@ export const getFolders = async(root: string): Promise<FolderEntry[]> => {
         const dirents = await fs.readdir(root);
 
         for (const dirent of dirents) {
-            const stats = await fs.stat(path.resolve(root, dirent));
+            try {
+                const stats = await fs.stat(path.resolve(root, dirent));
 
-            if (!stats.isDirectory()) {
+                if (!stats.isDirectory()) {
+                    continue;
+                }
+
+                dirs.push({
+                    name: dirent,
+                    path: path.join(root, dirent)
+                });
+            } catch (_) {
                 continue;
             }
-
-            dirs.push({
-                name: dirent,
-                path: path.join(root, dirent)
-            });
         }
 
         LOG.debug("Found %i subdirs", dirs.length);

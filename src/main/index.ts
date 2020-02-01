@@ -1,8 +1,18 @@
 import { app, BrowserWindow } from "electron";
 import * as path from "path";
+import * as fs from "fs";
 import * as url from "url";
 
 let win: BrowserWindow|null = null;
+
+// Temporary fix for https://github.com/electron/electron/issues/19468
+if (process.platform === 'win32') {
+    try {
+        fs.unlinkSync(path.join(app.getPath('userData'), 'DevTools Extensions'));
+    } catch (err) {
+        // no-op
+    }
+}
 
 const installDevExtensions = async() => {
     const installer = require("electron-devtools-installer");
@@ -10,15 +20,12 @@ const installDevExtensions = async() => {
 
     return Promise.all(
         extensions.map(name => installer.default(installer[name], !!process.env.UPGRADE_EXTENSIONS))
-    ).catch(err => {
-        console.error("Could not install dev extensions");
-        console.error(err);
-    });
+    );
 };
 
-const createMainWindow = async() => {
+const createMainWindow = () => {
     if (process.env.NODE_ENV !== "production") {
-        await installDevExtensions();
+        installDevExtensions().catch(err => console.error(err));
     }
 
     win = new BrowserWindow({
