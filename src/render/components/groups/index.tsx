@@ -14,7 +14,6 @@ export const TagGroups: React.FC = () => {
                     key={index}
                     name={group.name}
                     tags={group.tags}
-                    color={group.color}
                 />
             ))}
             <hr />

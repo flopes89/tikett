@@ -3,12 +3,22 @@ import { TagsState, tagsReducer, ACTION } from "./tags";
 const INITIAL_STATE: TagsState = {
     groups: [{
         name: "group1",
-        color: "#fff",
-        tags: ["tag1", "tag2"],
+        tags: [{
+            name: "tag1",
+            color: "#fff",
+        }, {
+            name: "tag2",
+            color: "#fff",
+        }],
     }, {
         name: "group2",
-        color: "#000",
-        tags: ["tag3", "tag4"],
+        tags: [{
+            name: "tag3",
+            color: "#000",
+        }, {
+            name: "tag4",
+            color: "#000",
+        }],
     }]
 };
 
@@ -23,15 +33,24 @@ it("handles add group action", () => {
     expect(newState).toEqual(<TagsState>{
         groups: [{
             name: "group1",
-            color: "#fff",
-            tags: ["tag1", "tag2"],
+            tags: [{
+                name: "tag1",
+                color: "#fff",
+            }, {
+                name: "tag2",
+                color: "#fff",
+            }],
         }, {
             name: "group2",
-            color: "#000",
-            tags: ["tag3", "tag4"],
+            tags: [{
+                name: "tag3",
+                color: "#000",
+            }, {
+                name: "tag4",
+                color: "#000",
+            }],
         }, {
             name: "group3",
-            color: "#efefef",
             tags: [],
         }]
     });
@@ -48,8 +67,13 @@ it("handles remove group action", () => {
     expect(newState).toEqual(<TagsState>{
         groups: [{
             name: "group2",
-            color: "#000",
-            tags: ["tag3", "tag4"],
+            tags: [{
+                name: "tag3",
+                color: "#000",
+            }, {
+                name: "tag4",
+                color: "#000",
+            }],
         }]
     });
 });
@@ -66,12 +90,22 @@ it("handles move tag action", () => {
     expect(newState).toEqual(<TagsState>{
         groups: [{
             name: "group1",
-            color: "#fff",
-            tags: ["tag2"],
+            tags: [{
+                name: "tag2",
+                color: "#fff",
+            }],
         }, {
             name: "group2",
-            color: "#000",
-            tags: ["tag1", "tag3", "tag4"],
+            tags: [{
+                name: "tag1",
+                color: "#000",
+            }, {
+                name: "tag3",
+                color: "#000",
+            }, {
+                name: "tag4",
+                color: "#000",
+            }],
         }]
     });
 });
@@ -88,12 +122,25 @@ it("handles move tag action (new tag)", () => {
     expect(newState).toEqual(<TagsState>{
         groups: [{
             name: "group1",
-            color: "#fff",
-            tags: ["tag1", "tag2", "tag5"],
+            tags: [{
+                name: "tag1",
+                color: "#fff",
+            }, {
+                name: "tag2",
+                color: "#fff",
+            }, {
+                name: "tag5",
+                color: "#fff",
+            }],
         }, {
             name: "group2",
-            color: "#000",
-            tags: ["tag3", "tag4"],
+            tags: [{
+                name: "tag3",
+                color: "#000",
+            }, {
+                name: "tag4",
+                color: "#000",
+            }],
         }]
     });
 });
@@ -110,12 +157,22 @@ it("handles change color action", () => {
     expect(newState).toEqual(<TagsState>{
         groups: [{
             name: "group1",
-            color: "#ddd",
-            tags: ["tag1", "tag2"],
+            tags: [{
+                name: "tag1",
+                color: "#ddd",
+            }, {
+                name: "tag2",
+                color: "#ddd",
+            }],
         }, {
             name: "group2",
-            color: "#000",
-            tags: ["tag3", "tag4"],
+            tags: [{
+                name: "tag3",
+                color: "#000",
+            }, {
+                name: "tag4",
+                color: "#000",
+            }],
         }]
     });
 });

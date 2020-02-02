@@ -7,11 +7,11 @@ import { ColorPicker } from "./colorPicker";
 import classnames from "classnames";
 import { useTagsState } from "../../state/tags";
 import { useDragState } from "../../state/drag";
+import { Tag } from "../../model";
 
 type TagGroupProps = {
     name: string;
-    tags: string[];
-    color: string;
+    tags: Tag[];
 };
 
 export const TagGroup: React.FC<TagGroupProps> = (props) => {
@@ -30,7 +30,7 @@ export const TagGroup: React.FC<TagGroupProps> = (props) => {
                 {...provided.droppableProps}
                 className={classes}
             >
-                <Tags tags={props.tags} color={props.color} />
+                <Tags tags={props.tags} />
                 {provided.placeholder}
             </div>
         );
@@ -42,7 +42,7 @@ export const TagGroup: React.FC<TagGroupProps> = (props) => {
                 <Col>
                     <strong>{props.name}</strong>
                     &nbsp;
-                    <ColorPicker group={props.name} color={props.color} />
+                    <ColorPicker group={props.name} />
                     &nbsp;
                     {props.name !== "Ungrouped" && (
                         <a href="#" onClick={() => removeGroup(props.name)}>

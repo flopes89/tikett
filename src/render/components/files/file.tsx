@@ -6,12 +6,13 @@ import classnames from "classnames";
 import { useFileBrowserState } from "../../state/fileBrowser";
 import { useDragState } from "../../state/drag";
 import { AddTag } from "./addTag";
+import { Tag } from "../../model";
 
 type FileProps = {
     name: string;
     path: string;
     isFile: boolean;
-    tags: string[];
+    tags: Tag[];
 };
 
 export const File: React.FC<FileProps> = (props) => {

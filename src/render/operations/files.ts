@@ -3,6 +3,8 @@ import path from "path";
 import { createLogger } from "../logger";
 import { used } from "windows-drive-letters";
 import { asHook } from "../util";
+import { Tag, DEFAULT_TAG_COLOR } from "../model";
+import { findIndex } from "lodash";
 
 export type FolderEntry = {
     name: string;
@@ -10,7 +12,7 @@ export type FolderEntry = {
 };
 
 export type PathEntry = FolderEntry & {
-    tags: string[];
+    tags: Tag[];
     isFile: boolean;
 };
 
@@ -93,11 +95,14 @@ export const getFiles = async(opts: GetFilesOptions): Promise<PathEntry[]> => {
 
             const [name, ext, tags] = splitFilename(entry.name);
             entry.name = name + ext;
-            entry.tags = tags.map(tag => tag + "#" + (tagColorMap.get(tag) || ""));
+            entry.tags = tags.map(tag => ({
+                name: tag,
+                color: tagColorMap.get(tag) || DEFAULT_TAG_COLOR,
+            }));
             
             let matchesFilter = false;
             filters.forEach(filter => {
-                matchesFilter = matchesFilter || entry.tags.indexOf(filter) !== -1;
+                matchesFilter = matchesFilter || (findIndex(entry.tags, tag => tag.name === filter) !== -1);
             });
 
             if (matchesFilter || !stats.isFile() || filters.length === 0) {

@@ -1,9 +1,9 @@
 import { Reducer } from "redux";
 import { useSelector, useDispatch } from "react-redux";
 import { Store } from ".";
-import { cloneDeep } from "lodash";
-
-export const DEFAULT_TAG_COLOR = "#efefef";
+import { cloneDeep, findIndex, remove, sortBy } from "lodash";
+import { TagGroup } from "../model";
+import { getColorOfGroup } from "../util";
 
 export enum ACTION {
     ADD_GROUP = "ADD_GROUP",
@@ -41,12 +41,6 @@ type TagsAction =
     | ChangeColorAction
     ;
 
-export type TagGroup = {
-    name: string;
-    color: string;
-    tags: string[];
-};
-
 export type TagsState = {
     groups: TagGroup[];
 };
@@ -59,17 +53,10 @@ export const tagsReducer: Reducer<TagsState, TagsAction> = (prev, action) => {
     const state: TagsState = cloneDeep({ ...defaultState, ...prev });
 
     if (action.type === ACTION.ADD_GROUP) {
-        const newGroups = state.groups.slice();
-        newGroups.push({
+        state.groups.push({
             name: action.name,
             tags: [],
-            color: "#efefef",
         });
-
-        return {
-            ...state,
-            groups: newGroups,
-        };
     }
 
     if (action.type === ACTION.REMOVE_GROUP) {
@@ -82,23 +69,25 @@ export const tagsReducer: Reducer<TagsState, TagsAction> = (prev, action) => {
 
     if (action.type === ACTION.MOVE_TAG) {
         state.groups.forEach(group => {
-            if (group.tags.includes(action.tagName)) {
-                group.tags.splice(group.tags.indexOf(action.tagName), 1);
+            if (findIndex(group.tags, tag => tag.name === action.tagName) !== -1) {
+                remove(group.tags, tag => tag.name === action.tagName);
             }
         
             if (group.name === action.groupName) {
-                group.tags.push(action.tagName);
-                group.tags = group.tags.sort();
+                group.tags.push({
+                    name: action.tagName,
+                    color: getColorOfGroup(group),
+                });
+                group.tags = sortBy(group.tags, ["name"]);
             }
         })
     }
 
     if (action.type === ACTION.CHANGE_COLOR) {
-        state.groups.forEach(group => {
-            if (group.name === action.name) {
-                group.color = action.color;
-            }
-        });
+        state.groups
+            .filter(group => group.name === action.name)
+            .forEach(group => group.tags.forEach(tag => tag.color = action.color)
+        );
     }
     
     return state;
@@ -146,6 +135,6 @@ export const useFlatTagList = (): string[] => {
 export const useTagColorMap = (): Map<string, string> => {
     const { groups } = useTagsState();
     const map = new Map<string, string>();
-    groups.forEach(group => group.tags.forEach(tag => map.set(tag, group.color)));
+    groups.forEach(group => group.tags.forEach(tag => map.set(tag.name, tag.color)));
     return map;
 };
