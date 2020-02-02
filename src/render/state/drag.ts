@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { Store } from ".";
 import { Reducer } from "redux";
+import { cloneDeep } from "lodash";
 
 export enum ACTION {
     START_TAG_DRAG = "START_TAG_DRAG",
@@ -29,24 +30,23 @@ const defaultState: DragState = {
 };
 
 export const dragReducer: Reducer<DragState, TagAction> = (prev, action) => {
-    const state = { ...defaultState, ...prev };
+    const state: DragState = cloneDeep({ ...defaultState, ...prev });
 
-    switch (action.type) {
-        case ACTION.START_TAG_DRAG:
-            return {
-                ...state,
-                isDraggingTag: true,
-            };
-
-        case ACTION.END_TAG_DRAG:
-            return {
-                ...state,
-                isDraggingTag: false,
-            };
-
-        default:
-            return state;
+    if (action.type === ACTION.START_TAG_DRAG) {
+        return {
+            ...state,
+            isDraggingTag: true,
+        };
     }
+
+    if (action.type === ACTION.END_TAG_DRAG) {
+        return {
+            ...state,
+            isDraggingTag: false,
+        };
+    }
+
+    return state;
 };
 
 export const useDragState = () => {

@@ -1,6 +1,7 @@
 import { Reducer } from "redux";
 import { useSelector, useDispatch } from "react-redux";
 import { Store } from ".";
+import { cloneDeep } from "lodash";
 
 export enum ACTION {
     ADD_GROUP = "ADD_GROUP",
@@ -53,25 +54,52 @@ const defaultState: TagsState = {
 };
 
 export const tagsReducer: Reducer<TagsState, TagsAction> = (prev, action) => {
-    const state = { ...defaultState, ...prev };
+    const state: TagsState = cloneDeep({ ...defaultState, ...prev });
 
-    switch (action.type) {
-        case ACTION.ADD_GROUP:
-            const newGroups = state.groups.slice();
-            newGroups.push({
-                name: action.name,
-                tags: [],
-                color: "#efefef",
-            });
+    if (action.type === ACTION.ADD_GROUP) {
+        const newGroups = state.groups.slice();
+        newGroups.push({
+            name: action.name,
+            tags: [],
+            color: "#efefef",
+        });
 
-            return {
-                ...state,
-                groups: newGroups,
-            };
-
-        default:
-            return state;
+        return {
+            ...state,
+            groups: newGroups,
+        };
     }
+
+    if (action.type === ACTION.REMOVE_GROUP) {
+        const newGroups = state.groups.filter(group => group.name !== action.name);
+        return {
+            ...state,
+            groups: newGroups,
+        };
+    }
+
+    if (action.type === ACTION.MOVE_TAG) {
+        state.groups.forEach(group => {
+            if (group.tags.includes(action.tagName)) {
+                group.tags.splice(group.tags.indexOf(action.tagName), 1);
+            }
+        
+            if (group.name === action.groupName) {
+                group.tags.push(action.tagName);
+                group.tags = group.tags.sort();
+            }
+        })
+    }
+
+    if (action.type === ACTION.CHANGE_COLOR) {
+        state.groups.forEach(group => {
+            if (group.name === action.name) {
+                group.color = action.color;
+            }
+        });
+    }
+    
+    return state;
 };
 
 export const useTagsState = () => {

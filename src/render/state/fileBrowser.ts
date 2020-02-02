@@ -1,6 +1,7 @@
 import { Reducer } from "redux";
 import { useSelector, useDispatch } from "react-redux";
 import { Store } from ".";
+import { cloneDeep } from "lodash";
 
 export enum ACTION {
     SET_ROOT = "SET_ROOT",
@@ -74,73 +75,81 @@ const defaultState: FileBrowserState = {
 };
 
 export const fileBrowserReducer: Reducer<FileBrowserState, FileBrowserAction> = (prev, action) => {
-    const state = { ...defaultState, ...prev };
+    const state = cloneDeep({ ...defaultState, ...prev });
 
-    switch (action.type) {
-        case ACTION.UPDATE_REFETCH:
-            return {
-                ...state,
-                lastRefetch: new Date(),
-            };
-
-        case ACTION.SET_ROOT:
-            return {
-                ...state,
-                root: action.root,
-            };
-
-        case ACTION.TOGGLE_DESCENDANTS:
-            return {
-                ...state,
-                showDescendants: !state.showDescendants,
-            };
-
-        case ACTION.OPEN_FOLDER:
-            let newCurrent = state.currentFolder;
-
-            if (action.folder.indexOf("/") === 0) {
-                newCurrent = action.folder;
-            } else if (action.folder === "..") {
-                if (newCurrent === "/") {
-                    newCurrent = "/";
-                } else {
-                    const parts = newCurrent.split("/");
-                    parts.splice(-2, 2);
-                    newCurrent = parts.join("/") + "/";
-                }
-            } else {
-                newCurrent += action.folder + "/";
-            }
-
-            return {
-                ...state,
-                currentFolder: newCurrent,
-            };
-
-        case ACTION.ADD_FILTER:
-            return {
-                ...state,
-                filters: [...state.filters, action.tag],
-            };
-
-        case ACTION.REMOVE_FILTER:
-            const filters = state.filters.slice();
-            filters.splice(filters.indexOf(action.tag), 1);
-
-            return {
-                ...state,
-                filters,
-            };
-
-        case ACTION.SELECT_FILE:
-            return {
-                ...state,
-                selected: action.path,
-            };
-        
-        default:
-            return state;
+    if (action.type === ACTION.UPDATE_REFETCH) {
+        return {
+            ...state,
+            lastRefetch: new Date(),
+        };
     }
+
+    if (action.type === ACTION.SET_ROOT) {
+        return {
+            ...state,
+            root: action.root,
+            currentFolder: "/",
+            showDescendants: false,
+            filters: [],
+            selected: "",
+        };
+    }
+
+    if (action.type === ACTION.TOGGLE_DESCENDANTS) {
+        return {
+            ...state,
+            showDescendants: !state.showDescendants,
+        };
+    }
+
+    if (action.type === ACTION.OPEN_FOLDER) {
+        let newCurrent = state.currentFolder;
+
+        if (action.folder.indexOf("/") === 0) {
+            newCurrent = action.folder;
+        } else if (action.folder === "..") {
+            if (newCurrent === "/") {
+                newCurrent = "/";
+            } else {
+                const parts = newCurrent.split("/");
+                parts.splice(-2, 2);
+                newCurrent = parts.join("/") + "/";
+            }
+        } else {
+            newCurrent += action.folder + "/";
+        }
+
+        return {
+            ...state,
+            currentFolder: newCurrent,
+        };
+    }
+
+    if (action.type === ACTION.ADD_FILTER) {
+        return {
+            ...state,
+            filters: [...state.filters, action.tag].sort(),
+        };
+    }
+
+    if (action.type === ACTION.REMOVE_FILTER) {
+        const filters = state.filters.slice();
+        filters.splice(filters.indexOf(action.tag), 1);
+
+        return {
+            ...state,
+            filters,
+        };
+    }
+
+    if (action.type === ACTION.SELECT_FILE) {
+        return {
+            ...state,
+            selected: action.path,
+        };
+    }
+    
+    return state;
 };
 
 export const useFileBrowserState = () => {
