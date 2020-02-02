@@ -104,7 +104,7 @@ export const getFiles = async(opts: GetFilesOptions): Promise<PathEntry[]> => {
                 return [entry];
             }
         } catch (_) {
-            // np-op
+            // no-op
         }
 
         return [];
@@ -193,9 +193,9 @@ export const useGetFolders = (current: string) => asHook(getFolders, current);
 // Add a tag to a file
 export const addTagToFile = async(name: string, filePath: string) => {
     const [filename, ext, tags] = splitFilename(filePath);
-    tags.push(name);
+    const newTags = Array.from(new Set([...tags, name]));
 
-    const newName = filename + "[" + tags.join(" ") + "]" + ext;
+    const newName = filename + "[" + newTags.join(" ") + "]" + ext;
 
     const dir = path.basename(filePath);
     return fs.rename(filePath, path.resolve(dir, newName));

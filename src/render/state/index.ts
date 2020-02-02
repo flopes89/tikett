@@ -11,15 +11,10 @@ export type Store = {
     fileBrowser: FileBrowserState,
 };
 
-const persistConfig = {
-    key: "root",
-    storage: createElectronStorage(),
-};
-
 const reducer = combineReducers({
     drag: dragReducer,
-    tags: persistReducer(persistConfig, tagsReducer),
-    fileBrowser: persistReducer(persistConfig, fileBrowserReducer),
+    tags: persistReducer({ key: "tags", storage: createElectronStorage() }, tagsReducer),
+    fileBrowser: persistReducer({ key: "fileBrowser", storage: createElectronStorage() }, fileBrowserReducer),
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

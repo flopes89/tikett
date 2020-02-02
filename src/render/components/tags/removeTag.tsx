@@ -1,19 +1,19 @@
 import React from "react";
 import Octicon, { Trashcan } from "@primer/octicons-react";
-//import { useTagsState } from "../../state/tags";
 import { useFileBrowserState } from "../../state/fileBrowser";
+import { removeTag } from "../../operations/files";
 
 type RemoveTagProps = {
     name: string;
     path: string;
 };
 
-export const RemoveTag: React.FC<RemoveTagProps> = () => {
-    //const { removeTag } = useTagsState();
-    const { selectFile } = useFileBrowserState();
+export const RemoveTag: React.FC<RemoveTagProps> = (props) => {
+    const { selectFile, updateRefetch } = useFileBrowserState();
 
-    const remove = () => {
-        //removeTag(props.name, props.path);
+    const remove = async() => {
+        await removeTag(props.name, props.path);
+        updateRefetch();
         selectFile("");
     };
 

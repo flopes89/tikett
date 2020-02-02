@@ -37,13 +37,13 @@ export const onDragEnd: (store: Store) => DragDropContextProps["onDragEnd"] = (s
     } else if (destType === "tagGroup") {
         store.dispatch({
             type: TAG_ACTION.MOVE_TAG,
-            tagName,
+            tagName: tagName + tagColor,
             groupName: destName,
         });
     } else if (destType === "filter") {
         store.dispatch({
             type: FILE_ACTION.ADD_FILTER,
-            tag: tagName + "#" + tagColor,
+            tag: tagName + tagColor,
         });
     }
 

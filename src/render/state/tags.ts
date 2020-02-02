@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { Store } from ".";
 import { cloneDeep } from "lodash";
 
+export const DEFAULT_TAG_COLOR = "#efefef";
+
 export enum ACTION {
     ADD_GROUP = "ADD_GROUP",
     REMOVE_GROUP = "REMOVE_GROUP",

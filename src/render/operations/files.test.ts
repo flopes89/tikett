@@ -238,6 +238,7 @@ it("adds tag to file", async() => {
 	const root = await createRoot();
 
 	await files.addTagToFile("tag", path.resolve(root, "file1.txt"));
+	await files.addTagToFile("tag", path.resolve(root, "file1[tag].txt"));
 	await files.addTagToFile("tag3", path.resolve(root, "file1[tag1 tag2].txt"));
 	await files.addTagToFile("tag hello world", path.resolve(root, "folder1", "file11[moretag].exe"));
 	

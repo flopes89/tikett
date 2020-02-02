@@ -43,7 +43,7 @@ export const File: React.FC<FileProps> = (props) => {
 
         return (
             <div ref={provided.innerRef} {...provided.droppableProps} className={classes}>
-                <Tags path={props.path} tags={props.tags} color="" />
+                <Tags path={props.path} tags={props.tags} />
                 <AddTag path={props.path} />
                 {provided.placeholder}
             </div>

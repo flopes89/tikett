@@ -3,6 +3,7 @@ import { SketchPicker, ColorResult } from "react-color";
 import { Popover, PopoverBody, Button } from "reactstrap";
 import Octicon, { Paintcan } from "@primer/octicons-react";
 import { useTagsState } from "../../state/tags";
+import { useFileBrowserState } from "../../state/fileBrowser";
 
 type ColorPickerProps = {
     group: string;
@@ -11,6 +12,7 @@ type ColorPickerProps = {
 
 export const ColorPicker: React.FC<ColorPickerProps> = (props) => {
     const { changeColor } = useTagsState();
+    const { updateRefetch } = useFileBrowserState();
     const [isOpen, setIsOpen] = useState(false);
     const [color, setColor] = useState(props.color);
 
@@ -21,6 +23,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = (props) => {
     const confirm = () => {
         setIsOpen(false);
         changeColor(props.group, color);
+        updateRefetch();
     };
 
     return (

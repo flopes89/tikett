@@ -2,6 +2,7 @@ import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { Badge } from "reactstrap";
 import { RemoveTag } from "./removeTag";
+import { DEFAULT_TAG_COLOR } from "../../state/tags";
 
 const HEX_COLOR_PATTERN = new RegExp(/#?(\w{2})(\w{2})(\w{2})/);
 
@@ -36,13 +37,12 @@ export const Tag: React.FC<TagProps> = (props) => (
 type TagsProps = {
     path?: string;
     tags: string[];
-    color: string;
 };
 
 export const Tags: React.FC<TagsProps> = (props) => (
     <>
         {props.tags.map((tag, index) => {
-            let color = props.color;
+            let color = DEFAULT_TAG_COLOR;
             let path = props.path;
             let name = tag;
 
