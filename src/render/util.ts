@@ -29,10 +29,14 @@ export const asHook = <T, P>(func: HookableFunc<T, P>, param: P): HookedFuncResu
     };
 };
 
-export const getColorOfGroup = (group: TagGroup): string => {
-    if (group.tags.length === 0) {
-        return DEFAULT_TAG_COLOR;
-    }
+export const getColorOfTag = (groups: TagGroup[], name: string): string => {
+    let result = DEFAULT_TAG_COLOR;
 
-    return group.tags[0].color;
+    groups.forEach(group => {
+        if (group.tags.findIndex(tag => tag === name) !== -1) {
+            result = group.color;
+        }
+    });
+
+    return result;
 };

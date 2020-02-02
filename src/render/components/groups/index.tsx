@@ -9,13 +9,7 @@ export const TagGroups: React.FC = () => {
 
     return (
         <div id="tag_groups">
-            {groups.map((group, index) => (
-                <TagGroup
-                    key={index}
-                    name={group.name}
-                    tags={group.tags}
-                />
-            ))}
+            {groups.map((group, index) => <TagGroup key={index} group={group} />)}
             <hr />
             <Row>
                 <Col>

@@ -23,12 +23,10 @@ export const onDragEnd: (store: Store) => DragDropContextProps["onDragEnd"] = (s
     const destType = destParts[0];
     const destName = destParts[1];
 
-    const tagParts = dropResult.draggableId.split("|");
-    const tagName = tagParts[0];
-    const tagColor = tagParts[1];
+    const source = dropResult.draggableId;
 
     if (destType === "file") {
-        addTagToFile(tagName, destName)
+        addTagToFile(source, destName)
             .then(() => {
                 store.dispatch({
                 type: FILE_ACTION.UPDATE_REFETCH,
@@ -37,13 +35,13 @@ export const onDragEnd: (store: Store) => DragDropContextProps["onDragEnd"] = (s
     } else if (destType === "tagGroup") {
         store.dispatch({
             type: TAG_ACTION.MOVE_TAG,
-            tagName: tagName + tagColor,
+            tagName: source,
             groupName: destName,
         });
     } else if (destType === "filter") {
         store.dispatch({
             type: FILE_ACTION.ADD_FILTER,
-            tag: tagName + tagColor,
+            tag: source,
         });
     }
 

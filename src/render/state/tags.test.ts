@@ -1,24 +1,15 @@
 import { TagsState, tagsReducer, ACTION } from "./tags";
+import { DEFAULT_TAG_COLOR } from "../model";
 
 const INITIAL_STATE: TagsState = {
     groups: [{
         name: "group1",
-        tags: [{
-            name: "tag1",
-            color: "#fff",
-        }, {
-            name: "tag2",
-            color: "#fff",
-        }],
+        color: "#fff",
+        tags: ["tag1", "tag2"],
     }, {
         name: "group2",
-        tags: [{
-            name: "tag3",
-            color: "#000",
-        }, {
-            name: "tag4",
-            color: "#000",
-        }],
+        color: "#000",
+        tags: ["tag3", "tag4"],
     }]
 };
 
@@ -33,24 +24,15 @@ it("handles add group action", () => {
     expect(newState).toEqual(<TagsState>{
         groups: [{
             name: "group1",
-            tags: [{
-                name: "tag1",
-                color: "#fff",
-            }, {
-                name: "tag2",
-                color: "#fff",
-            }],
+            color: "#fff",
+            tags: ["tag1", "tag2"],
         }, {
             name: "group2",
-            tags: [{
-                name: "tag3",
-                color: "#000",
-            }, {
-                name: "tag4",
-                color: "#000",
-            }],
+            color: "#000",
+            tags: ["tag3", "tag4"],
         }, {
             name: "group3",
+            color: DEFAULT_TAG_COLOR,
             tags: [],
         }]
     });
@@ -67,13 +49,8 @@ it("handles remove group action", () => {
     expect(newState).toEqual(<TagsState>{
         groups: [{
             name: "group2",
-            tags: [{
-                name: "tag3",
-                color: "#000",
-            }, {
-                name: "tag4",
-                color: "#000",
-            }],
+            color: "#000",
+            tags: ["tag3", "tag4"],
         }]
     });
 });
@@ -90,22 +67,12 @@ it("handles move tag action", () => {
     expect(newState).toEqual(<TagsState>{
         groups: [{
             name: "group1",
-            tags: [{
-                name: "tag2",
-                color: "#fff",
-            }],
+            color: "#fff",
+            tags: ["tag2"],
         }, {
             name: "group2",
-            tags: [{
-                name: "tag1",
-                color: "#000",
-            }, {
-                name: "tag3",
-                color: "#000",
-            }, {
-                name: "tag4",
-                color: "#000",
-            }],
+            color: "#000",
+            tags: ["tag1", "tag3", "tag4"],
         }]
     });
 });
@@ -122,25 +89,12 @@ it("handles move tag action (new tag)", () => {
     expect(newState).toEqual(<TagsState>{
         groups: [{
             name: "group1",
-            tags: [{
-                name: "tag1",
-                color: "#fff",
-            }, {
-                name: "tag2",
-                color: "#fff",
-            }, {
-                name: "tag5",
-                color: "#fff",
-            }],
+            color: "#fff",
+            tags: ["tag1", "tag2", "tag5"],
         }, {
             name: "group2",
-            tags: [{
-                name: "tag3",
-                color: "#000",
-            }, {
-                name: "tag4",
-                color: "#000",
-            }],
+            color: "#000",
+            tags: ["tag3", "tag4"],
         }]
     });
 });
@@ -157,22 +111,12 @@ it("handles change color action", () => {
     expect(newState).toEqual(<TagsState>{
         groups: [{
             name: "group1",
-            tags: [{
-                name: "tag1",
-                color: "#ddd",
-            }, {
-                name: "tag2",
-                color: "#ddd",
-            }],
+            color: "#ddd",
+            tags: ["tag1", "tag2"],
         }, {
             name: "group2",
-            tags: [{
-                name: "tag3",
-                color: "#000",
-            }, {
-                name: "tag4",
-                color: "#000",
-            }],
+            color: "#000",
+            tags: ["tag3", "tag4"],
         }]
     });
 });

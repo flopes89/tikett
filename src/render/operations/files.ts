@@ -3,8 +3,6 @@ import path from "path";
 import { createLogger } from "../logger";
 import { used } from "windows-drive-letters";
 import { asHook } from "../util";
-import { Tag, DEFAULT_TAG_COLOR } from "../model";
-import { findIndex } from "lodash";
 
 export type FolderEntry = {
     name: string;
@@ -12,7 +10,7 @@ export type FolderEntry = {
 };
 
 export type PathEntry = FolderEntry & {
-    tags: Tag[];
+    tags: string[];
     isFile: boolean;
 };
 
@@ -22,7 +20,6 @@ export type GetFilesOptions = {
     showDescendants: boolean;
     filters: string[];
     refetch: Date;
-    tagColorMap: Map<string, string>;
     prefix?: string;
 };
 
@@ -53,7 +50,6 @@ export const getFiles = async(opts: GetFilesOptions): Promise<PathEntry[]> => {
         current,
         showDescendants,
         filters,
-        tagColorMap,
         refetch,
         prefix = "",
     } = opts;
@@ -85,7 +81,6 @@ export const getFiles = async(opts: GetFilesOptions): Promise<PathEntry[]> => {
                         showDescendants,
                         filters,
                         refetch,
-                        tagColorMap,
                         prefix: relativePath + path.sep,
                     });
                 }
@@ -95,14 +90,11 @@ export const getFiles = async(opts: GetFilesOptions): Promise<PathEntry[]> => {
 
             const [name, ext, tags] = splitFilename(entry.name);
             entry.name = name + ext;
-            entry.tags = tags.map(tag => ({
-                name: tag,
-                color: tagColorMap.get(tag) || DEFAULT_TAG_COLOR,
-            }));
+            entry.tags = tags;
             
             let matchesFilter = false;
             filters.forEach(filter => {
-                matchesFilter = matchesFilter || (findIndex(entry.tags, tag => tag.name === filter) !== -1);
+                matchesFilter = matchesFilter || entry.tags.indexOf(filter) !== -1;
             });
 
             if (matchesFilter || !stats.isFile() || filters.length === 0) {

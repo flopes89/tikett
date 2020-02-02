@@ -1,9 +1,8 @@
 import { Reducer } from "redux";
 import { useSelector, useDispatch } from "react-redux";
 import { Store } from ".";
-import { cloneDeep, findIndex, remove, sortBy } from "lodash";
-import { TagGroup } from "../model";
-import { getColorOfGroup } from "../util";
+import { cloneDeep } from "lodash";
+import { TagGroup, DEFAULT_TAG_COLOR } from "../model";
 
 export enum ACTION {
     ADD_GROUP = "ADD_GROUP",
@@ -55,6 +54,7 @@ export const tagsReducer: Reducer<TagsState, TagsAction> = (prev, action) => {
     if (action.type === ACTION.ADD_GROUP) {
         state.groups.push({
             name: action.name,
+            color: DEFAULT_TAG_COLOR,
             tags: [],
         });
     }
@@ -69,25 +69,23 @@ export const tagsReducer: Reducer<TagsState, TagsAction> = (prev, action) => {
 
     if (action.type === ACTION.MOVE_TAG) {
         state.groups.forEach(group => {
-            if (findIndex(group.tags, tag => tag.name === action.tagName) !== -1) {
-                remove(group.tags, tag => tag.name === action.tagName);
+            if (group.tags.includes(action.tagName)) {
+                group.tags.splice(group.tags.indexOf(action.tagName), 1);
             }
         
             if (group.name === action.groupName) {
-                group.tags.push({
-                    name: action.tagName,
-                    color: getColorOfGroup(group),
-                });
-                group.tags = sortBy(group.tags, ["name"]);
+                group.tags.push(action.tagName);
+                group.tags = group.tags.sort();
             }
         })
     }
 
     if (action.type === ACTION.CHANGE_COLOR) {
-        state.groups
-            .filter(group => group.name === action.name)
-            .forEach(group => group.tags.forEach(tag => tag.color = action.color)
-        );
+        state.groups.forEach(group => {
+            if (group.name === action.name) {
+                group.color = action.color;
+            }
+        });
     }
     
     return state;
@@ -128,13 +126,4 @@ export const useTagsState = () => {
 export const useFlatTagList = (): string[] => {
     const { groups } = useTagsState();
     return Array.prototype.concat(groups.map(group => group.tags));
-};
-
-// Get a map between tagname => color
-// based on the current tag groups and their colors
-export const useTagColorMap = (): Map<string, string> => {
-    const { groups } = useTagsState();
-    const map = new Map<string, string>();
-    groups.forEach(group => group.tags.forEach(tag => map.set(tag.name, tag.color)));
-    return map;
 };

@@ -7,11 +7,10 @@ import { ColorPicker } from "./colorPicker";
 import classnames from "classnames";
 import { useTagsState } from "../../state/tags";
 import { useDragState } from "../../state/drag";
-import { Tag } from "../../model";
+import { TagGroup as TagGroupModel } from "../../model";
 
 type TagGroupProps = {
-    name: string;
-    tags: Tag[];
+    group: TagGroupModel;
 };
 
 export const TagGroup: React.FC<TagGroupProps> = (props) => {
@@ -30,7 +29,7 @@ export const TagGroup: React.FC<TagGroupProps> = (props) => {
                 {...provided.droppableProps}
                 className={classes}
             >
-                <Tags tags={props.tags} />
+                <Tags tags={props.group.tags} />
                 {provided.placeholder}
             </div>
         );
@@ -40,20 +39,18 @@ export const TagGroup: React.FC<TagGroupProps> = (props) => {
         <>
             <Row>
                 <Col>
-                    <strong>{props.name}</strong>
+                    <strong>{props.group.name}</strong>
                     &nbsp;
-                    <ColorPicker group={props.name} />
+                    <ColorPicker group={props.group} />
                     &nbsp;
-                    {props.name !== "Ungrouped" && (
-                        <a href="#" onClick={() => removeGroup(props.name)}>
-                            <Octicon icon={Trashcan} />
-                        </a>
-                    )}
+                    <a href="#" onClick={() => removeGroup(props.group.name)}>
+                        <Octicon icon={Trashcan} />
+                    </a>
                 </Col>
             </Row>
             <Row>
                 <Col>
-                    <Droppable droppableId={"tagGroup|" + props.name}>
+                    <Droppable droppableId={"tagGroup|" + props.group.name}>
                         {(provided, snapshot) => renderTagGroup(provided, snapshot)}
                     </Droppable>
                 </Col>

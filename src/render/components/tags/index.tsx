@@ -2,7 +2,8 @@ import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { Badge } from "reactstrap";
 import { RemoveTag } from "./removeTag";
-import { Tag as TagModel } from "../../model";
+import { getColorOfTag } from "../../util";
+import { useTagsState } from "../../state/tags";
 
 const HEX_COLOR_PATTERN = new RegExp(/#?(\w{2})(\w{2})(\w{2})/);
 
@@ -36,31 +37,35 @@ export const Tag: React.FC<TagProps> = (props) => (
 
 type TagsProps = {
     path?: string;
-    tags: TagModel[];
+    tags: string[];
 };
 
-export const Tags: React.FC<TagsProps> = (props) => (
-    <>
-        {props.tags.map((tag, index) => {
-            const id = `${tag.name}|${tag.color}|${props.path}`;
+export const Tags: React.FC<TagsProps> = (props) => {
+    const { groups } = useTagsState();
 
-            return (
-                <Draggable draggableId={id} index={index} key={index}>
-                    {(provided) => (
-                        <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            className="tag"
-                        >
-                            <Tag color={tag.color}>
-                                {tag.name}
-                                {props.path && (<RemoveTag name={tag.name} path={props.path} />)}
-                            </Tag>
-                        </div>
-                    )}
-                </Draggable>
-            );
-        })}
-    </>
-);
+    return (
+        <>
+            {props.tags.map((tag, index) => {
+                const color = getColorOfTag(groups, tag);
+
+                return (
+                    <Draggable draggableId={tag} index={index} key={index}>
+                        {(provided) => (
+                            <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                className="tag"
+                            >
+                                <Tag color={color}>
+                                    {tag}
+                                    {props.path && (<RemoveTag name={tag} path={props.path} />)}
+                                </Tag>
+                            </div>
+                        )}
+                    </Draggable>
+                );
+            })}
+        </>
+    );
+};

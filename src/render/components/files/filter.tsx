@@ -6,21 +6,22 @@ import classnames from "classnames";
 import Octicon, { Trashcan } from "@primer/octicons-react";
 import { useFileBrowserState } from "../../state/fileBrowser";
 import { useDragState } from "../../state/drag";
+import { useTagsState } from "../../state/tags";
+import { getColorOfTag } from "../../util";
 
-export const Filter: React.FC = (props) => {
+export const Filter: React.FC = () => {
     const { filters, removeFilter } = useFileBrowserState();
+    const { groups } = useTagsState();
     const { isDraggingTag } = useDragState();
 
     const renderTag = (tag: string) => {
-        const parts = tag.split("#");
-        const name = parts[0];
-        const color = parts[1];
+        const color = getColorOfTag(groups, tag);
 
         return (
-            <div key={name} className="tag">
+            <div key={tag} className="tag">
                 <Tag color={color}>
-                    {name}
-                    <a className="remove_tag ml-2" href="#" onClick={() => removeFilter(name)}>
+                    {tag}
+                    <a className="remove_tag ml-2" href="#" onClick={() => removeFilter(tag)}>
                         <Octicon icon={Trashcan} size={12} verticalAlign="middle" />
                     </a>
                 </Tag>

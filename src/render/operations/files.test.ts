@@ -65,7 +65,6 @@ it("finds files", async() => {
         showDescendants: false,
         filters: [],
         refetch: new Date(),
-        tagColorMap: new Map<string, string>(),
     });
 
 	await fs.remove(root);
@@ -88,24 +87,12 @@ it("finds files", async() => {
             name: "file1.txt",
             path: path.resolve(root, "file1[tag1 tag2].txt"),
             isFile: true,
-            tags: [{
-                name: "tag1",
-                color: "#efefef",
-            }, {
-                name: "tag2",
-                color: "#efefef",
-            }],
+            tags: ["tag1", "tag2"],
         }, {
             name: "file2",
             path: path.resolve(root, "file2[tag1 tag2]"),
             isFile: true,
-            tags: [{
-                name: "tag1",
-                color: "#efefef",
-            }, {
-                name: "tag2",
-                color: "#efefef",
-            }],
+            tags: ["tag1", "tag2"],
         }, {
             name: "folder1",
             path: path.resolve(root, "folder1"),
@@ -124,7 +111,6 @@ it("finds descendants", async() => {
         showDescendants: true,
         filters: [],
         refetch: new Date(),
-        tagColorMap: new Map<string, string>(),
     });
 
 	await fs.remove(root);
@@ -142,51 +128,27 @@ it("finds descendants", async() => {
             name: "file1.txt",
             path: path.resolve(root, "file1[tag1 tag2].txt"),
             isFile: true,
-            tags: [{
-                name: "tag1",
-                color: "#efefef",
-            }, {
-                name: "tag2",
-                color: "#efefef",
-            }],
+            tags: ["tag1", "tag2"],
         }, {
             name: "file2",
             path: path.resolve(root, "file2[tag1 tag2]"),
             isFile: true,
-            tags: [{
-                name: "tag1",
-                color: "#efefef",
-            }, {
-                name: "tag2",
-                color: "#efefef",
-            }],
+            tags: ["tag1", "tag2"],
         }, {
             name: path.join("folder1", "file11.exe"),
             path: path.resolve(root, "folder1", "file11[moretag].exe"),
             isFile: true,
-            tags: [{
-                name: "moretag",
-                color: "#efefef",
-            }],
+            tags: ["moretag"],
         }, {
             name: path.join("folder1", "folder2", "file4.ext.split"),
             path: path.resolve(root, "folder1", "folder2", "file4[tag5 tag6].ext.split"),
             isFile: true,
-            tags: [{
-                name: "tag5",
-                color: "#efefef",
-            }, {
-                name: "tag6",
-                color: "#efefef",
-            }],
+            tags: ["tag5", "tag6"],
         }, {
             name: path.join("folder1", "folder2", "file5"),
             path: path.resolve(root, "folder1", "folder2", "file5[tag2]"),
             isFile: true,
-            tags: [{
-                name: "tag2",
-                color: "#efefef",
-            }],
+            tags: ["tag2"],
         }
     ]);
 });
@@ -200,7 +162,6 @@ it("filters by tags", async() => {
         showDescendants: false,
         filters: ["tag1"],
         refetch: new Date(),
-        tagColorMap: new Map<string, string>(),
     });
 
 	await fs.remove(root);
@@ -218,24 +179,12 @@ it("filters by tags", async() => {
             name: "file1.txt",
             path: path.resolve(root, "file1[tag1 tag2].txt"),
             isFile: true,
-            tags: [{
-                name: "tag1",
-                color: "#efefef",
-            }, {
-                name: "tag2",
-                color: "#efefef",
-            }],
+            tags: ["tag1", "tag2"],
         }, {
             name: "file2",
             path: path.resolve(root, "file2[tag1 tag2]"),
             isFile: true,
-            tags: [{
-                name: "tag1",
-                color: "#efefef",
-            }, {
-                name: "tag2",
-                color: "#efefef",
-            }],
+            tags: ["tag1", "tag2"],
         }, {
             name: "folder1",
             path: path.resolve(root, "folder1"),
@@ -254,7 +203,6 @@ it("filters by tags with descendants", async() => {
         showDescendants: true,
         filters: ["tag2"],
         refetch: new Date(),
-        tagColorMap: new Map<string, string>(),
     });
 
 	await fs.remove(root);
@@ -267,32 +215,17 @@ it("filters by tags with descendants", async() => {
             name: "file1.txt",
             path: path.resolve(root, "file1[tag1 tag2].txt"),
             isFile: true,
-            tags: [{
-                name: "tag1",
-                color: "#efefef",
-            }, {
-                name: "tag2",
-                color: "#efefef",
-            }],
+            tags: ["tag1", "tag2"],
         }, {
             name: "file2",
             path: path.resolve(root, "file2[tag1 tag2]"),
             isFile: true,
-            tags: [{
-                name: "tag1",
-                color: "#efefef",
-            }, {
-                name: "tag2",
-                color: "#efefef",
-            }],
+            tags: ["tag1", "tag2"],
         }, {
             name: path.join("folder1", "folder2", "file5"),
             path: path.resolve(root, "folder1", "folder2", "file5[tag2]"),
             isFile: true,
-            tags: [{
-                name: "tag2",
-                color: "#efefef",
-            }],
+            tags: ["tag2"],
         }
     ]);
 });

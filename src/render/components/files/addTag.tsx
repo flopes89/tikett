@@ -3,15 +3,17 @@ import { Button, Badge, Input, Modal, ModalHeader, ModalBody, ButtonGroup } from
 import Octicon, { Plus } from "@primer/octicons-react";
 import { Tag } from "../tags";
 import classnames from "classnames";
-import { useFlatTagList } from "../../state/tags";
+import { useFlatTagList, useTagsState } from "../../state/tags";
 import { useFileBrowserState } from "../../state/fileBrowser";
 import { addTagToFile } from "../../operations/files";
+import { getColorOfTag } from "../../util";
 
 type TagListProps = {
     confirm: (tag: string) => void;
 };
 
 const TagList: React.FC<TagListProps> = (props) => {
+    const { groups } = useTagsState();
     const [typed, setTyped] = useState("");
     const [selected, setSelected] = useState("");
     
@@ -65,9 +67,7 @@ const TagList: React.FC<TagListProps> = (props) => {
     };
 
     const renderTag = (tag: string, index: number) => {
-        const split = tag.split("#");
-        const name = split[0];
-        const color = split[1];
+        const color = getColorOfTag(groups, tag);
 
         const classes = classnames({
             "text-left": true,
@@ -77,7 +77,7 @@ const TagList: React.FC<TagListProps> = (props) => {
         return (
             <Button outline size="sm" className={classes} key={index} onClick={confirm}>
                 <Tag color={color}>
-                    {name}
+                    {tag}
                 </Tag>
             </Button>
         );
