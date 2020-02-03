@@ -5,6 +5,7 @@ cache: npm
 script:
   - npm run validate-types
   - npm test
+  - npm run dist
 deploy:
   provider: releases
   api_key:
@@ -13,4 +14,4 @@ deploy:
   on:
     tags: true
   file_glob: true
-  file: dist/*
+  file: release/tikett-*.exe

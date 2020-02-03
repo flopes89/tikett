@@ -1,13 +1,23 @@
 {
     "private": true,
     "name": "tikett",
+    "author": {
+        "name": "flopes89",
+        "url": "https://github.com/flopes89"
+    },
+    "description": "Offline file tag manager",
     "version": "2.0.0",
-    "main": "dist/main.js",
+    "main": "./dist/main.js",
     "scripts": {
-        "start-render-dev": "webpack-dev-server --progress --config webpack/render.dev.js",
-        "start-main-dev": "webpack --config webpack/main.js && electron dist/main.js",
+        "render": "webpack-dev-server --progress --config webpack/render.dev.js",
+        "main": "webpack --config webpack/main.js && electron dist/main.js",
         "validate-types": "tsc --noEmit",
-        "test": "jest"
+        "test": "jest",
+        "build-main": "cross-env NODE_ENV=production webpack --config webpack/main.prod.js",
+        "build-render": "cross-env NODE_ENV=production webpack --config webpack/render.prod.js",
+        "build": "npm run build-main && npm run build-render",
+        "pack": "npm run build && electron-builder --dir",
+        "dist": "npm run build && electron-builder"
     },
     "devDependencies": {
         "@babel/core": "^7.8.3",
@@ -35,6 +45,7 @@
         "cross-env": "^5.2.1",
         "css-loader": "^1.0.1",
         "electron": "^7.1.10",
+        "electron-builder": "^22.3.2",
         "electron-devtools-installer": "^2.2.4",
         "electron-store": "^5.1.0",
         "fs-extra": "^7.0.1",
@@ -69,5 +80,20 @@
         "webpack-merge": "^4.2.2",
         "windows-drive-letters": "^4.0.0",
         "winston": "^3.2.1"
+    },
+    "build": {
+        "productName": "tikett",
+        "appId": "flopes89.tikett",
+        "directories": {
+            "output": "release"
+        },
+        "files": [
+            "dist/",
+            "node_modules/",
+            "package.json"
+        ],
+        "win": {
+            "target": "portable"
+        }
     }
 }
