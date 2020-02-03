@@ -24,7 +24,7 @@ type RemoveGroupAction = {
 type MoveTagAction = {
     type: ACTION.MOVE_TAG;
     tagName: string;
-    groupName: string;
+    groupName?: string;
 };
 
 type ChangeColorAction = {
@@ -108,7 +108,7 @@ export const useTagsState = () => {
             name
         }),
     
-        moveTag: (tagName: string, groupName: string): MoveTagAction => dispatch({
+        moveTag: (tagName: string, groupName?: string): MoveTagAction => dispatch({
             type: ACTION.MOVE_TAG,
             tagName,
             groupName,

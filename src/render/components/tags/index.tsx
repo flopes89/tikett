@@ -49,7 +49,7 @@ export const Tags: React.FC<TagsProps> = (props) => {
                 const color = getColorOfTag(groups, tag);
 
                 return (
-                    <Draggable draggableId={tag} index={index} key={index}>
+                    <Draggable draggableId={tag + "|" + props.path} index={index} key={index}>
                         {(provided) => (
                             <div
                                 ref={provided.innerRef}
@@ -59,7 +59,7 @@ export const Tags: React.FC<TagsProps> = (props) => {
                             >
                                 <Tag color={color}>
                                     {tag}
-                                    {props.path && (<RemoveTag name={tag} path={props.path} />)}
+                                    <RemoveTag name={tag} path={props.path} />
                                 </Tag>
                             </div>
                         )}

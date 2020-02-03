@@ -99,6 +99,27 @@ it("handles move tag action (new tag)", () => {
     });
 });
 
+it("handles move tag action (remove tag)", () => {
+    const newState = tagsReducer(INITIAL_STATE, {
+        type: ACTION.MOVE_TAG,
+        tagName: "tag3"
+    });
+
+    expect.assertions(2);
+    expect(newState).not.toBe(INITIAL_STATE);
+    expect(newState).toEqual(<TagsState>{
+        groups: [{
+            name: "group1",
+            color: "#fff",
+            tags: ["tag1", "tag2"],
+        }, {
+            name: "group2",
+            color: "#000",
+            tags: ["tag4"],
+        }]
+    });
+});
+
 it("handles change color action", () => {
     const newState = tagsReducer(INITIAL_STATE, {
         type: ACTION.CHANGE_COLOR,
