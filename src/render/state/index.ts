@@ -1,9 +1,10 @@
 import { combineReducers, createStore, compose } from "redux";
 import { persistReducer, persistStore } from "redux-persist";
+import stateReconciler from "redux-persist/lib/stateReconciler/hardSet";
 import createElectronStorage from "redux-persist-electron-storage";
 import { dragReducer, DragState } from "./drag";
-import { FileBrowserState, fileBrowserReducer } from "./fileBrowser";
-import { TagsState, tagsReducer } from "./tags";
+import { FileBrowserState, fileBrowserReducer, FileBrowserAction } from "./fileBrowser";
+import { TagsState, tagsReducer, TagsAction } from "./tags";
 
 export type Store = {
     tags: TagsState;
@@ -11,10 +12,28 @@ export type Store = {
     fileBrowser: FileBrowserState,
 };
 
+const storage = createElectronStorage({
+    electronStoreOpts: {
+        name: "tikett",
+    },
+});
+
 const reducer = combineReducers({
     drag: dragReducer,
-    tags: persistReducer({ key: "tags", storage: createElectronStorage() }, tagsReducer),
-    fileBrowser: persistReducer({ key: "fileBrowser", storage: createElectronStorage() }, fileBrowserReducer),
+
+    tags: persistReducer<TagsState, TagsAction>({
+        key: "tags",
+        version: 1,
+        storage,
+        stateReconciler
+    }, tagsReducer),
+
+    fileBrowser: persistReducer<FileBrowserState, FileBrowserAction>({
+        key: "fileBrowser",
+        version: 1,
+        storage,
+        stateReconciler
+    }, fileBrowserReducer),
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

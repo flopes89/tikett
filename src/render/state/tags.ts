@@ -33,7 +33,7 @@ type ChangeColorAction = {
     color: string;
 };
 
-type TagsAction =
+export type TagsAction =
     AddGroupAction
     | RemoveGroupAction
     | MoveTagAction
@@ -49,7 +49,7 @@ const defaultState: TagsState = {
 };
 
 export const tagsReducer: Reducer<TagsState, TagsAction> = (prev, action) => {
-    const state: TagsState = cloneDeep({ ...defaultState, ...prev });
+    const state: TagsState = cloneDeep(prev) || defaultState;
 
     if (action.type === ACTION.ADD_GROUP) {
         state.groups.push({

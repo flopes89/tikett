@@ -30,7 +30,7 @@ const defaultState: DragState = {
 };
 
 export const dragReducer: Reducer<DragState, TagAction> = (prev, action) => {
-    const state: DragState = cloneDeep({ ...defaultState, ...prev });
+    const state: DragState = cloneDeep(prev) || defaultState;
 
     if (action.type === ACTION.START_TAG_DRAG) {
         return {

@@ -75,7 +75,7 @@ const defaultState: FileBrowserState = {
 };
 
 export const fileBrowserReducer: Reducer<FileBrowserState, FileBrowserAction> = (prev, action) => {
-    const state = cloneDeep({ ...defaultState, ...prev });
+    const state: FileBrowserState = cloneDeep(prev) || defaultState;
 
     if (action.type === ACTION.UPDATE_REFETCH) {
         return {
