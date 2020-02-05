@@ -88,9 +88,7 @@
             "output": "release"
         },
         "files": [
-            "dist/",
-            "node_modules/",
-            "package.json"
+            "dist/**/*"
         ],
         "win": {
             "target": "portable"

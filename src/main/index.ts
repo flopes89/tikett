@@ -48,7 +48,7 @@ const createMainWindow = () => {
     } else {
         win.loadURL(
             url.format({
-                pathname: path.join(__dirname, "index.html"),
+                pathname: path.join("resources", "app.asar", "dist", "index.html"),
                 protocol: "file:",
                 slashes: true
             })
