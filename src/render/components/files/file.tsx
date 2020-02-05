@@ -1,4 +1,4 @@
-import React, { KeyboardEvent, useState, ChangeEvent } from "react";
+import React, { KeyboardEvent, useState, ChangeEvent, useRef, useEffect } from "react";
 import Octicon, { FileDirectory, File as FileIcon, Search } from "@primer/octicons-react";
 import { Tags } from "../tags";
 import { Droppable, DroppableProps } from "react-beautiful-dnd";
@@ -21,8 +21,16 @@ export const File: React.FC<FileProps> = (props) => {
     const { isDraggingTag } = useDragState();
     const [isEditing, setIsEditing] = useState(false);
     const [newName, setNewName] = useState(props.name);
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const isSelected = selected === props.path;
+
+    useEffect(() => {
+        if (isEditing && inputRef.current) {
+            inputRef.current.focus();
+            inputRef.current.select();
+        }
+    }, [isEditing]);
 
     if (!props.isFile) {
         const onKeyDown = (event: KeyboardEvent) => {
@@ -61,14 +69,12 @@ export const File: React.FC<FileProps> = (props) => {
     });
 
     const onKeyDown = async(event: KeyboardEvent) => {
-        if (event.key === "Enter") {
-            if (isEditing) {
-                await renameFile(props.path, newName);
-                setIsEditing(false);
-                updateRefetch();
-            } else {
-                selectFile(props.path);
-            }
+        event.persist();
+
+        if (event.key === "Enter" && isEditing) {
+            await renameFile(props.path, newName);
+            setIsEditing(false);
+            updateRefetch();
         }
 
         if (event.key === "F2") {
@@ -83,10 +89,18 @@ export const File: React.FC<FileProps> = (props) => {
     const onChange = (event: ChangeEvent<HTMLInputElement>) => {
         setNewName(event.target.value);
     };
+    
+    const toggleSelect = () => {
+        if (isSelected) {
+            selectFile("");
+        } else {
+            selectFile(props.path);
+        }
+    };
 
     let nameComponent: React.ReactNode = props.name;
     if (isEditing) {
-        nameComponent = <Input type="text" value={newName} onChange={onChange} />;
+        nameComponent = <Input innerRef={inputRef} type="text" value={newName} onChange={onChange} />;
     }
 
     return (
@@ -103,7 +117,9 @@ export const File: React.FC<FileProps> = (props) => {
                 </Droppable>
             </td>
             <td>
-                <Octicon icon={Search} />
+                <a onClick={toggleSelect}>
+                    <Octicon icon={Search} />
+                </a>
             </td>
         </tr>
     );

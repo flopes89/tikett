@@ -1,4 +1,4 @@
-import React, { useState, KeyboardEvent } from "react";
+import React, { useState, KeyboardEvent, useRef, useEffect } from "react";
 import { Button, Input } from "reactstrap";
 import Octicon, { Plus } from "@primer/octicons-react";
 import { useTagsState } from "../../state/tags";
@@ -7,10 +7,23 @@ export const CreateTagGroup: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [name, setName] = useState("");
     const { addGroup } = useTagsState();
+    const inputRef = useRef<HTMLInputElement>(null);
 
-    const onKeyPress = (event: KeyboardEvent) => {
-        if (event.which === 13) {
+    useEffect(() => {
+        if (isOpen && inputRef.current) {
+            inputRef.current.focus();
+            inputRef.current.select();
+        }
+    }, [isOpen]);
+
+    const onKeyDown = (event: KeyboardEvent) => {
+        if (name.length > 0 && event.key === "Enter") {
             addGroup(name);
+            setIsOpen(false);
+        }
+
+        if (event.key === "Escape") {
+            setName("");
             setIsOpen(false);
         }
     };
@@ -19,10 +32,11 @@ export const CreateTagGroup: React.FC = () => {
         <div id="create_new_tag_group">
             {isOpen && (
                 <Input
+                    innerRef={inputRef}
                     value={name}
                     onChange={(event) => setName(event.target.value)}
                     onBlur={() => setIsOpen(false)}
-                    onKeyPress={onKeyPress}
+                    onKeyDown={onKeyDown}
                     placeholder="Press enter to confirm"
                 />
             )}
