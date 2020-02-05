@@ -3,6 +3,7 @@ import path from "path";
 import { createLogger } from "../logger";
 import { used } from "windows-drive-letters";
 import { asHook } from "../util";
+import { constants } from "fs-extra";
 
 export type FolderEntry = {
     name: string;
@@ -27,12 +28,12 @@ const LOG = createLogger("files");
 
 // TODO File IO should probably be done in the main thread to not block the UI updates (?)
 
-// Split a filename into its "base" part (without tags) and the tags itself
-// and returns then [base, ext, tags[]]
-export const splitFilename = (filename: string): [string, string, string[]] => {
+// Split a filename into its "base" part (path + name without tags), its extension and the tags itself
+// and returns then [basePath, ext, tags[]]
+export const splitFilename = (filePath: string): [string, string, string[]] => {
     let tags: string[] = [];
-    const ext = path.extname(filename);
-    let name = filename.replace(ext, "");
+    const ext = path.extname(filePath);
+    let name = filePath.replace(ext, "");
 
     const matchTags = /\[([^\]]*)]/.exec(name);
     if (matchTags) {
@@ -88,8 +89,8 @@ export const getFiles = async(opts: GetFilesOptions): Promise<PathEntry[]> => {
                 return [entry];
             }
 
-            const [name, ext, tags] = splitFilename(entry.name);
-            entry.name = name + ext;
+            const [filePath, ext, tags] = splitFilename(entry.name);
+            entry.name = filePath + ext;
             entry.tags = tags;
             
             let matchesFilter = false;
@@ -200,17 +201,37 @@ export const addTagToFile = async(name: string, filePath: string) => {
 
 // Remove a tag from a file
 export const removeTag = async(name: string, filePath: string) => {
-    const [filename, ext, tags] = splitFilename(filePath);
+    const [basePath, ext, tags] = splitFilename(filePath);
     tags.splice(tags.indexOf(name), 1);
 
-    let newName = filename;
+    let newPath = basePath;
 
     if (tags.length > 0) {
-        newName += "[" + tags.join(" ") + "]";
+        newPath += "[" + tags.join(" ") + "]";
     }
 
-    newName += ext;
+    newPath += ext;
 
-    const dir = path.basename(filePath);
-    return fs.rename(filePath, path.resolve(dir, newName));
+    return fs.rename(filePath, newPath);
 };
+
+export const renameFile = async(filePath: string, newName: string) => {
+    const [, , tags] = splitFilename(filePath);
+    const [newBaseName, ext, newTags] = splitFilename(newName);
+
+    const combinedTags = Array.prototype.concat(tags, newTags).sort();
+
+    let newPath = filePath.replace(path.basename(filePath), "") + newBaseName;
+
+    if (combinedTags.length > 0) {
+        newPath += "[" + combinedTags.join(" ") + "]";
+    }
+
+    newPath += ext;
+    
+    return fs.rename(filePath, newPath);
+};
+
+export const removeFile = async(filePath: string) => fs.remove(filePath);
+
+export const moveFile = async(oldPath: string, newPath: string) => fs.move(oldPath, newPath);

@@ -1,11 +1,13 @@
-import React, { KeyboardEvent } from "react";
-import Octicon, { FileDirectory, File as FileIcon } from "@primer/octicons-react";
+import React, { KeyboardEvent, useState, ChangeEvent } from "react";
+import Octicon, { FileDirectory, File as FileIcon, Search } from "@primer/octicons-react";
 import { Tags } from "../tags";
 import { Droppable, DroppableProps } from "react-beautiful-dnd";
 import classnames from "classnames";
 import { useFileBrowserState } from "../../state/fileBrowser";
 import { useDragState } from "../../state/drag";
 import { AddTag } from "./addTag";
+import { renameFile } from "../../operations/files";
+import { Input } from "reactstrap";
 
 type FileProps = {
     name: string;
@@ -15,8 +17,10 @@ type FileProps = {
 };
 
 export const File: React.FC<FileProps> = (props) => {
-    const { selectFile, selected, openFolder } = useFileBrowserState();
+    const { selectFile, selected, openFolder, updateRefetch } = useFileBrowserState();
     const { isDraggingTag } = useDragState();
+    const [isEditing, setIsEditing] = useState(false);
+    const [newName, setNewName] = useState(props.name);
 
     const isSelected = selected === props.path;
 
@@ -29,7 +33,9 @@ export const File: React.FC<FileProps> = (props) => {
 
         return (
             <tr className="folder" onClick={() => openFolder(props.name)} onKeyDown={onKeyDown} tabIndex={0}>
-                <td><Octicon icon={FileDirectory} /> [{props.name}]</td>
+                <td><Octicon icon={FileDirectory} /></td>
+                <td>[{props.name}]</td>
+                <td>&nbsp;</td>
                 <td>&nbsp;</td>
             </tr>
         );
@@ -54,22 +60,50 @@ export const File: React.FC<FileProps> = (props) => {
         "selected": isSelected,
     });
 
-    const onKeyDown = (event: KeyboardEvent) => {
+    const onKeyDown = async(event: KeyboardEvent) => {
         if (event.key === "Enter") {
-            selectFile(props.path);
-            return false;
+            if (isEditing) {
+                await renameFile(props.path, newName);
+                setIsEditing(false);
+                updateRefetch();
+            } else {
+                selectFile(props.path);
+            }
+        }
+
+        if (event.key === "F2") {
+            setIsEditing(true);
+        }
+
+        if (event.key === "Escape") {
+            setIsEditing(false);
         }
     };
 
+    const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setNewName(event.target.value);
+    };
+
+    let nameComponent: React.ReactNode = props.name;
+    if (isEditing) {
+        nameComponent = <Input type="text" value={newName} onChange={onChange} />;
+    }
+
     return (
         <tr className={classes} tabIndex={0} onKeyDown={onKeyDown}>
-            <td onClick={() => selectFile(props.path)}>
-                <Octicon icon={FileIcon} /> {props.name}
+            <td>
+                <Octicon icon={FileIcon} />
+            </td>
+            <td>
+                {nameComponent}
             </td>
             <td>
                 <Droppable droppableId={"file|" + props.path} direction="horizontal">
                     {renderFile}
                 </Droppable>
+            </td>
+            <td>
+                <Octicon icon={Search} />
             </td>
         </tr>
     );

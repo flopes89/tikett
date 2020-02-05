@@ -262,3 +262,51 @@ it("removes tag from file", async() => {
 
 	await fs.remove(root);
 });
+
+it("renames files", async() => {
+    const root = await createRoot();
+
+    await files.renameFile(path.resolve(root, "file1.txt"), "file1_new.txt");
+    await files.renameFile(path.resolve(root, "file1[tag1 tag2].txt"), "file1_new");
+    await files.renameFile(path.resolve(root, "folder1", "file11[moretag].exe"), "file11[test].exe");
+
+    expect.assertions(3);
+
+	await expect(fs.pathExists(path.resolve(root, "file1_new.txt"))).resolves.toBeTruthy();
+	await expect(fs.pathExists(path.resolve(root, "file1_new[tag1 tag2]"))).resolves.toBeTruthy();
+    await expect(fs.pathExists(path.resolve(root, "folder1", "file11[moretag test].exe"))).resolves.toBeTruthy();
+    
+    await fs.remove(root);
+});
+
+it("removes files", async() => {
+    const root = await createRoot();
+
+    await files.removeFile(path.resolve(root, "file1.txt"));
+    await files.removeFile(path.resolve(root, "file1[tag1 tag2].txt"));
+    await files.removeFile(path.resolve(root, "folder1", "file11[moretag].exe"));
+
+    expect.assertions(3);
+
+	await expect(fs.pathExists(path.resolve(root, "file1.txt"))).resolves.toBeFalsy();
+	await expect(fs.pathExists(path.resolve(root, "file1[tag1 tag2]"))).resolves.toBeFalsy();
+    await expect(fs.pathExists(path.resolve(root, "folder1", "file11[moretag].exe"))).resolves.toBeFalsy();
+    
+    await fs.remove(root);
+});
+
+it("moves files", async() => {
+    const root = await createRoot();
+
+    await files.moveFile(path.resolve(root, "file1.txt"), path.resolve(root, "folder1", "file1.txt"));
+    await files.moveFile(path.resolve(root, "file1[tag1 tag2].txt"), path.resolve(root, "folder1", "file1[tag1 tag2].txt"));
+    await files.moveFile(path.resolve(root, "folder1", "file11[moretag].exe"), path.resolve(root, "file11[moretag].exe"));
+
+    expect.assertions(3);
+
+	await expect(fs.pathExists(path.resolve(root, "folder1", "file1.txt"))).resolves.toBeTruthy();
+	await expect(fs.pathExists(path.resolve(root, "folder1", "file1[tag1 tag2].txt"))).resolves.toBeTruthy();
+    await expect(fs.pathExists(path.resolve(root, "file11[moretag].exe"))).resolves.toBeTruthy();
+    
+    await fs.remove(root);
+});

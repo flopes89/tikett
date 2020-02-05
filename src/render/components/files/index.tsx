@@ -54,6 +54,7 @@ const FileList: React.FC<FileListProps> = (props) => {
                 <Col>
                     <Table>
                         <colgroup>
+                            <col width="16px" />
                             <col width="40%" />
                         </colgroup>
                         <tbody>
