@@ -14,4 +14,4 @@ deploy:
   on:
     tags: true
   file_glob: true
-  file: release/tikett-*.exe
+  file: release/tikett*.exe
