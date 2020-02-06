@@ -1,17 +1,55 @@
-language: node_js
-node_js:
-  - "lts/*"
-cache: npm
-script:
-  - npm run validate-types
-  - npm test
-  - npm run dist
-deploy:
-  provider: releases
-  api_key:
-    secure: Ei5x0/B4mZIGCm8QkkTLx94a+stwUi4LI3jZbkkd7jxojg+2QVvyLxKLaPqaXBbIlBuCY1IO7p7MfAkHD5lcpu4Iha3b0v8IAHgjS7WCzX2kLtCrTpqc6A1GDkf9NLQW+4kbjrNCQJu8FKRJ4QqRBUHvw14vYMJVuGqera+Oh3MTFAiwlddnK3naOM8oE8B2WmN/ubRPEADwdawu44CkXfiiM91r50K45LeA5OP5C0rmO3eTSW7sqwv9oLaBXQ828C8rawmuDKrOhSX+kkBXBuaRFZ5XOFqcYbbiRqQ3Kq+ZfZhSmuuoMNybF+C1inLl790rExlgpS4XRPb8T9xo8VlA+7uradNVFuIZMFsZTl82OiY+IMGb63ModOS6L45r6N080gtMdOPflaDYB3ldMAsLJJ4C7x6zTSmbME+hBtCqDU8TdQO6FCw2vbA5YLJldQU6P69aVN4zXUZyrB4eH4lbIrCe8U6dYswz5O0yUmGMAaC73/syY6tPma2rD8JdXelSHbGh/pP4iIk3Cgv1fgh5pcpOts/iQWaxp4X0kCxjNpzKTFKjvq+4vHzRYL0d4m0rYe17tBrL5nRAGrKQ5LN2vurKLH9W2ikwEeqJfSlhhnZjwg09N95NOq9RBmEdXvWn6HSlHFPoQ7PwAfezhIRrrEDllNk+biHofe1DNy0=
-  skip_cleanup: true
-  on:
-    tags: true
-  file_glob: true
-  file: release/tikett*.exe
+matrix:
+  include:
+    - os: osx
+      osx_image: xcode10.2
+      language: node_js
+      node_js: "12"
+      env:
+        - ELECTRON_CACHE=$HOME/.cache/electron
+        - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
+
+    - os: linux
+      services: docker
+      language: generic
+
+cache: 
+  directories:
+    - node_modules
+    - $HOME/.cache/electron
+    - $HOME/.cache/electron-builder
+
+jobs:
+  include:
+    - script:
+        - yarn validate-types
+        - yarn test
+
+    - stage: build
+      script:
+        - yarn build
+        - |
+          if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+            docker run --rm \
+              --env-file <(env | grep -iE 'DEBUG|NODE_|ELECTRON_|YARN_|NPM_|CI|CIRCLE|TRAVIS|APPVEYOR_|CSC_|_TOKEN|_KEY|AWS_|STRIP|BUILD_') \
+              -v ${PWD}:/project \
+              -v ~/.cache/electron:/root/.cache/electron \
+              -v ~/.cache/electron-builder:/root/.cache/electron-builder \
+              electronuserland/builder:wine \
+              /bin/bash -c "yarn --link-duplicates --pure-lockfile && yarn dist --linux --win"
+          else
+            yarn dist
+          fi
+
+    - stage: deploy
+      script: skip
+      deploy:
+        provider: releases
+        api_key:
+          secure: Ei5x0/B4mZIGCm8QkkTLx94a+stwUi4LI3jZbkkd7jxojg+2QVvyLxKLaPqaXBbIlBuCY1IO7p7MfAkHD5lcpu4Iha3b0v8IAHgjS7WCzX2kLtCrTpqc6A1GDkf9NLQW+4kbjrNCQJu8FKRJ4QqRBUHvw14vYMJVuGqera+Oh3MTFAiwlddnK3naOM8oE8B2WmN/ubRPEADwdawu44CkXfiiM91r50K45LeA5OP5C0rmO3eTSW7sqwv9oLaBXQ828C8rawmuDKrOhSX+kkBXBuaRFZ5XOFqcYbbiRqQ3Kq+ZfZhSmuuoMNybF+C1inLl790rExlgpS4XRPb8T9xo8VlA+7uradNVFuIZMFsZTl82OiY+IMGb63ModOS6L45r6N080gtMdOPflaDYB3ldMAsLJJ4C7x6zTSmbME+hBtCqDU8TdQO6FCw2vbA5YLJldQU6P69aVN4zXUZyrB4eH4lbIrCe8U6dYswz5O0yUmGMAaC73/syY6tPma2rD8JdXelSHbGh/pP4iIk3Cgv1fgh5pcpOts/iQWaxp4X0kCxjNpzKTFKjvq+4vHzRYL0d4m0rYe17tBrL5nRAGrKQ5LN2vurKLH9W2ikwEeqJfSlhhnZjwg09N95NOq9RBmEdXvWn6HSlHFPoQ7PwAfezhIRrrEDllNk+biHofe1DNy0=
+        skip_cleanup: true
+        on:
+          tags: true
+        file_glob: true
+        file:
+          - release/tikett*.exe
+          - release/tikett*.dmg

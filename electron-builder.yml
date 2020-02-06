@@ -1,0 +1,6 @@
+productName: tikett
+appId: flopes89.tikett
+directories:
+  output: release
+files:
+  - dist/**/*
