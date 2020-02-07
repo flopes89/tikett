@@ -6,6 +6,7 @@ import { TagGroups } from "./components/groups";
 import { Breadcrumbs } from "./components/files/breadcrumbs";
 import { Files } from "./components/files";
 import { FilePreview } from "./components/files/filePreview";
+import { Info } from "./info";
 
 export default () => (
     <React.Fragment>
@@ -19,6 +20,8 @@ export default () => (
                     </Col>
                     <Col className="text-right">
                         <SetRoot />
+                        &nbsp;
+                        <Info />
                     </Col>
                 </Row>
             </Navbar>
@@ -40,7 +43,11 @@ export default () => (
         <footer className="text-center mb-3">
             <hr />
             <Container fluid>
-                <a href="https://github.com/flopes89/tikett">tikett</a> &copy; Florian Peschka
+                <Row>
+                    <Col>
+                        <a href="https://github.com/flopes89/tikett">tikett</a> &copy; Florian Peschka
+                    </Col>
+                </Row>
             </Container>
         </footer>
     </React.Fragment>
