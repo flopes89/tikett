@@ -16,6 +16,8 @@ export const ColorPicker: React.FC<ColorPickerProps> = (props) => {
     const [isOpen, setIsOpen] = useState(false);
     const [color, setColor] = useState(props.group.color);
 
+    const targetId = "colorPicker_" + props.group.name.replace(/[^a-z0-9]/, "_");
+
     const changeComplete = (color: ColorResult) => {
         setColor(color.hex);
     };
@@ -28,10 +30,10 @@ export const ColorPicker: React.FC<ColorPickerProps> = (props) => {
 
     return (
         <>
-            <a href="#" onClick={() => setIsOpen(true)} id={"colorPicker_" + props.group.name}>
+            <a href="#" onClick={() => setIsOpen(true)} id={targetId}>
                 <Octicon icon={Paintcan} verticalAlign="middle" />
             </a>
-            <Popover isOpen={isOpen} target={"colorPicker_" + props.group.name} toggle={() => setIsOpen(!isOpen)}>
+            <Popover isOpen={isOpen} target={targetId} toggle={() => setIsOpen(!isOpen)}>
                 <PopoverBody>
                     <SketchPicker disableAlpha={true} onChangeComplete={changeComplete} color={color} />
                     <Button onClick={confirm}>OK</Button>
