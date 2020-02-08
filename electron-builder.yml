@@ -4,3 +4,4 @@ directories:
   output: release
 files:
   - dist/**/*
+publish: github
