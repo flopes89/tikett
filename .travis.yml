@@ -28,5 +28,7 @@ deploy:
     tags: true
   file_glob: true
   file:
-    - release/tikett*
+    - release/tikett*.exe
+    - release/tikett*.AppImage
+    - release/tikett*.dmg
     

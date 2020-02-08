@@ -8,12 +8,8 @@
 
 Download the latest [Release](https://github.com/flopes89/tikett/releases) and run it.
 
-## Usage
-
-// TODO
-
 ## Developing
 
 - Run `npm i`
-- Run `npm run start-render-dev` first
-- Run `npm run start-main-dev` in a second terminal
+- Run `npm run render` first
+- Run `npm run main` in a second terminal
