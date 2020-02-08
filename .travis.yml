@@ -13,10 +13,6 @@ cache:
     - $HOME/.cache/electron
     - $HOME/.cache/electron-builder
 
-env:
-  - ELECTRON_CACHE=$HOME/.cache/electron
-  - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
-
 script:
   - npm install
   - npm run validate-types
