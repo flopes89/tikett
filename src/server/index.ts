@@ -2,7 +2,7 @@ import path from "path";
 import fs from "fs-extra";
 import express from "express";
 import bodyParser from "body-parser";
-import graphqlHttp from "express-graphql";
+import { ApolloServer } from "apollo-server-express";
 import { createLogger } from "./logger";
 import { apiRouter } from "./api";
 import net from "net";
@@ -47,25 +47,17 @@ const run = async(): Promise<string> => {
 
     const schema = await fs.readFile(path.resolve(__dirname, "schema.gql"));
 
-    app.use("/graphql", graphqlHttp({
-        schema: buildSchema(schema.toString()),
-        rootValue: resolvers,
-        graphiql: true,
-        customFormatErrorFn: (error) => {
-            LOG.error(error);
-            return {
-                message: error.message,
-                locations: error.locations,
-                stack: error.stack ? error.stack.split('\n') : [],
-                path: error.path,
-            };
-        },
-        extensions: () => {
-            return {
-                lastDbUpdate: new Date().toISOString(),
-            };
-        }
-    }));
+    const apolloServer = new ApolloServer({
+        typeDefs: schema.toString(),
+        resolvers,
+        introspection: process.env.NODE_ENV === "development",
+        playground: process.env.NODE_ENV === "development",
+    });
+
+    apolloServer.applyMiddleware({
+        app,
+        path: "/graphql"
+    });
 
     const port = process.env.PORT || await findRandomOpenPort();
 
