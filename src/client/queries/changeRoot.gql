@@ -1,0 +1,3 @@
+mutation ChangeRoot($folder: String!) {
+    changeRoot(folder: $folder)
+}

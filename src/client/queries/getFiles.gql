@@ -1,0 +1,8 @@
+query Files($current: String! $showDescendants: Boolean! $filters: [String!]!) {
+    files(current: $current showDescendants: $showDescendants filters: $filters) {
+        name
+        tags
+        path
+        isFile
+    }
+}

@@ -1,4 +1,4 @@
-// Used for jest only, main/render is transpiled with webpack
+// Used for jest only, server/client is transpiled with webpack
 
 module.exports = {
     presets: [

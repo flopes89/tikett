@@ -1,0 +1,79 @@
+type Config {
+    dbPath: String!
+    root: String!
+}
+
+type File {
+    name: String!
+    tags: [String!]!
+    path: String!
+    isFile: Boolean!
+}
+
+type TagGroup {
+    name: String!
+    color: String!
+    tags: [String!]!
+}
+
+type Folder {
+    name: String!
+    path: String!
+}
+
+type Query {
+    config: Config!
+
+    tagGroups: [TagGroup!]!
+
+    files(
+        current: String!
+        showDescendants: Boolean!
+        filters: [String!]!
+    ): [File!]!
+
+    tags: [String!]!
+
+    folders(
+        current: String!
+    ): [Folder!]!
+}
+
+type Mutation {
+    changeRoot(
+        folder: String!
+    ): Boolean!
+
+    createTagGroup(
+        name: String!
+    ): Boolean!
+
+    removeTagGroup(
+        group: String!
+    ): Boolean!
+
+    moveTag(
+        tag: String!
+        group: String
+    ): Boolean!
+
+    changeColor(
+        group: String!
+        color: String!
+    ): Boolean!
+
+    addTag(
+        path: String!
+        tag: String!
+    ): Boolean!
+    
+    removeTag(
+        path: String!
+        tag: String!
+    ): Boolean!
+
+    renameFile(
+        path: String!
+        newName: String!
+    ): Boolean!
+}

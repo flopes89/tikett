@@ -1,0 +1,3 @@
+mutation CreateTagGroup($name: String!) {
+    createTagGroup(name: $name)
+}

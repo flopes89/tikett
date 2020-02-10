@@ -1,0 +1,3 @@
+mutation RemoveTag($path: String! $tag: String!) {
+    removeTag(path: $path tag: $tag)
+}

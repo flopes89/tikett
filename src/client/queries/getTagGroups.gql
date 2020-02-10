@@ -1,0 +1,7 @@
+query TagGroups {
+    tagGroups {
+        name
+        color
+        tags
+    }
+}

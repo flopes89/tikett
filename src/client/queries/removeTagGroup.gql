@@ -1,0 +1,3 @@
+mutation RemoveTagGroup($group: String!) {
+    removeTagGroup(group: $group)
+}

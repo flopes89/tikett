@@ -1,0 +1,6 @@
+query Folders($current: String!) {
+    folders(current: $current) {
+        name
+        path
+    }
+}

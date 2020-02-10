@@ -1,0 +1,3 @@
+mutation MoveTag($tag: String! $group: String) {
+    moveTag(tag: $tag group: $group)
+}

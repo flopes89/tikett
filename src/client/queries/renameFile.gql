@@ -1,0 +1,3 @@
+mutation RenameFile($path: String! $newName: String!) {
+    renameFile(path: $path newName: $newName)
+}

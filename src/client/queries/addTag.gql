@@ -1,0 +1,3 @@
+mutation AddTag($path: String! $tag: String!) {
+    addTag(path: $path tag: $tag)
+}

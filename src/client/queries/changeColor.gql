@@ -1,0 +1,3 @@
+mutation ChangeColor($group: String! $color: String!) {
+    changeColor(group: $group color: $color)
+}
