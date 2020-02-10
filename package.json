@@ -12,7 +12,8 @@
         "validate-types": "tsc --noEmit",
         "generate-types": "graphql-codegen --config codegen.yml",
         "test": "jest",
-        "dev": "cross-env NODE_ENV=development webpack --config webpack/index.js --mode development"
+        "dev": "cross-env NODE_ENV=development webpack --config webpack/index.js --mode development",
+        "dist": "cross-env NODE_ENV=production webpack --config webpack/index.js --mode production"
     },
     "devDependencies": {
         "@apollo/react-hooks": "^3.1.3",
