@@ -96,16 +96,15 @@ const FolderSelection: React.FC<FolderSelectionProps> = (props) => {
 };
 
 export const SetRoot: React.FC = () => {
-    const { data, loading } = useConfigQuery();
+    const { data } = useConfigQuery();
+    const [isOpen, setIsOpen] = useState(Boolean(data?.config.root));
 
-    if (loading) {
+    if (!data) {
         return <Loading />;
     }
 
-    const [isOpen, setIsOpen] = useState(Boolean(data?.config.root));
-
     const close = () => {
-        if (data?.config.root) {
+        if (data.config.root) {
             setIsOpen(false);
         }
     };

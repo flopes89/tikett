@@ -8,7 +8,7 @@ import { apiRouter } from "./api";
 import net from "net";
 import { resolvers } from "./resolver";
 import { buildSchema } from "graphql";
-import { persist, load } from "./db";
+import { load } from "./db";
 import open from "open";
 
 const LOG = createLogger("server");
@@ -41,18 +41,17 @@ const run = async(): Promise<string> => {
     app.use(express.static(path.resolve(__dirname)));
 
     app.use("/graphql", (req, res, next) => {
-        LOG.silly(">>> New GraphQL request", req.body);
         load();
         return next();
     });
 
-    const schema = await fs.readFile(path.resolve(__dirname, "static", "schema.gql"));
+    const schema = await fs.readFile(path.resolve(__dirname, "schema.gql"));
 
     app.use("/graphql", graphqlHttp({
         schema: buildSchema(schema.toString()),
         rootValue: resolvers,
         graphiql: true,
-        formatError: (error) => {
+        customFormatErrorFn: (error) => {
             LOG.error(error);
             return {
                 message: error.message,
@@ -62,8 +61,6 @@ const run = async(): Promise<string> => {
             };
         },
         extensions: () => {
-            LOG.silly("<<< Finished GraphQL request");
-            persist();
             return {
                 lastDbUpdate: new Date().toISOString(),
             };
@@ -82,7 +79,7 @@ const run = async(): Promise<string> => {
 };
 
 run().then((port) => {
-    LOG.info("Running tikett %s on port %s", process.env.BUILD_INFO, port);
+    LOG.info("Running tikett %s", process.env.BUILD_INFO);
 
     if (process.env.NODE_ENV === "production") {
         open("http://localhost:" + port);

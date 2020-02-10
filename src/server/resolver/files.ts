@@ -1,5 +1,6 @@
 import path from "path";
-import { promises as fs, constants } from "fs";
+import fs from "fs-extra";
+import { constants } from "fs";
 import { GqlQueryResolvers, GqlFile, GqlFolder, GqlMutationResolvers } from "../../generated/graphql";
 import { createLogger } from "../logger";
 import { getDb } from "../db";
@@ -172,7 +173,7 @@ export const folders: GqlQueryResolvers["folders"] = async(root, args) => {
 // Add a tag to a file
 export const addTagToFile: GqlMutationResolvers["addTag"] = async(root, args) => {
     const [filename, ext, tags] = splitFilename(args.path);
-    const newTags = Array.from(new Set([...tags, args.name]));
+    const newTags = Array.from(new Set([...tags, args.tag]));
 
     const newName = filename + "[" + newTags.join(" ") + "]" + ext;
 
@@ -185,7 +186,7 @@ export const addTagToFile: GqlMutationResolvers["addTag"] = async(root, args) =>
 // Remove a tag from a file
 export const removeTag: GqlMutationResolvers["removeTag"] = async(root, args) => {
     const [basePath, ext, tags] = splitFilename(args.path);
-    tags.splice(tags.indexOf(args.name), 1);
+    tags.splice(tags.indexOf(args.tag), 1);
 
     let newPath = basePath;
 

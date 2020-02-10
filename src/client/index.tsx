@@ -26,9 +26,3 @@ ReactDOM.render(
         </Provider>
     </ApolloProvider>
     , appElement);
-
-if (process.env.NODE_ENV === "development") {
-    const livereloadScript = document.createElement("script");
-    livereloadScript.src = "http://localhost:35729/livereload.js";
-    document.body.appendChild(livereloadScript);
-}
