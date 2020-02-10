@@ -1,5 +1,5 @@
 import path from "path";
-import { promises as fs } from "fs";
+import fs from "fs-extra";
 import express from "express";
 import bodyParser from "body-parser";
 import graphqlHttp from "express-graphql";
@@ -38,7 +38,7 @@ const run = async(): Promise<string> => {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
 
-    app.use(express.static(path.resolve(__dirname, "public")));
+    app.use(express.static(path.resolve(__dirname)));
 
     app.use("/graphql", (req, res, next) => {
         LOG.silly(">>> New GraphQL request", req.body);
@@ -46,7 +46,7 @@ const run = async(): Promise<string> => {
         return next();
     });
 
-    const schema = await fs.readFile(path.resolve(__dirname, "./schema.gql"));
+    const schema = await fs.readFile(path.resolve(__dirname, "static", "schema.gql"));
 
     app.use("/graphql", graphqlHttp({
         schema: buildSchema(schema.toString()),

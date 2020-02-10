@@ -1,4 +1,5 @@
 const { DefinePlugin } = require("webpack");
+const CopyPlugin = require("copy-webpack-plugin");
 const nodeExternals = require("webpack-node-externals");
 const { smart } = require("webpack-merge");
 const { resolve } = require("path");
@@ -29,7 +30,7 @@ module.exports = smart(base, {
                 enforce: "pre",
                 test: /\.js$/,
                 loader: "source-map-loader"
-            }
+            },
         ]
     },
     plugins: [
@@ -40,6 +41,9 @@ module.exports = smart(base, {
                 + "."
                 + (process.env.TRAVIS_COMMIT || "0")
             )
-        })
+        }),
+        new CopyPlugin([
+            { from: "**/*", context: "src/static" }
+        ])
     ]
 });
