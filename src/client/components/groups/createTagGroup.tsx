@@ -1,7 +1,7 @@
 import React, { useState, KeyboardEvent, useRef, useEffect } from "react";
 import { Button, Input } from "reactstrap";
 import Octicon, { Plus } from "@primer/octicons-react";
-import { useCreateTagGroupMutation } from "../../../generated/graphql";
+import { useCreateTagGroupMutation, TagGroupsDocument } from "../../../generated/graphql";
 import { Loading } from "../util";
 
 export const CreateTagGroup: React.FC = () => {
@@ -22,7 +22,10 @@ export const CreateTagGroup: React.FC = () => {
             await createTagGroup({
                 variables: {
                     name,
-                }
+                },
+                refetchQueries: [{
+                    query: TagGroupsDocument,
+                }]
             });
             setIsOpen(false);
         }

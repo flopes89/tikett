@@ -43,7 +43,7 @@ export const FilePreview = () => {
             </Row>
             <Row>
                 <Col>
-                    <iframe src={selected} />
+                    <iframe src={`file://${selected}`} />
                 </Col>
             </Row>
         </Col>

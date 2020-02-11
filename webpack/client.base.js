@@ -33,15 +33,7 @@ module.exports = smart(base, {
             },
             {
                 test: /\.(gif|png|jpe?g|svg)$/,
-                use: [
-                    "file-loader",
-                    {
-                        loader: "image-webpack-loader",
-                        options: {
-                            disable: true
-                        }
-                    }
-                ]
+                loader: "file-loader",
             },
             {
                 enforce: "pre",

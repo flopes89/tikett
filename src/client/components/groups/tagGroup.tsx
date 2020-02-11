@@ -6,7 +6,7 @@ import { Droppable, DroppableProps } from "react-beautiful-dnd";
 import { ColorPicker } from "./colorPicker";
 import classnames from "classnames";
 import { useDragState } from "../../state/drag";
-import { GqlTagGroup, useRemoveTagGroupMutation } from "../../../generated/graphql";
+import { GqlTagGroup, useRemoveTagGroupMutation, TagGroupsDocument } from "../../../generated/graphql";
 import { Loading } from "../util";
 
 type TagGroupProps = {
@@ -39,7 +39,10 @@ export const TagGroup: React.FC<TagGroupProps> = (props) => {
         await removeGroup({
             variables: {
                 group: props.group.name,
-            }
+            },
+            refetchQueries: [{
+                query: TagGroupsDocument,
+            }]
         });
     }
     

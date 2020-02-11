@@ -1,7 +1,7 @@
 import React from "react";
 import Octicon, { Trashcan } from "@primer/octicons-react";
 import { useFileBrowserState } from "../../state/fileBrowser";
-import { useMoveTagMutation, useRemoveTagMutation } from "../../../generated/graphql";
+import { useMoveTagMutation, useRemoveTagMutation, FilesDocument, TagGroupsDocument } from "../../../generated/graphql";
 import { Loading } from "../util";
 
 type RemoveTagProps = {
@@ -12,7 +12,7 @@ type RemoveTagProps = {
 export const RemoveTag: React.FC<RemoveTagProps> = (props) => {
     const [moveTag, { loading: moveTagLoading }] = useMoveTagMutation();
     const [removeTag, { loading: removeTagLoading }] = useRemoveTagMutation();
-    const { selectFile } = useFileBrowserState();
+    const { selectFile, currentFolder, showDescendants, filters } = useFileBrowserState();
 
     const remove = async() => {
         if (props.path) {
@@ -20,7 +20,15 @@ export const RemoveTag: React.FC<RemoveTagProps> = (props) => {
                 variables: {
                     path: props.path,
                     tag: props.name,
-                }
+                },
+                refetchQueries: [{
+                    query: FilesDocument,
+                    variables: {
+                        current: currentFolder,
+                        showDescendants,
+                        filters
+                    }
+                }]
             });
             selectFile("");
         } else {
@@ -28,7 +36,10 @@ export const RemoveTag: React.FC<RemoveTagProps> = (props) => {
                 variables: {
                     tag: props.name,
                     group: null,
-                }
+                },
+                refetchQueries: [{
+                    query: TagGroupsDocument,
+                }]
             });
         }
     };

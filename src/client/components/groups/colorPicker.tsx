@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { SketchPicker, ColorResult } from "react-color";
 import { Popover, PopoverBody, Button } from "reactstrap";
 import Octicon, { Paintcan } from "@primer/octicons-react";
-import { GqlTagGroup, useChangeColorMutation } from "../../../generated/graphql";
+import { GqlTagGroup, useChangeColorMutation, TagGroupsDocument } from "../../../generated/graphql";
 import { Loading } from "../util";
 
 type ColorPickerProps = {
@@ -26,7 +26,10 @@ export const ColorPicker: React.FC<ColorPickerProps> = (props) => {
             variables: {
                 group: props.group.name,
                 color
-            }
+            },
+            refetchQueries: [{
+                query: TagGroupsDocument,
+            }]
         });
     };
 

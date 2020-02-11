@@ -40,8 +40,8 @@ const run = async(): Promise<string> => {
 
     app.use(express.static(path.resolve(__dirname)));
 
-    app.use("/graphql", (req, res, next) => {
-        load();
+    app.use("/graphql", async(req, res, next) => {
+        await load();
         return next();
     });
 
