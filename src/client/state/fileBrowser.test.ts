@@ -3,42 +3,11 @@ import { FileBrowserState, fileBrowserReducer, ACTION } from "./fileBrowser";
 const INITIAL_DATE = new Date();
 
 const INITIAL_STATE: FileBrowserState = {
-    root: "/baseroot",
     currentFolder: "/some-folder/",
     showDescendants: false,
     filters: [],
     selected: "",
-    lastRefetch: INITIAL_DATE,
 };
-
-it("handles set root action", () => {
-    expect.assertions(2);
-
-    const newState = fileBrowserReducer(INITIAL_STATE, {
-        type: ACTION.SET_ROOT,
-        root: "/new-root"
-    });
-
-    expect(newState).not.toBe(INITIAL_STATE);
-    expect(newState).toEqual(<FileBrowserState>{
-        root: "/new-root",
-        currentFolder: "/",
-        showDescendants: false,
-        filters: [],
-        selected: "",
-        lastRefetch: INITIAL_DATE,
-    });
-});
-
-it("handles update refetch action", () => {
-    expect.assertions(1);
-
-    const newState = fileBrowserReducer(INITIAL_STATE, {
-        type: ACTION.UPDATE_REFETCH,
-    });
-
-    expect(newState).not.toBe(INITIAL_STATE);
-});
 
 it("handles toggle descendants action", () => {
     expect.assertions(2);

@@ -2,17 +2,31 @@ import path from "path";
 import fs from "fs-extra";
 import os from "os";
 import uuid from "uuid/v4";
-import { load, getDb, persist } from "../server/db";
+import { load, getDb, persist } from "../db";
 
 export const createRoot = async(): Promise<string> => {
     const root = path.resolve(os.tmpdir(), "tikett-test", uuid());
     
-    load(root);
-    const db = await getDb();
-    db.root = root;
-    persist();
-    
     await fs.ensureDir(root);
+    
+    await load(root);
+    
+    const db = getDb();
+    db.root = root;
+    db.tagGroups = [
+        {
+            name: "group1",
+            color: "#fff",
+            tags: ["tag1", "tag2"],
+        }, {
+            name: "group2",
+            color: "#000",
+            tags: ["tag3", "tag4"],
+        }
+    ];
+
+    await persist();
+    
     await fs.ensureFile(path.resolve(root, "file1.txt"));
     await fs.ensureFile(path.resolve(root, "file1[tag1 tag2].txt"));
     await fs.ensureFile(path.resolve(root, "file2[tag1 tag2]"));

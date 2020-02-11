@@ -1,27 +1,25 @@
 import * as tags from "./tags";
+import fs from "fs-extra";
+import { createRoot } from "./testUtils";
+import { DEFAULT_TAG_COLOR } from "../../shared/interface-types";
 
-const INITIAL_STATE: TagsState = {
-    groups: [{
-        name: "group1",
-        color: "#fff",
-        tags: ["tag1", "tag2"],
-    }, {
-        name: "group2",
-        color: "#000",
-        tags: ["tag3", "tag4"],
-    }]
-};
+it("handles add group action", async() => {
+    const root = await createRoot();
 
-it("handles add group action", () => {
-    const newState = tagsReducer(INITIAL_STATE, {
-        type: ACTION.ADD_GROUP,
+    await tags.createTagGroup({}, {
         name: "group3",
-    });
+    },
+    // @ts-ignore
+    null, null);
 
-    expect.assertions(2);
-    expect(newState).not.toBe(INITIAL_STATE);
-    expect(newState).toEqual(<TagsState>{
-        groups: [{
+    expect.assertions(1);
+
+    const newGroups = await tags.tagGroups({}, {},
+        // @ts-ignore
+        null, null);
+
+    expect(newGroups).toEqual([
+        {
             name: "group1",
             color: "#fff",
             tags: ["tag1", "tag2"],
@@ -33,38 +31,56 @@ it("handles add group action", () => {
             name: "group3",
             color: DEFAULT_TAG_COLOR,
             tags: [],
-        }]
-    });
+        }
+    ]);
+
+    await fs.remove(root);
 });
 
-it("handles remove group action", () => {
-    const newState = tagsReducer(INITIAL_STATE, {
-        type: ACTION.REMOVE_GROUP,
-        name: "group1",
-    });
+it("handles remove group action", async() => {
+    const root = await createRoot();
 
-    expect.assertions(2);
-    expect(newState).not.toBe(INITIAL_STATE);
-    expect(newState).toEqual(<TagsState>{
-        groups: [{
+    await tags.removeTagGroup({}, {
+        group: "group1",
+    },
+    // @ts-ignore
+    null, null);
+
+    expect.assertions(1);
+    
+    const newGroups = await tags.tagGroups({}, {},
+        // @ts-ignore
+        null, null);
+
+    expect(newGroups).toEqual([
+        {
             name: "group2",
             color: "#000",
             tags: ["tag3", "tag4"],
-        }]
-    });
+        }
+    ]);
+
+    await fs.remove(root);
 });
 
-it("handles move tag action", () => {
-    const newState = tagsReducer(INITIAL_STATE, {
-        type: ACTION.MOVE_TAG,
-        tagName: "tag1",
-        groupName: "group2",
-    });
+it("handles move tag action", async() => {
+    const root = await createRoot();
 
-    expect.assertions(2);
-    expect(newState).not.toBe(INITIAL_STATE);
-    expect(newState).toEqual(<TagsState>{
-        groups: [{
+    await tags.moveTag({}, {
+        tag: "tag1",
+        group: "group2",
+    },
+    // @ts-ignore
+    null, null);
+
+    expect.assertions(1);
+    
+    const newGroups = await tags.tagGroups({}, {},
+        // @ts-ignore
+        null, null);
+
+    expect(newGroups).toEqual([
+        {
             name: "group1",
             color: "#fff",
             tags: ["tag2"],
@@ -72,21 +88,30 @@ it("handles move tag action", () => {
             name: "group2",
             color: "#000",
             tags: ["tag1", "tag3", "tag4"],
-        }]
-    });
+        }
+    ]);
+
+    await fs.remove(root);
 });
 
-it("handles move tag action (new tag)", () => {
-    const newState = tagsReducer(INITIAL_STATE, {
-        type: ACTION.MOVE_TAG,
-        tagName: "tag5",
-        groupName: "group1",
-    });
+it("handles move tag action (new tag)", async() => {
+    const root = await createRoot();
 
-    expect.assertions(2);
-    expect(newState).not.toBe(INITIAL_STATE);
-    expect(newState).toEqual(<TagsState>{
-        groups: [{
+    await tags.moveTag({}, {
+        tag: "tag5",
+        group: "group1",
+    },
+    // @ts-ignore
+    null, null);
+
+    expect.assertions(1);
+    
+    const newGroups = await tags.tagGroups({}, {},
+        // @ts-ignore
+        null, null);
+
+    expect(newGroups).toEqual([
+        {
             name: "group1",
             color: "#fff",
             tags: ["tag1", "tag2", "tag5"],
@@ -94,20 +119,29 @@ it("handles move tag action (new tag)", () => {
             name: "group2",
             color: "#000",
             tags: ["tag3", "tag4"],
-        }]
-    });
+        }
+    ]);
+
+    await fs.remove(root);
 });
 
-it("handles move tag action (remove tag)", () => {
-    const newState = tagsReducer(INITIAL_STATE, {
-        type: ACTION.MOVE_TAG,
-        tagName: "tag3"
-    });
+it("handles move tag action (remove tag)", async() => {
+    const root = await createRoot();
 
-    expect.assertions(2);
-    expect(newState).not.toBe(INITIAL_STATE);
-    expect(newState).toEqual(<TagsState>{
-        groups: [{
+    await tags.moveTag({}, {
+        tag: "tag3"
+    },
+    // @ts-ignore
+    null, null);
+
+    expect.assertions(1);
+    
+    const newGroups = await tags.tagGroups({}, {},
+        // @ts-ignore
+        null, null);
+
+    expect(newGroups).toEqual([
+        {
             name: "group1",
             color: "#fff",
             tags: ["tag1", "tag2"],
@@ -115,21 +149,30 @@ it("handles move tag action (remove tag)", () => {
             name: "group2",
             color: "#000",
             tags: ["tag4"],
-        }]
-    });
+        }
+    ]);
+
+    await fs.remove(root);
 });
 
-it("handles change color action", () => {
-    const newState = tagsReducer(INITIAL_STATE, {
-        type: ACTION.CHANGE_COLOR,
-        name: "group1",
-        color: "#ddd"
-    });
+it("handles change color action", async() => {
+    const root = await createRoot();
 
-    expect.assertions(2);
-    expect(newState).not.toBe(INITIAL_STATE);
-    expect(newState).toEqual(<TagsState>{
-        groups: [{
+    await tags.changeColor({}, {
+        group: "group1",
+        color: "#ddd"
+    },
+    // @ts-ignore
+    null, null);
+
+    expect.assertions(1);
+    
+    const newGroups = await tags.tagGroups({}, {},
+        // @ts-ignore
+        null, null);
+
+    expect(newGroups).toEqual([
+        {
             name: "group1",
             color: "#ddd",
             tags: ["tag1", "tag2"],
@@ -137,6 +180,8 @@ it("handles change color action", () => {
             name: "group2",
             color: "#000",
             tags: ["tag3", "tag4"],
-        }]
-    });
+        }
+    ]);
+
+    await fs.remove(root);
 });

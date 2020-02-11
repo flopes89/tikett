@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs-extra";
 import * as files from "../resolver/files";
-import { createRoot } from "../../client/testUtils";
+import { createRoot } from "./testUtils";
 
 it("splits filenames", async() => {
     let [filename, ext, tags] = files.splitFilename("file");
@@ -310,9 +310,26 @@ it("removes tag from file", async() => {
 it("renames files", async() => {
     const root = await createRoot();
 
-    await files.renameFile(path.resolve(root, "file1.txt"), "file1_new.txt");
-    await files.renameFile(path.resolve(root, "file1[tag1 tag2].txt"), "file1_new");
-    await files.renameFile(path.resolve(root, "folder1", "file11[moretag].exe"), "file11[test].exe");
+    await files.renameFile({}, {
+        path: path.resolve(root, "file1.txt"),
+        newName: "file1_new.txt",
+    },
+    // @ts-ignore
+    null, null);
+
+    await files.renameFile({}, {
+        path: path.resolve(root, "file1[tag1 tag2].txt"),
+        newName: "file1_new",
+    },
+    // @ts-ignore
+    null, null);
+
+    await files.renameFile({}, {
+        path: path.resolve(root, "folder1", "file11[moretag].exe"),
+        newName: "file11[test].exe",
+    },
+    // @ts-ignore
+    null, null);
 
     expect.assertions(3);
 

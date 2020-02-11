@@ -25,12 +25,14 @@ export const getDb = () => db;
 export const load = async(dbPathOverwrite?: string): Promise<Db> => {
     dbPath = path.resolve(dbPathOverwrite || getDbPath(), "tikett.json");
 
+    await fs.ensureFile(dbPath);
+
     LOG.silly("Loading DB from [%s]", dbPath);
 
     try {
         db = await fs.readJSON(dbPath);
     } catch (err) {
-        LOG.warn("Could not load db, creating default Db");
+        LOG.debug("Creating default Db at [%s]", dbPath);
         db = DEFAULT_DB;
         await persist();
     }

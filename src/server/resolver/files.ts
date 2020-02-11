@@ -38,6 +38,10 @@ const getFiles = async(
     const dirents = await fs.readdir(folder);
 
     const promises = dirents.map(async dirent => {
+        if (dirent === "tikett.json") {
+            return [];
+        }
+
         try {
             const absolutePath = path.join(folder, dirent);
             const stats = await fs.stat(absolutePath);
@@ -201,13 +205,13 @@ export const removeTag: GqlMutationResolvers["removeTag"] = async(root, args) =>
     return true;
 };
 
-export const renameFile = async(filePath: string, newName: string) => {
-    const [, , tags] = splitFilename(filePath);
-    const [newBaseName, ext, newTags] = splitFilename(newName);
+export const renameFile: GqlMutationResolvers["renameFile"] = async(root, args) => {
+    const [, , tags] = splitFilename(args.path);
+    const [newBaseName, ext, newTags] = splitFilename(args.newName);
 
     const combinedTags = Array.prototype.concat(tags, newTags).sort();
 
-    let newPath = filePath.replace(path.basename(filePath), "") + newBaseName;
+    let newPath = args.path.replace(path.basename(args.path), "") + newBaseName;
 
     if (combinedTags.length > 0) {
         newPath += "[" + combinedTags.join(" ") + "]";
@@ -215,7 +219,9 @@ export const renameFile = async(filePath: string, newName: string) => {
 
     newPath += ext;
     
-    return fs.rename(filePath, newPath);
+    await fs.rename(args.path, newPath);
+
+    return true;
 };
 
 export const removeFile = async(filePath: string) => fs.unlink(filePath);
