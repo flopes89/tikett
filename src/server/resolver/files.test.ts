@@ -237,28 +237,28 @@ it("filters by tags with descendants", async() => {
 it("adds tag to file", async() => {
 	const root = await createRoot();
 
-	await files.addTagToFile({}, {
+	await files.addTag({}, {
         tag: "tag",
         path: path.resolve(root, "file1.txt")
     },
     // @ts-ignore
     null, null);
 
-	await files.addTagToFile({}, {
+	await files.addTag({}, {
         tag: "tag",
         path: path.resolve(root, "file1[tag].txt")
     },
     // @ts-ignore
     null, null);
 
-	await files.addTagToFile({}, {
+	await files.addTag({}, {
         tag: "tag3",
         path: path.resolve(root, "file1[tag1 tag2].txt")
     },
     // @ts-ignore
     null, null);
 
-	await files.addTagToFile({}, {
+	await files.addTag({}, {
         tag: "tag hello world",
         path: path.resolve(root, "folder1", "file11[moretag].exe")
     },

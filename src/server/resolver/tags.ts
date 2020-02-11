@@ -6,7 +6,7 @@ export const tagGroups: GqlQueryResolvers["tagGroups"] = () => getDb().tagGroups
 
 export const tags: GqlQueryResolvers["tags"] = () => {
     const groups = getDb().tagGroups;
-    return Array.prototype.concat(groups.map(group => group.tags));
+    return groups.map(group => group.tags).flat();
 };
 
 export const createTagGroup: GqlMutationResolvers["createTagGroup"] = async(root, args) => {

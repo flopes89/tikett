@@ -175,7 +175,7 @@ export const folders: GqlQueryResolvers["folders"] = async(root, args) => {
 };
 
 // Add a tag to a file
-export const addTagToFile: GqlMutationResolvers["addTag"] = async(root, args) => {
+export const addTag: GqlMutationResolvers["addTag"] = async(root, args) => {
     const [filename, ext, tags] = splitFilename(args.path);
     const newTags = Array.from(new Set([...tags, args.tag]));
 

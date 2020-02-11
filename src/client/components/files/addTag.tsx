@@ -133,7 +133,7 @@ export const AddTag: React.FC<AddTagProps> = (props) => {
     };
 
     const onKeyDown = (event: KeyboardEvent) => {
-        if (event.key === "Enter") {
+        if (event.key === "Insert") {
             setIsOpen(true);
             event.stopPropagation();
             return false;
