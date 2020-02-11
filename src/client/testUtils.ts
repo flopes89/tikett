@@ -2,12 +2,15 @@ import path from "path";
 import fs from "fs-extra";
 import os from "os";
 import uuid from "uuid/v4";
-import { load } from "../server/db";
+import { load, getDb, persist } from "../server/db";
 
 export const createRoot = async(): Promise<string> => {
     const root = path.resolve(os.tmpdir(), "tikett-test", uuid());
     
     load(root);
+    const db = await getDb();
+    db.root = root;
+    persist();
     
     await fs.ensureDir(root);
     await fs.ensureFile(path.resolve(root, "file1.txt"));

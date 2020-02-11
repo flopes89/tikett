@@ -238,28 +238,28 @@ it("adds tag to file", async() => {
 	const root = await createRoot();
 
 	await files.addTagToFile({}, {
-        name: "tag",
+        tag: "tag",
         path: path.resolve(root, "file1.txt")
     },
     // @ts-ignore
     null, null);
 
 	await files.addTagToFile({}, {
-        name: "tag",
+        tag: "tag",
         path: path.resolve(root, "file1[tag].txt")
     },
     // @ts-ignore
     null, null);
 
 	await files.addTagToFile({}, {
-        name: "tag3",
+        tag: "tag3",
         path: path.resolve(root, "file1[tag1 tag2].txt")
     },
     // @ts-ignore
     null, null);
 
 	await files.addTagToFile({}, {
-        name: "tag hello world",
+        tag: "tag hello world",
         path: path.resolve(root, "folder1", "file11[moretag].exe")
     },
     // @ts-ignore
@@ -278,21 +278,21 @@ it("removes tag from file", async() => {
 	const root = await createRoot();
 
 	await files.removeTag({}, {
-        name: "tag",
+        tag: "tag",
         path: path.resolve(root, "file1.txt")
     },
     // @ts-ignore
     null, null);
 
 	await files.removeTag({}, {
-        name: "tag1",
+        tag: "tag1",
         path: path.resolve(root, "file1[tag1 tag2].txt")
     },
     // @ts-ignore
     null, null);
 
 	await files.removeTag({}, {
-        name: "moretag",
+        tag: "moretag",
         path: path.resolve(root, "folder1", "file11[moretag].exe")
     },
     // @ts-ignore

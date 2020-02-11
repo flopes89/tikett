@@ -16,14 +16,14 @@ const DEFAULT_DB: Db = {
 const LOG = createLogger("db");
 
 let db: Db = DEFAULT_DB;
-let dbPath = path.resolve(__dirname, "tikett.json");
+let dbPath = __dirname;
 
 export const getDbPath = () => dbPath;
 
 export const getDb = () => db;
 
 export const load = async(dbPathOverwrite?: string): Promise<Db> => {
-    dbPath = dbPathOverwrite || getDbPath();
+    dbPath = path.resolve(dbPathOverwrite || getDbPath(), "tikett.json");
 
     LOG.silly("Loading DB from [%s]", dbPath);
 
