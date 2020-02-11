@@ -9,7 +9,7 @@ export const createRoot = async(): Promise<string> => {
     
     await fs.ensureDir(root);
     
-    await load(root);
+    await load(path.resolve(root, "tikett.json"));
     
     const db = getDb();
     db.root = root;

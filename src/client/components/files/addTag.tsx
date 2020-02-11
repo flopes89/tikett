@@ -4,8 +4,9 @@ import Octicon, { Plus } from "@primer/octicons-react";
 import { Tag } from "../tags";
 import classnames from "classnames";
 import { getColorOfTag } from "../../util";
-import { useTagGroupsQuery, useTagsQuery, useAddTagMutation } from "../../../generated/graphql";
+import { useTagGroupsQuery, useTagsQuery, useAddTagMutation, FilesDocument } from "../../../generated/graphql";
 import { Loading } from "../util";
+import { useFileBrowserState } from "../../state/fileBrowser";
 
 type TagListProps = {
     confirm: (tag: string) => void;
@@ -110,6 +111,7 @@ type AddTagProps = {
 
 export const AddTag: React.FC<AddTagProps> = (props) => {
     const [isOpen, setIsOpen] = useState(false);
+    const { filters, currentFolder, showDescendants } = useFileBrowserState();
     const [addTag, { loading }] = useAddTagMutation();
     
     const confirm = async(tag: string) => {
@@ -117,7 +119,15 @@ export const AddTag: React.FC<AddTagProps> = (props) => {
             variables: {
                 path: props.path,
                 tag,
-            }
+            },
+            refetchQueries: [{
+                query: FilesDocument,
+                variables: {
+                    current: currentFolder,
+                    filters,
+                    showDescendants,
+                }
+            }]
         });
         setIsOpen(false);
     };

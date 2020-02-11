@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Row, Col, ButtonGroup, Button, Modal, ModalBody, ModalHeader } from "reactstrap";
 import Octicon, { Inbox } from "@primer/octicons-react";
-import { Error, Loading } from "../util";
+import { Loading } from "../util";
+import { useFoldersQuery, useChangeRootMutation, useConfigQuery, FilesDocument, TagGroupsDocument, ConfigDocument } from "../../../generated/graphql";
 import { useFileBrowserState } from "../../state/fileBrowser";
-import { useFoldersQuery, useChangeRootMutation, useConfigQuery } from "../../../generated/graphql";
 
 type FolderListProps = {
     current: string;
@@ -47,12 +47,25 @@ type ConfirmButtonProps = {
 
 const ConfirmButton: React.FC<ConfirmButtonProps> = (props) => {
     const [setRoot, { loading }] = useChangeRootMutation();
+    const { currentFolder, showDescendants, filters } = useFileBrowserState();
 
     const onClick = async() => {
         await setRoot({
             variables: {
                 folder: props.current,
-            }
+            },
+            refetchQueries: [{
+                query: FilesDocument,
+                variables: {
+                    current: currentFolder,
+                    showDescendants,
+                    filters,
+                }
+            }, {
+                query: TagGroupsDocument,
+            }, {
+                query: ConfigDocument,
+            }]
         });
         props.close();
     };
@@ -108,6 +121,10 @@ export const SetRoot: React.FC = () => {
             setIsOpen(false);
         }
     };
+
+    if (data.config.root) {
+        return null;
+    }
 
     return (
         <React.Fragment>
