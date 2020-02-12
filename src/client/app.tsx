@@ -7,6 +7,7 @@ import { Breadcrumbs } from "./components/files/breadcrumbs";
 import { Files } from "./components/files";
 import { FilePreview } from "./components/files/filePreview";
 import { Info } from "./info";
+import { files } from "../server/resolver/files";
 
 export default () => (
     <React.Fragment>
@@ -33,8 +34,10 @@ export default () => (
                         <TagGroups />
                     </Col>
                     <Col>
-                        <Breadcrumbs />
-                        <Files />
+                        <div id="files">
+                            <Breadcrumbs />
+                            <Files />
+                        </div>
                     </Col>
                     <FilePreview />
                 </Row>

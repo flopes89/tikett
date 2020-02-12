@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Row, Col, Button, Breadcrumb, BreadcrumbItem } from "reactstrap";
 import Octicon, { X } from "@primer/octicons-react";
 import {  useFileBrowserState } from "../../state/fileBrowser";
-import path from "path";
 
-const getHeight = () => window.innerHeight - 280;
+const getHeight = () => {
+    const tagGroups = document.querySelector("#tag_groups")?.clientHeight;
+    const files = document.querySelector("#files")?.clientHeight;
+    return Math.max(tagGroups || 0, files || 0, 300) - 50;
+}
 
 const adjustHeight = () => {
     const ref: HTMLIFrameElement|null = document.querySelector("#file_preview iframe");
@@ -20,6 +23,8 @@ window.onresize = adjustHeight;
 
 export const FilePreview = () => {
     const { selected, selectFile } = useFileBrowserState();
+
+    useEffect(adjustHeight);
 
     if (!selected) {
         return null;
@@ -43,7 +48,7 @@ export const FilePreview = () => {
             </Row>
             <Row>
                 <Col>
-                    <iframe src={`file://${selected}`} />
+                    <iframe src={`/api/file?path=${selected}`} />
                 </Col>
             </Row>
         </Col>
