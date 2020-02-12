@@ -1,5 +1,5 @@
 overwrite: true
-schema: "src/server/schema.gql"
+schema: "src/static/schema.gql"
 documents: "src/**/*.gql"
 generates:
   src/generated/graphql.tsx:
@@ -15,6 +15,3 @@ generates:
       - "typescript-operations"
       - "typescript-react-apollo"
       - "typescript-resolvers"
-  ./graphql.schema.json:
-    plugins:
-      - "introspection"

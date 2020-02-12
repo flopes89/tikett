@@ -43,6 +43,7 @@ export type GqlMutation = {
   addTag: Scalars['Boolean'],
   removeTag: Scalars['Boolean'],
   renameFile: Scalars['Boolean'],
+  removeFile: Scalars['Boolean'],
 };
 
 
@@ -88,6 +89,11 @@ export type GqlMutationRemoveTagArgs = {
 export type GqlMutationRenameFileArgs = {
   path: Scalars['String'],
   newName: Scalars['String']
+};
+
+
+export type GqlMutationRemoveFileArgs = {
+  path: Scalars['String']
 };
 
 export type GqlQuery = {
@@ -792,6 +798,7 @@ export type GqlMutationResolvers<ContextType = any, ParentType extends GqlResolv
   addTag: Resolver<GqlResolversTypes['Boolean'], ParentType, ContextType, RequireFields<GqlMutationAddTagArgs, 'path' | 'tag'>>,
   removeTag: Resolver<GqlResolversTypes['Boolean'], ParentType, ContextType, RequireFields<GqlMutationRemoveTagArgs, 'path' | 'tag'>>,
   renameFile: Resolver<GqlResolversTypes['Boolean'], ParentType, ContextType, RequireFields<GqlMutationRenameFileArgs, 'path' | 'newName'>>,
+  removeFile: Resolver<GqlResolversTypes['Boolean'], ParentType, ContextType, RequireFields<GqlMutationRemoveFileArgs, 'path'>>,
 };
 
 export type GqlQueryResolvers<ContextType = any, ParentType extends GqlResolversParentTypes['Query'] = GqlResolversParentTypes['Query']> = {
