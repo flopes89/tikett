@@ -1,23 +1,19 @@
 language: node_js
 node_js:
-  - "lts/*"
-  
+- lts/*
 cache: npm
-
 script:
-  - npm run validate-types
-  - npm run test
-  - npm run dist
-  - tar -zcvf tikett-${TRAVIS_TAG}.tar.gz dist/*
-  - ls -la
+- npm run validate-types
+- npm run test
+- npm run dist
+- tar -zcvf tikett-${TRAVIS_TAG}.tar.gz dist/*
 
 deploy:
   provider: releases
   draft: true
   overwrite: true
   api_key:
-    secure: Ei5x0/B4mZIGCm8QkkTLx94a+stwUi4LI3jZbkkd7jxojg+2QVvyLxKLaPqaXBbIlBuCY1IO7p7MfAkHD5lcpu4Iha3b0v8IAHgjS7WCzX2kLtCrTpqc6A1GDkf9NLQW+4kbjrNCQJu8FKRJ4QqRBUHvw14vYMJVuGqera+Oh3MTFAiwlddnK3naOM8oE8B2WmN/ubRPEADwdawu44CkXfiiM91r50K45LeA5OP5C0rmO3eTSW7sqwv9oLaBXQ828C8rawmuDKrOhSX+kkBXBuaRFZ5XOFqcYbbiRqQ3Kq+ZfZhSmuuoMNybF+C1inLl790rExlgpS4XRPb8T9xo8VlA+7uradNVFuIZMFsZTl82OiY+IMGb63ModOS6L45r6N080gtMdOPflaDYB3ldMAsLJJ4C7x6zTSmbME+hBtCqDU8TdQO6FCw2vbA5YLJldQU6P69aVN4zXUZyrB4eH4lbIrCe8U6dYswz5O0yUmGMAaC73/syY6tPma2rD8JdXelSHbGh/pP4iIk3Cgv1fgh5pcpOts/iQWaxp4X0kCxjNpzKTFKjvq+4vHzRYL0d4m0rYe17tBrL5nRAGrKQ5LN2vurKLH9W2ikwEeqJfSlhhnZjwg09N95NOq9RBmEdXvWn6HSlHFPoQ7PwAfezhIRrrEDllNk+biHofe1DNy0=
-  skip_cleanup: true
-  on:
-    tags: true
+    secure: KxlpUUkAQGNx7Pf346SPZAk2yg4osaLoFCsSY6EkmA1ju0DKQP4ajmMOW1EaOKWrbl9rjy05cGaBOE19JaKQk5yQ7WcNJa7+fUqRBlCSpu5p3iIG0fOABewKdbGwzoyeYYlzayrYe4eu1W2CVRFXyY80W6UmkoS+F67VR7HR6qsGsXXe237nl/Gw/oY8Sf3GWe0ba2BqbfkQGvvh7yHSMPpPNw4tlWs0s3Y2Rkm7sBCf1HFKxDPKnAPOdF1X/OCHEoh2UxKYehM1qhn3npsWbPf2g6zhNzkWMy/9hQbuzuykvesNOw1p3DLLgSkmd62lwMSR+95ZEqWueadH36Bq51LZlSEHb8xiAHTYuceTSLDCVLXrIr9NeXNSDwOJmoC+KuITnXKIE0XOBpuCsMt661YspTiws3j68jLlKj1MUptbYsfUNRapLe0OFPN7sRJ7RqBOa+zQj/0CCs6+UJUQa6QvfV4RdP1q9y26r0aJQ2QXx7L4rUre9Ck2HYHR/qrBrjPps12fG7iMYMmoSAigVbexewWpRw1iKQLcwk4wlUNHCT6NnP2tj5+t8AYdf5N2oZ+Ur0LMUAYzs/86f0p1us+x9BDeBHCwQGyVDpmbrEpxVzERzdn96BO1tqUQer41GXlm9lA90HV4bDW0NL1+guBb6gjPIj5KvW6OelJiKPg=
   file: tikett-${TRAVIS_TAG}.tar.gz
+  on:
+    repo: flopes89/tikett
