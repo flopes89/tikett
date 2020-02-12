@@ -10,7 +10,6 @@
 of your choosing.
 - Download and install the latest [nodejs](https://nodejs.org) Release for your system (including `npm`)
 - Navigate to the unzipped `tikett` files
-- Execute `npm install`
 - Execute `node server.js`
 
 ## Developing
