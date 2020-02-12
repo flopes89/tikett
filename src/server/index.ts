@@ -8,7 +8,7 @@ import { apiRouter } from "./api";
 import net from "net";
 import { resolvers } from "./resolver";
 import { buildSchema } from "graphql";
-import { load } from "./db";
+import { load, persist } from "./db";
 import open from "open";
 
 const LOG = createLogger("server");
@@ -40,6 +40,7 @@ const run = async(): Promise<string> => {
 
     app.use(express.static(path.resolve(__dirname)));
 
+    // Load the current db state into memory before every graphql request
     app.use("/graphql", async(req, res, next) => {
         await load();
         return next();
@@ -57,6 +58,12 @@ const run = async(): Promise<string> => {
     apolloServer.applyMiddleware({
         app,
         path: "/graphql"
+    });
+
+    // Persist the (probably modifier) db state after each graphql request
+    app.use("/graphql", async(req, res, next) => {
+        await persist();
+        return next();
     });
 
     const port = process.env.PORT || await findRandomOpenPort();

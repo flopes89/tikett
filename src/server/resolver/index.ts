@@ -1,4 +1,4 @@
-import { addTag, removeTag, files, folders } from "./files";
+import { addTag, removeTag, files, folders, renameFile, removeFile } from "./files";
 import { config, changeRoot } from "./config";
 import { tagGroups, tags, changeColor, createTagGroup, moveTag, removeTagGroup } from "./tags";
 
@@ -12,6 +12,8 @@ export const resolvers = {
     },
     Mutation: {
         addTag,
+        renameFile,
+        removeFile,
         removeTag,
         changeRoot,
         createTagGroup,

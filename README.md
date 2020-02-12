@@ -10,6 +10,5 @@ Download the latest [Release](https://github.com/flopes89/tikett/releases) and r
 
 ## Developing
 
-- Run `npm i`
-- Run `npm run render` first
-- Run `npm run main` in a second terminal
+- `npm install`
+- `npm run dev`

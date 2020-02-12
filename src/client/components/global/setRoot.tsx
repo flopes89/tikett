@@ -122,10 +122,6 @@ export const SetRoot: React.FC = () => {
         }
     };
 
-    if (data.config.root) {
-        return null;
-    }
-
     return (
         <React.Fragment>
             <Button onClick={() => setIsOpen(true)}>

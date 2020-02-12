@@ -76,4 +76,8 @@ type Mutation {
         path: String!
         newName: String!
     ): Boolean!
+
+    removeFile(
+        path: String!
+    ): Boolean!
 }

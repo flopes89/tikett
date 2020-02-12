@@ -7,7 +7,7 @@ import { useFileBrowserState } from "../../state/fileBrowser";
 import { useDragState } from "../../state/drag";
 import { AddTag } from "./addTag";
 import { Input } from "reactstrap";
-import { useRenameFileMutation } from "../../../generated/graphql";
+import { useRenameFileMutation, FilesDocument } from "../../../generated/graphql";
 import { Loading } from "../util";
 
 type FileProps = {
@@ -18,12 +18,21 @@ type FileProps = {
 };
 
 export const File: React.FC<FileProps> = (props) => {
-    const { selectFile, selected, openFolder } = useFileBrowserState();
+    const { selectFile, selected, openFolder, currentFolder, showDescendants, filters } = useFileBrowserState();
     const { isDraggingTag } = useDragState();
     const [isEditing, setIsEditing] = useState(false);
     const [newName, setNewName] = useState(props.name);
     const inputRef = useRef<HTMLInputElement>(null);
-    const [renameFile, { loading }] = useRenameFileMutation();
+    const [renameFile, { loading }] = useRenameFileMutation({
+        refetchQueries: [{
+            query: FilesDocument,
+            variables: {
+                current: currentFolder,
+                filters,
+                showDescendants,
+            }
+        }]
+    });
 
     const isSelected = selected === props.path;
 
@@ -104,13 +113,13 @@ export const File: React.FC<FileProps> = (props) => {
         }
     };
 
-    if (loading) {
-        return <Loading />;
-    }
-
     let nameComponent: React.ReactNode = props.name;
     if (isEditing) {
         nameComponent = <Input innerRef={inputRef} type="text" value={newName} onChange={onChange} />;
+    }
+
+    if (loading) {
+        nameComponent = <Loading />;
     }
 
     return (

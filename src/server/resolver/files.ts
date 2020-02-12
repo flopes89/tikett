@@ -21,6 +21,8 @@ export const splitFilename = (filePath: string): [string, string, string[]] => {
         name = name.replace(matchTags[0], "");
     }
 
+    LOG.debug("Split up filename [%s] into [%s, %s, %s]", filePath, name, ext, tags);
+
     return [name, ext, tags];
 };
 
@@ -53,7 +55,7 @@ const getFiles = async(
                 path: absolutePath,
             };
 
-            LOG.silly("Creating PathEntry for %s", absolutePath);
+            LOG.silly("Creating PathEntry for [%s]", absolutePath);
 
             if (stats.isDirectory()) {
                 if (showDescendants) {
@@ -130,11 +132,11 @@ export const folders: GqlQueryResolvers["folders"] = async(root, args) => {
                     path: letter + ":" + path.sep
                 });
             } catch (_) {
-                LOG.debug("Skipping drive %s because it's unreadable", letter);
+                LOG.debug("Skipping drive [%s] because it's unreadable", letter);
             }
         }));
     } else {
-        LOG.debug("Reading dir %s", args.current);
+        LOG.silly("Reading dir [%s]", args.current);
 
         const dirents = await fs.readdir(args.current);
 
@@ -155,8 +157,6 @@ export const folders: GqlQueryResolvers["folders"] = async(root, args) => {
             }
         }
 
-        LOG.debug("Found %i subdirs", dirs.length);
-
         // Add a "back to root" option for windows to get back to the drive selection
         if (/^[a-z]:\\$/i.test(args.current) && process.platform === "win32") {
             dirs.unshift({
@@ -176,6 +176,8 @@ export const folders: GqlQueryResolvers["folders"] = async(root, args) => {
 
 // Add a tag to a file
 export const addTag: GqlMutationResolvers["addTag"] = async(root, args) => {
+    LOG.info(`Adding tag [%s] to [%s]`, args.tag, args.path);
+
     const [filename, ext, tags] = splitFilename(args.path);
     const newTags = Array.from(new Set([...tags, args.tag]));
 
@@ -189,6 +191,8 @@ export const addTag: GqlMutationResolvers["addTag"] = async(root, args) => {
 
 // Remove a tag from a file
 export const removeTag: GqlMutationResolvers["removeTag"] = async(root, args) => {
+    LOG.info(`Removing tag [%s] from [%s]`, args.tag, args.path);
+
     const [basePath, ext, tags] = splitFilename(args.path);
     tags.splice(tags.indexOf(args.tag), 1);
 
@@ -206,6 +210,8 @@ export const removeTag: GqlMutationResolvers["removeTag"] = async(root, args) =>
 };
 
 export const renameFile: GqlMutationResolvers["renameFile"] = async(root, args) => {
+    LOG.info(`Renaming [%s] to [%s]`, args.path, args.newName);
+
     const [, , tags] = splitFilename(args.path);
     const [newBaseName, ext, newTags] = splitFilename(args.newName);
 
