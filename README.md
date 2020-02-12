@@ -9,7 +9,8 @@
 - Download the latest [Release](https://github.com/flopes89/tikett/releases) and unzip it in a location
 of your choosing.
 - Download and install the latest [nodejs](https://nodejs.org) Release for your system (including `npm`)
-- Navigate to the unzipped `tikett` files
+- Navigate to the unzipped `tikett` files (on command line)
+- Execute `npm ci --production`
 - Execute `node server.js`
 
 ## Developing
