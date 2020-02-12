@@ -6,9 +6,12 @@
 
 ## Installation
 
-Download the latest [Release](https://github.com/flopes89/tikett/releases) and run it.
+- Download the latest [Release](https://github.com/flopes89/tikett/releases) and unzip it in a location
+of your choosing.
+- Download and install the latest [node]() Release for your system
+- Navigate to the unzipped `tikett` files
+- Execute `node server.js`
 
 ## Developing
 
-- `npm install`
-- `npm run dev`
+- Install dependencies and run the `dev` script

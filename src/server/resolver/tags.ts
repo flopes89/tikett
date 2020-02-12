@@ -1,5 +1,5 @@
 import { GqlQueryResolvers, GqlMutationResolvers } from "../../generated/graphql";
-import { getDb } from "../db";
+import { getDb, persist } from "../db";
 import { DEFAULT_TAG_COLOR } from "../../shared/interface-types";
 import { createLogger } from "../logger";
 
@@ -22,6 +22,8 @@ export const createTagGroup: GqlMutationResolvers["createTagGroup"] = async(root
         tags: [],
     });
     
+    await persist();
+
     return true;
 };
 
@@ -31,6 +33,8 @@ export const removeTagGroup: GqlMutationResolvers["removeTagGroup"] = async(root
     const groups = getDb().tagGroups;
     getDb().tagGroups = groups.filter(group => group.name !== args.group);
     
+    await persist();
+
     return true;
 };
 
@@ -50,6 +54,8 @@ export const moveTag: GqlMutationResolvers["moveTag"] = async(root, args) => {
         }
     });
     
+    await persist();
+
     return true;
 };
 
@@ -64,5 +70,7 @@ export const changeColor: GqlMutationResolvers["changeColor"] = async(root, args
         }
     });
     
+    await persist();
+
     return true;
 };

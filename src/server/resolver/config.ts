@@ -1,5 +1,5 @@
 import { GqlQueryResolvers, GqlMutationResolvers } from "../../generated/graphql";
-import { getDb, getDbPath } from "../db";
+import { getDb, getDbPath, persist } from "../db";
 
 export const config: GqlQueryResolvers["config"] = () => {
     return {
@@ -10,5 +10,6 @@ export const config: GqlQueryResolvers["config"] = () => {
 
 export const changeRoot: GqlMutationResolvers["changeRoot"] = async(root, args) => {
     getDb().root = args.folder;
+    await persist();
     return true;
 };
