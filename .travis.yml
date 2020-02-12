@@ -8,7 +8,7 @@ script:
   - npm run validate-types
   - npm run test
   - npm run dist
-  - tar -zcvf tikett-$TRAVIS_TAG.tar.gz dist/*
+  - tar -zcvf tikett-${TRAVIS_TAG}.tar.gz dist/*
 
 deploy:
   provider: releases
@@ -19,4 +19,4 @@ deploy:
   skip_cleanup: true
   on:
     tags: true
-  file: tikett-$TRAVIS_TAG.tar.gz
+  file: tikett-${TRAVIS_TAG}.tar.gz
