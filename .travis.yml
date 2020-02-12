@@ -9,6 +9,7 @@ script:
   - npm run test
   - npm run dist
   - tar -zcvf tikett-${TRAVIS_TAG}.tar.gz dist/*
+  - ls -la
 
 deploy:
   provider: releases
