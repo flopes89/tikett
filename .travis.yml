@@ -9,10 +9,10 @@ script:
 
 before_deploy:
 - tar -zcvf tikett-${TRAVIS_TAG}.tar.gz dist/*
+- ls -la
 
 deploy:
   provider: releases
-  draft: true
   overwrite: true
   api_key:
     secure: KxlpUUkAQGNx7Pf346SPZAk2yg4osaLoFCsSY6EkmA1ju0DKQP4ajmMOW1EaOKWrbl9rjy05cGaBOE19JaKQk5yQ7WcNJa7+fUqRBlCSpu5p3iIG0fOABewKdbGwzoyeYYlzayrYe4eu1W2CVRFXyY80W6UmkoS+F67VR7HR6qsGsXXe237nl/Gw/oY8Sf3GWe0ba2BqbfkQGvvh7yHSMPpPNw4tlWs0s3Y2Rkm7sBCf1HFKxDPKnAPOdF1X/OCHEoh2UxKYehM1qhn3npsWbPf2g6zhNzkWMy/9hQbuzuykvesNOw1p3DLLgSkmd62lwMSR+95ZEqWueadH36Bq51LZlSEHb8xiAHTYuceTSLDCVLXrIr9NeXNSDwOJmoC+KuITnXKIE0XOBpuCsMt661YspTiws3j68jLlKj1MUptbYsfUNRapLe0OFPN7sRJ7RqBOa+zQj/0CCs6+UJUQa6QvfV4RdP1q9y26r0aJQ2QXx7L4rUre9Ck2HYHR/qrBrjPps12fG7iMYMmoSAigVbexewWpRw1iKQLcwk4wlUNHCT6NnP2tj5+t8AYdf5N2oZ+Ur0LMUAYzs/86f0p1us+x9BDeBHCwQGyVDpmbrEpxVzERzdn96BO1tqUQer41GXlm9lA90HV4bDW0NL1+guBb6gjPIj5KvW6OelJiKPg=
