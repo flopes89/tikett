@@ -1,4 +1,4 @@
-import React, { useState, KeyboardEvent } from "react";
+import React, { useState, KeyboardEvent, useRef, useEffect } from "react";
 import { Button, Badge, Input, Modal, ModalHeader, ModalBody, ButtonGroup } from "reactstrap";
 import Octicon, { Plus } from "@primer/octicons-react";
 import { Tag } from "../tags";
@@ -17,9 +17,18 @@ const TagList: React.FC<TagListProps> = (props) => {
     const { data: tagsQuery } = useTagsQuery();
     const [typed, setTyped] = useState("");
     const [selected, setSelected] = useState("");
+    const inputRef = useRef<HTMLInputElement>(null);
     
     const displayValue = (selected || typed).split("#")[0];
-    
+
+    useEffect(() => {
+        if (!inputRef.current) {
+            return;
+        }
+
+        inputRef.current.focus();
+    }, [inputRef.current]);
+
     if (!tagsQuery || !tagGroupsQuery) {
         return <Loading />;
     }
@@ -95,6 +104,7 @@ const TagList: React.FC<TagListProps> = (props) => {
                 onChange={(event) => setTyped(event.target.value)}
                 onKeyPress={onKeyPress}
                 onKeyDown={onKeyDown}
+                innerRef={inputRef}
             />
             {tags.length > 0 && (
                 <ButtonGroup id="tag_suggestions" vertical className="mt-3 d-flex">
