@@ -16,7 +16,7 @@ const DEFAULT_DB: Db = {
 const LOG = createLogger("db");
 
 let db: Db = DEFAULT_DB;
-let dbPath = path.resolve(__dirname, "tikett.json");
+let dbPath = path.resolve(process.env.DBPATH || __dirname, "tikett.json");
 
 export const getDbPath = () => dbPath;
 

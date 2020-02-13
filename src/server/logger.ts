@@ -1,7 +1,7 @@
 import winston from "winston";
 
 export const createLogger = (name: string) => winston.createLogger({
-    level: "silly",
+    level: process.env.LOGLEVEL || "info",
     format: winston.format.combine(
         winston.format.splat(),
         winston.format.align(),
