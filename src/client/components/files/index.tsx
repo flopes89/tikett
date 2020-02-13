@@ -6,6 +6,7 @@ import { useFileBrowserState } from "../../state/fileBrowser";
 import { Loading } from "../util";
 import { Filter } from "./filter";
 import { useFilesQuery, useConfigQuery } from "../../../generated/graphql";
+import { useHeightAdjust } from "../../util";
 
 const FileList: React.FC = () => {
     const { currentFolder, showDescendants, filters, toggleDescendants } = useFileBrowserState();
@@ -16,6 +17,8 @@ const FileList: React.FC = () => {
             filters,
         }
     });
+    
+    useHeightAdjust("#files_table");
 
     if (!data) {
         return <Loading />;
@@ -38,7 +41,7 @@ const FileList: React.FC = () => {
                     </Label>
                 </Col>
             </Row>
-            <Row className="mt-5">
+            <Row id="files_table" className="mt-5">
                 <Col>
                     <Table>
                         <colgroup>

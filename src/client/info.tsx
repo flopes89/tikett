@@ -12,7 +12,7 @@ export const Info: React.FC = () => {
     const rows = new Map<string, string>();
     rows.set("Build", process.env.BUILD_INFO || "dev");
     rows.set("DB path", data?.config.dbPath || "");
-
+    
     const elements: React.ReactNodeArray = [];
     for (const [key, val] of rows) {
         elements.push(
@@ -40,6 +40,11 @@ export const Info: React.FC = () => {
                     <dl className="row">
                         {elements}
                     </dl>
+                    <p>
+                        <span className="text-muted">
+                            <a href="https://github.com/flopes89/tikett">tikett</a> &copy; Florian Peschka
+                        </span>
+                    </p>
                 </ModalBody>
             </Modal>
         </>
