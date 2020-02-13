@@ -6,13 +6,13 @@
         "url": "https://github.com/flopes89"
     },
     "description": "Offline file tag manager",
-    "version": "1.4.0",
-    "main": "dist/server.js",
+    "version": "1.5.0",
+    "main": "server.js",
     "scripts": {
         "validate-types": "tsc --noEmit",
         "generate-types": "graphql-codegen --config codegen.yml",
         "test": "jest",
-        "start": "node dist/server.js",
+        "start": "node server.js",
         "dev": "cross-env NODE_ENV=development webpack --config webpack/index.js --mode development",
         "dist": "cross-env NODE_ENV=production webpack --config webpack/index.js --mode production"
     },
