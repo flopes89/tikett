@@ -1,6 +1,6 @@
 import { addTag, removeTag, files, folders, renameFile, removeFile } from "./files";
 import { config, changeRoot } from "./config";
-import { tagGroups, tags, changeColor, createTagGroup, moveTag, removeTagGroup } from "./tags";
+import { tagGroups, tags, changeColor, createTagGroup, moveTag, removeTagGroup, renameTagGroup } from "./tags";
 
 export const resolvers = {
     Query: {
@@ -20,5 +20,6 @@ export const resolvers = {
         removeTagGroup,
         moveTag,
         changeColor,
+        renameTagGroup,
     }
 };

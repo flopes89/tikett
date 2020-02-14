@@ -147,7 +147,7 @@ export const AddTag: React.FC<AddTagProps> = (props) => {
     }
 
     return (
-        <React.Fragment>
+        <>
             <Badge className="add_tag" color="primary" onClick={() => setIsOpen(true)} tabIndex={0} onKeyDown={onKeyDown}>
                 <Octicon icon={Plus} height={12} verticalAlign="middle" />
             </Badge>
@@ -156,12 +156,12 @@ export const AddTag: React.FC<AddTagProps> = (props) => {
                     <Octicon icon={Plus} verticalAlign="middle" /> Add tag
                 </ModalHeader>
                 <ModalBody>
-                    <p>
+                    <p className="break">
                         {props.path}
                     </p>
                     <TagList confirm={confirm} />
                 </ModalBody>
             </Modal>
-        </React.Fragment >
+        </>
     );
 };

@@ -1,5 +1,5 @@
 import React, { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
-import Octicon, { File as FileIcon, FileDirectory, Search, Trashcan } from "@primer/octicons-react";
+import Octicon, { File as FileIcon, FileDirectory, Search, Trashcan, Pencil } from "@primer/octicons-react";
 import { Tags } from "../tags";
 import { Droppable, DroppableProps } from "react-beautiful-dnd";
 import classnames from "classnames";
@@ -117,12 +117,9 @@ export const File: React.FC<FileProps> = (props) => {
             setIsEditing(false);
         }
 
-        if (event.key === "F2") {
-            setIsEditing(true);
-        }
-
         if (event.key === "Escape") {
             setIsEditing(false);
+            setNewName(props.name);
         }
     };
 
@@ -140,7 +137,15 @@ export const File: React.FC<FileProps> = (props) => {
 
     let nameComponent: React.ReactNode = props.name;
     if (isEditing) {
-        nameComponent = <Input innerRef={inputRef} type="text" value={newName} onChange={onChange} />;
+        nameComponent = (
+            <Input
+                innerRef={inputRef}
+                type="text"
+                value={newName}
+                onChange={onChange}
+                onKeyDown={onKeyDown}
+            />
+        );
     }
 
     if (loading) {
@@ -148,11 +153,11 @@ export const File: React.FC<FileProps> = (props) => {
     }
 
     return (
-        <tr className={classes} tabIndex={0} onKeyDown={onKeyDown}>
+        <tr className={classes} onKeyDown={onKeyDown}>
             <td>
                 <Octicon icon={FileIcon} />
             </td>
-            <td>
+            <td className="break">
                 {nameComponent}
             </td>
             <td>
@@ -163,6 +168,10 @@ export const File: React.FC<FileProps> = (props) => {
             <td>
                 <a className="icon" onClick={toggleSelect}>
                     <Octicon icon={Search} />
+                </a>
+                &nbsp;
+                <a className="icon" onClick={() => setIsEditing(!isEditing)}>
+                    <Octicon icon={Pencil} />
                 </a>
                 &nbsp;
                 <RemoveFile path={props.path} />

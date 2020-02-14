@@ -43,10 +43,9 @@ const FileList: React.FC = () => {
             </Row>
             <Row id="files_table" className="mt-5">
                 <Col>
-                    <Table responsive>
+                    <Table>
                         <colgroup>
                             <col width="16px" />
-                            <col width="40%" />
                         </colgroup>
                         <tbody>
                             {data.files.map((file, index) => (

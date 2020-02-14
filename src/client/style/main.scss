@@ -17,10 +17,6 @@ a.icon {
     }
 }
 
-dd {
-    word-wrap: break-word;
-}
-
 .tag {
     margin-right: 5px;
 
@@ -35,7 +31,6 @@ dd {
 
 .breadcrumb-item {
     max-width: 100%;
-    word-wrap: break-word;
 }
 
 [data-react-beautiful-dnd-droppable] {
@@ -57,7 +52,19 @@ dd {
     min-height: 26px;
 }
 
-#files_component {
+.breadcrumb-item, .break {
+    word-wrap: break-word;
+}
+
+#files_table {
+    table {
+        table-layout: fixed;
+    }
+
+    td:first-child {
+        padding-left: 0;
+    }
+
     tr {
         &.folder {
             cursor: pointer;
@@ -78,11 +85,6 @@ dd {
                 display: inline-block;
                 font-size: 100%;
                 vertical-align: middle;
-
-                &:focus {
-                    outline: none;
-                    box-shadow: 0 0 10px 0 black;
-                }
             }
         }
 
