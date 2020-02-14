@@ -1,5 +1,5 @@
-import React, { KeyboardEvent, useState, ChangeEvent, useRef, useEffect } from "react";
-import Octicon, { FileDirectory, File as FileIcon, Search } from "@primer/octicons-react";
+import React, { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
+import Octicon, { File as FileIcon, FileDirectory, Search, Trashcan } from "@primer/octicons-react";
 import { Tags } from "../tags";
 import { Droppable, DroppableProps } from "react-beautiful-dnd";
 import classnames from "classnames";
@@ -7,8 +7,39 @@ import { useFileBrowserState } from "../../state/fileBrowser";
 import { useDragState } from "../../state/drag";
 import { AddTag } from "./addTag";
 import { Input } from "reactstrap";
-import { useRenameFileMutation, FilesDocument } from "../../../generated/graphql";
+import { useRemoveFileMutation, useRenameFileMutation } from "../../../generated/graphql";
 import { Loading } from "../util";
+import { useRefetchFilesQuery } from "../../util";
+
+type RemoveFileProps = {
+    path: string;
+};
+
+const RemoveFile: React.FC<RemoveFileProps> = (props) => {
+    const { selectFile } = useFileBrowserState();
+    const refetchFilesQuery = useRefetchFilesQuery();
+    const [removeFile, { loading }] = useRemoveFileMutation({
+        variables: {
+            path: props.path,
+        },
+        refetchQueries: [refetchFilesQuery]
+    });
+
+    if (loading) {
+        return <Loading />;
+    }
+
+    const remove = async() => {
+        selectFile("");
+        await removeFile();
+    };
+
+    return (
+        <a className="icon" onClick={() => remove()}>
+            <Octicon icon={Trashcan} />
+        </a>
+    );
+};
 
 type FileProps = {
     name: string;
@@ -18,20 +49,14 @@ type FileProps = {
 };
 
 export const File: React.FC<FileProps> = (props) => {
-    const { selectFile, selected, openFolder, currentFolder, showDescendants, filters } = useFileBrowserState();
+    const { selectFile, selected, openFolder } = useFileBrowserState();
     const { isDraggingTag } = useDragState();
     const [isEditing, setIsEditing] = useState(false);
     const [newName, setNewName] = useState(props.name);
     const inputRef = useRef<HTMLInputElement>(null);
+    const refetchFilesQuery = useRefetchFilesQuery();
     const [renameFile, { loading }] = useRenameFileMutation({
-        refetchQueries: [{
-            query: FilesDocument,
-            variables: {
-                current: currentFolder,
-                filters,
-                showDescendants,
-            }
-        }]
+        refetchQueries: [refetchFilesQuery]
     });
 
     const isSelected = selected === props.path;
@@ -136,9 +161,11 @@ export const File: React.FC<FileProps> = (props) => {
                 </Droppable>
             </td>
             <td>
-                <a onClick={toggleSelect}>
+                <a className="icon" onClick={toggleSelect}>
                     <Octicon icon={Search} />
                 </a>
+                &nbsp;
+                <RemoveFile path={props.path} />
             </td>
         </tr>
     );

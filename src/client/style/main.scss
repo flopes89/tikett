@@ -9,6 +9,14 @@ a, a:hover {
     color: inherit;
 }
 
+a.icon {
+    cursor: pointer;
+
+    &:hover {
+        color: $blue;
+    }
+}
+
 dd {
     word-wrap: break-word;
 }

@@ -1,7 +1,8 @@
-import { GraphQLResolveInfo } from 'graphql';
-import gql from 'graphql-tag';
-import * as ApolloReactCommon from '@apollo/react-common';
-import * as ApolloReactHooks from '@apollo/react-hooks';
+import { GraphQLResolveInfo } from "graphql";
+import gql from "graphql-tag";
+import * as ApolloReactCommon from "@apollo/react-common";
+import * as ApolloReactHooks from "@apollo/react-hooks";
+
 export type Maybe<T> = T | null;
 export type RequireFields<T, K extends keyof T> = { [X in Exclude<keyof T, K>]?: T[X] } & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
@@ -233,6 +234,16 @@ export type GqlMoveTagMutationVariables = {
 export type GqlMoveTagMutation = (
   { __typename?: 'Mutation' }
   & Pick<GqlMutation, 'moveTag'>
+);
+
+export type GqlRemoveFileMutationVariables = {
+  path: Scalars['String']
+};
+
+
+export type GqlRemoveFileMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<GqlMutation, 'removeFile'>
 );
 
 export type GqlRemoveTagMutationVariables = {
@@ -590,6 +601,36 @@ export function useMoveTagMutation(baseOptions?: ApolloReactHooks.MutationHookOp
 export type MoveTagMutationHookResult = ReturnType<typeof useMoveTagMutation>;
 export type MoveTagMutationResult = ApolloReactCommon.MutationResult<GqlMoveTagMutation>;
 export type MoveTagMutationOptions = ApolloReactCommon.BaseMutationOptions<GqlMoveTagMutation, GqlMoveTagMutationVariables>;
+export const RemoveFileDocument = gql`
+    mutation RemoveFile($path: String!) {
+  removeFile(path: $path)
+}
+    `;
+export type GqlRemoveFileMutationFn = ApolloReactCommon.MutationFunction<GqlRemoveFileMutation, GqlRemoveFileMutationVariables>;
+
+/**
+ * __useRemoveFileMutation__
+ *
+ * To run a mutation, you first call `useRemoveFileMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveFileMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeFileMutation, { data, loading, error }] = useRemoveFileMutation({
+ *   variables: {
+ *      path: // value for 'path'
+ *   },
+ * });
+ */
+export function useRemoveFileMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<GqlRemoveFileMutation, GqlRemoveFileMutationVariables>) {
+        return ApolloReactHooks.useMutation<GqlRemoveFileMutation, GqlRemoveFileMutationVariables>(RemoveFileDocument, baseOptions);
+      }
+export type RemoveFileMutationHookResult = ReturnType<typeof useRemoveFileMutation>;
+export type RemoveFileMutationResult = ApolloReactCommon.MutationResult<GqlRemoveFileMutation>;
+export type RemoveFileMutationOptions = ApolloReactCommon.BaseMutationOptions<GqlRemoveFileMutation, GqlRemoveFileMutationVariables>;
 export const RemoveTagDocument = gql`
     mutation RemoveTag($path: String!, $tag: String!) {
   removeTag(path: $path, tag: $tag)

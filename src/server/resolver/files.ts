@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs-extra";
 import { constants } from "fs";
-import { GqlQueryResolvers, GqlFile, GqlFolder, GqlMutationResolvers } from "../../generated/graphql";
+import { GqlFile, GqlFolder, GqlMutationResolvers, GqlQueryResolvers } from "../../generated/graphql";
 import { createLogger } from "../logger";
 import { getDb } from "../db";
 import { used } from "windows-drive-letters";
@@ -153,7 +153,7 @@ export const folders: GqlQueryResolvers["folders"] = async(root, args) => {
                     path: path.join(args.current, dirent)
                 });
             } catch (_) {
-                continue;
+                // no-op
             }
         }
 
@@ -230,6 +230,12 @@ export const renameFile: GqlMutationResolvers["renameFile"] = async(root, args) 
     return true;
 };
 
-export const removeFile = async(filePath: string) => fs.unlink(filePath);
+export const removeFile: GqlMutationResolvers["removeFile"] = async(root, args) => {
+    LOG.info("Removing file [%s]", args.path);
+
+    await fs.unlink(args.path);
+
+    return true;
+};
 
 export const moveFile = async(oldPath: string, newPath: string) => fs.rename(oldPath, newPath);

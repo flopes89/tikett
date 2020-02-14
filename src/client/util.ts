@@ -1,6 +1,7 @@
-import { GqlTagGroup } from "../generated/graphql";
+import { FilesDocument, GqlFilesQueryVariables, GqlTagGroup } from "../generated/graphql";
 import { DEFAULT_TAG_COLOR } from "../shared/interface-types";
 import { useEffect } from "react";
+import { useFileBrowserState } from "./state/fileBrowser";
 
 export const useHeightAdjust = (elementSelector: string) => {
     const handleResize = () => {
@@ -31,4 +32,21 @@ export const getColorOfTag = (groups: GqlTagGroup[], name: string): string => {
     });
 
     return result;
+};
+
+export const useRefetchFilesQuery = () => {
+    const variables = useFilesVariables();
+    return {
+        query: FilesDocument,
+        variables,
+    };
+};
+
+export const useFilesVariables = () => {
+    const state = useFileBrowserState();
+    return <GqlFilesQueryVariables>{
+        current: state.currentFolder,
+        filters: state.filters,
+        showDescendants: state.showDescendants,
+    };
 };

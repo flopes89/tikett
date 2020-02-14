@@ -1,12 +1,11 @@
-import React, { useState, KeyboardEvent, useRef, useEffect } from "react";
-import { Button, Badge, Input, Modal, ModalHeader, ModalBody, ButtonGroup } from "reactstrap";
+import React, { KeyboardEvent, useEffect, useRef, useState } from "react";
+import { Badge, Button, ButtonGroup, Input, Modal, ModalBody, ModalHeader } from "reactstrap";
 import Octicon, { Plus } from "@primer/octicons-react";
 import { Tag } from "../tags";
 import classnames from "classnames";
-import { getColorOfTag } from "../../util";
-import { useTagGroupsQuery, useTagsQuery, useAddTagMutation, FilesDocument } from "../../../generated/graphql";
+import { getColorOfTag, useRefetchFilesQuery } from "../../util";
+import { useAddTagMutation, useTagGroupsQuery, useTagsQuery } from "../../../generated/graphql";
 import { Loading } from "../util";
-import { useFileBrowserState } from "../../state/fileBrowser";
 
 type TagListProps = {
     confirm: (tag: string) => void;
@@ -40,7 +39,7 @@ const TagList: React.FC<TagListProps> = (props) => {
         props.confirm(displayValue);
         setTyped("");
         setSelected("");
-    }
+    };
 
     const onKeyPress = (event: KeyboardEvent) => {
         if (event.key === "Enter") {
@@ -121,8 +120,8 @@ type AddTagProps = {
 
 export const AddTag: React.FC<AddTagProps> = (props) => {
     const [isOpen, setIsOpen] = useState(false);
-    const { filters, currentFolder, showDescendants } = useFileBrowserState();
     const [addTag, { loading }] = useAddTagMutation();
+    const refetchFilesQuery = useRefetchFilesQuery();
     
     const confirm = async(tag: string) => {
         await addTag({
@@ -130,14 +129,7 @@ export const AddTag: React.FC<AddTagProps> = (props) => {
                 path: props.path,
                 tag,
             },
-            refetchQueries: [{
-                query: FilesDocument,
-                variables: {
-                    current: currentFolder,
-                    filters,
-                    showDescendants,
-                }
-            }]
+            refetchQueries: [refetchFilesQuery]
         });
         setIsOpen(false);
     };
