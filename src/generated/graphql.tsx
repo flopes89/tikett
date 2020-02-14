@@ -1,8 +1,7 @@
-import { GraphQLResolveInfo } from "graphql";
-import gql from "graphql-tag";
-import * as ApolloReactCommon from "@apollo/react-common";
-import * as ApolloReactHooks from "@apollo/react-hooks";
-
+import { GraphQLResolveInfo } from 'graphql';
+import gql from 'graphql-tag';
+import * as ApolloReactCommon from '@apollo/react-common';
+import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
 export type RequireFields<T, K extends keyof T> = { [X in Exclude<keyof T, K>]?: T[X] } & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
@@ -38,6 +37,7 @@ export type GqlMutation = {
    __typename?: 'Mutation',
   changeRoot: Scalars['Boolean'],
   createTagGroup: Scalars['Boolean'],
+  renameTagGroup: Scalars['Boolean'],
   removeTagGroup: Scalars['Boolean'],
   moveTag: Scalars['Boolean'],
   changeColor: Scalars['Boolean'],
@@ -55,6 +55,12 @@ export type GqlMutationChangeRootArgs = {
 
 export type GqlMutationCreateTagGroupArgs = {
   name: Scalars['String']
+};
+
+
+export type GqlMutationRenameTagGroupArgs = {
+  group: Scalars['String'],
+  newName: Scalars['String']
 };
 
 
@@ -276,6 +282,17 @@ export type GqlRenameFileMutationVariables = {
 export type GqlRenameFileMutation = (
   { __typename?: 'Mutation' }
   & Pick<GqlMutation, 'renameFile'>
+);
+
+export type GqlRenameTagGroupMutationVariables = {
+  group: Scalars['String'],
+  newName: Scalars['String']
+};
+
+
+export type GqlRenameTagGroupMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<GqlMutation, 'renameTagGroup'>
 );
 
 
@@ -723,6 +740,37 @@ export function useRenameFileMutation(baseOptions?: ApolloReactHooks.MutationHoo
 export type RenameFileMutationHookResult = ReturnType<typeof useRenameFileMutation>;
 export type RenameFileMutationResult = ApolloReactCommon.MutationResult<GqlRenameFileMutation>;
 export type RenameFileMutationOptions = ApolloReactCommon.BaseMutationOptions<GqlRenameFileMutation, GqlRenameFileMutationVariables>;
+export const RenameTagGroupDocument = gql`
+    mutation RenameTagGroup($group: String!, $newName: String!) {
+  renameTagGroup(group: $group, newName: $newName)
+}
+    `;
+export type GqlRenameTagGroupMutationFn = ApolloReactCommon.MutationFunction<GqlRenameTagGroupMutation, GqlRenameTagGroupMutationVariables>;
+
+/**
+ * __useRenameTagGroupMutation__
+ *
+ * To run a mutation, you first call `useRenameTagGroupMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRenameTagGroupMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [renameTagGroupMutation, { data, loading, error }] = useRenameTagGroupMutation({
+ *   variables: {
+ *      group: // value for 'group'
+ *      newName: // value for 'newName'
+ *   },
+ * });
+ */
+export function useRenameTagGroupMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<GqlRenameTagGroupMutation, GqlRenameTagGroupMutationVariables>) {
+        return ApolloReactHooks.useMutation<GqlRenameTagGroupMutation, GqlRenameTagGroupMutationVariables>(RenameTagGroupDocument, baseOptions);
+      }
+export type RenameTagGroupMutationHookResult = ReturnType<typeof useRenameTagGroupMutation>;
+export type RenameTagGroupMutationResult = ApolloReactCommon.MutationResult<GqlRenameTagGroupMutation>;
+export type RenameTagGroupMutationOptions = ApolloReactCommon.BaseMutationOptions<GqlRenameTagGroupMutation, GqlRenameTagGroupMutationVariables>;
 
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -833,6 +881,7 @@ export type GqlFolderResolvers<ContextType = any, ParentType extends GqlResolver
 export type GqlMutationResolvers<ContextType = any, ParentType extends GqlResolversParentTypes['Mutation'] = GqlResolversParentTypes['Mutation']> = {
   changeRoot: Resolver<GqlResolversTypes['Boolean'], ParentType, ContextType, RequireFields<GqlMutationChangeRootArgs, 'folder'>>,
   createTagGroup: Resolver<GqlResolversTypes['Boolean'], ParentType, ContextType, RequireFields<GqlMutationCreateTagGroupArgs, 'name'>>,
+  renameTagGroup: Resolver<GqlResolversTypes['Boolean'], ParentType, ContextType, RequireFields<GqlMutationRenameTagGroupArgs, 'group' | 'newName'>>,
   removeTagGroup: Resolver<GqlResolversTypes['Boolean'], ParentType, ContextType, RequireFields<GqlMutationRemoveTagGroupArgs, 'group'>>,
   moveTag: Resolver<GqlResolversTypes['Boolean'], ParentType, ContextType, RequireFields<GqlMutationMoveTagArgs, 'tag'>>,
   changeColor: Resolver<GqlResolversTypes['Boolean'], ParentType, ContextType, RequireFields<GqlMutationChangeColorArgs, 'group' | 'color'>>,

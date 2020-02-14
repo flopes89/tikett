@@ -1,0 +1,3 @@
+mutation RenameTagGroup($group: String! $newName: String!) {
+    renameTagGroup(group: $group newName: $newName)
+}

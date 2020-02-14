@@ -33,6 +33,11 @@ dd {
     }
 }
 
+.breadcrumb-item {
+    max-width: 100%;
+    word-wrap: break-word;
+}
+
 [data-react-beautiful-dnd-droppable] {
     border: 3px solid transparent;
 }

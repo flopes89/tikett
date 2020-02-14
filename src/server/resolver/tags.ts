@@ -74,3 +74,17 @@ export const changeColor: GqlMutationResolvers["changeColor"] = async(root, args
 
     return true;
 };
+
+export const renameTagGroup: GqlMutationResolvers["renameTagGroup"] = async(root, args) => {
+    LOG.info("Renaming [%s] to [%s]", args.group, args.newName);
+
+    const group = getDb().tagGroups.find(group => group.name === args.group);
+
+    if (group) {
+        group.name = args.newName;
+    }
+
+    await persist();
+
+    return true;
+};

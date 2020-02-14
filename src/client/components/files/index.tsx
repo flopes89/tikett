@@ -43,7 +43,7 @@ const FileList: React.FC = () => {
             </Row>
             <Row id="files_table" className="mt-5">
                 <Col>
-                    <Table>
+                    <Table responsive>
                         <colgroup>
                             <col width="16px" />
                             <col width="40%" />

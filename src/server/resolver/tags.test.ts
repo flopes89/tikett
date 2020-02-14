@@ -185,3 +185,34 @@ it("handles change color action", async() => {
 
     await fs.remove(root);
 });
+
+it("handles rename tag group", async() => {
+    const root = await createRoot();
+
+    await tags.renameTagGroup({}, {
+        group: "group1",
+        newName: "newGroup1"
+    },
+    // @ts-ignore
+    null, null);
+
+    expect.assertions(1);
+    
+    const newGroups = await tags.tagGroups({}, {},
+        // @ts-ignore
+        null, null);
+
+    expect(newGroups).toEqual([
+        {
+            name: "newGroup1",
+            color: "#fff",
+            tags: ["tag1", "tag2"],
+        }, {
+            name: "group2",
+            color: "#000",
+            tags: ["tag3", "tag4"],
+        }
+    ]);
+
+    await fs.remove(root);
+});

@@ -343,9 +343,25 @@ it("renames files", async() => {
 it("removes files", async() => {
     const root = await createRoot();
 
-    await files.removeFile(path.resolve(root, "file1.txt"));
-    await files.removeFile(path.resolve(root, "file1[tag1 tag2].txt"));
-    await files.removeFile(path.resolve(root, "folder1", "file11[moretag].exe"));
+    await files.removeFile({}, {
+        path: path.resolve(root, "file1.txt")
+    },
+    // @ts-ignore
+    null, null);
+
+    await files.removeFile({}, {
+        path: path.resolve(root, "file1[tag1 tag2].txt")
+        
+    },
+    // @ts-ignore
+    null, null);
+
+    await files.removeFile({}, {
+        path: path.resolve(root, "folder1", "file11[moretag].exe")
+        
+    },
+    // @ts-ignore
+    null, null);
 
     expect.assertions(3);
 
