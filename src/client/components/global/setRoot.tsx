@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, ButtonGroup, Col, Modal, ModalBody, ModalHeader, Row } from "reactstrap";
 import Octicon, { Inbox } from "@primer/octicons-react";
 import { Loading } from "../util";
@@ -109,7 +109,11 @@ const FolderSelection: React.FC<FolderSelectionProps> = (props) => {
 
 export const SetRoot: React.FC = () => {
     const { data } = useConfigQuery();
-    const [isOpen, setIsOpen] = useState(Boolean(data?.config.root));
+    const [isOpen, setIsOpen] = useState(false);
+
+    useEffect(() => {
+        setIsOpen(!Boolean(data?.config.root));
+    }, [data]);
 
     if (!data) {
         return <Loading />;

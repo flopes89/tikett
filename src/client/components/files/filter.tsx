@@ -36,7 +36,7 @@ export const Filter: React.FC = () => {
 
     return (
         <Row>
-            <Col xs={3}>
+            <Col xs={1}>
                 <strong>Filters</strong>
             </Col>
             <Col>

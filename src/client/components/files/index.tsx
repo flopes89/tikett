@@ -30,7 +30,7 @@ const FileList: React.FC = () => {
                 <Col>
                     <Filter />
                 </Col>
-                <Col xs={4} className="text-right">
+                <Col xs={2} className="text-right">
                     <Label check className="pl-2">
                         <Input
                             type="checkbox"
