@@ -69,14 +69,8 @@ export const File: React.FC<FileProps> = (props) => {
     }, [isEditing]);
 
     if (!props.isFile) {
-        const onKeyDown = (event: KeyboardEvent) => {
-            if (event.key === "Enter") {
-                openFolder(props.name);
-            }
-        };
-
         return (
-            <tr className="folder" onClick={() => openFolder(props.name)} onKeyDown={onKeyDown} tabIndex={0}>
+            <tr className="folder" onClick={() => openFolder(props.name)}>
                 <td><Octicon icon={FileDirectory} /></td>
                 <td>[{props.name}]</td>
                 <td>&nbsp;</td>
@@ -106,6 +100,7 @@ export const File: React.FC<FileProps> = (props) => {
 
     const onKeyDown = async(event: KeyboardEvent) => {
         event.persist();
+        event.stopPropagation();
 
         if (event.key === "Enter" && isEditing) {
             await renameFile({

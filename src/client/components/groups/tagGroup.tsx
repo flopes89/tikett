@@ -59,6 +59,7 @@ export const TagGroup: React.FC<TagGroupProps> = (props) => {
     
     const onKeyDown = async(event: KeyboardEvent) => {
         event.persist();
+        event.stopPropagation();
 
         if (event.key === "Enter" && isEditing) {
             await renameGroup({

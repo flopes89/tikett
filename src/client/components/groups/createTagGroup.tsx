@@ -18,6 +18,9 @@ export const CreateTagGroup: React.FC = () => {
     }, [isOpen]);
 
     const onKeyDown = async(event: KeyboardEvent) => {
+        event.persist();
+        event.stopPropagation();
+
         if (name.length > 0 && event.key === "Enter") {
             await createTagGroup({
                 variables: {
