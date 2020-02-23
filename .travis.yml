@@ -10,8 +10,10 @@ script:
 before_deploy:
 - cp package.json dist
 - cp package-lock.json dist
+- cd dist
+- npm ci --production
+- cd ..
 - tar -zcf tikett-${TRAVIS_TAG}.tar.gz dist/*
-- ls -la
 
 deploy:
   provider: releases

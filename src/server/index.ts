@@ -7,8 +7,7 @@ import { createLogger } from "./logger";
 import { apiRouter } from "./api";
 import net from "net";
 import { resolvers } from "./resolver";
-import { load, persist } from "./db";
-import open from "open";
+import { load } from "./db";
 
 const LOG = createLogger("server");
 
@@ -61,7 +60,7 @@ const run = async(): Promise<string> => {
     const port = process.env.PORT || await findRandomOpenPort();
 
     app.listen(port, () => {
-        LOG.info(`Running server on ${port}`);
+        LOG.info(`Running server on :${port}`);
     });
 
     app.use("/api", apiRouter);
@@ -69,10 +68,14 @@ const run = async(): Promise<string> => {
     return port;
 };
 
-run().then((port) => {
+run().then(port => {
     LOG.info("Running tikett %s", process.env.BUILD_INFO);
 
     if (process.env.NODE_ENV === "production") {
-        open("http://localhost:" + port);
+        console.log("");
+        console.log("## tikett has started. Open your browser and navigate to the following address:");
+        console.log("##");
+        console.log("## http://localhost:" + port + "/");
+        console.log("");
     }
 });
