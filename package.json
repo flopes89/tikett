@@ -6,7 +6,7 @@
         "url": "https://github.com/flopes89"
     },
     "description": "Offline file tag manager",
-    "version": "1.6.1",
+    "version": "1.7.0",
     "main": "server.js",
     "scripts": {
         "validate-types": "tsc --noEmit",

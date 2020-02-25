@@ -61,10 +61,6 @@ a.icon {
         table-layout: fixed;
     }
 
-    td:first-child {
-        padding-left: 0;
-    }
-
     tr {
         &.folder {
             cursor: pointer;

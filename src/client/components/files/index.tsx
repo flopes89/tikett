@@ -45,7 +45,10 @@ const FileList: React.FC = () => {
                 <Col>
                     <Table>
                         <colgroup>
-                            <col width="16px" />
+                            <col width="20px" />
+                            <col />
+                            <col />
+                            <col width="75px" />
                         </colgroup>
                         <tbody>
                             {data.files.map((file, index) => (
