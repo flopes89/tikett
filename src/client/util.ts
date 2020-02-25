@@ -1,4 +1,4 @@
-import { FilesDocument, GqlFilesQueryVariables, GqlTagGroup } from "../generated/graphql";
+import { FilesDocument, GqlFilesQueryVariables, GqlTagGroup, TagsDocument } from "../generated/graphql";
 import { DEFAULT_TAG_COLOR } from "../shared/interface-types";
 import { useEffect } from "react";
 import { useFileBrowserState } from "./state/fileBrowser";
@@ -41,6 +41,10 @@ export const useRefetchFilesQuery = () => {
         variables,
     };
 };
+
+export const useRefetchTagsQuery = () => ({
+    query: TagsDocument,
+});
 
 export const useFilesVariables = () => {
     const state = useFileBrowserState();

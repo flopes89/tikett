@@ -3,7 +3,7 @@ import { Badge, Button, ButtonGroup, Input, Modal, ModalBody, ModalHeader } from
 import Octicon, { Plus } from "@primer/octicons-react";
 import { Tag } from "../tags";
 import classnames from "classnames";
-import { getColorOfTag, useRefetchFilesQuery } from "../../util";
+import { getColorOfTag, useRefetchFilesQuery, useRefetchTagsQuery } from "../../util";
 import { useAddTagMutation, useTagGroupsQuery, useTagsQuery } from "../../../generated/graphql";
 import { Loading } from "../util";
 
@@ -124,6 +124,7 @@ export const AddTag: React.FC<AddTagProps> = (props) => {
     const [isOpen, setIsOpen] = useState(false);
     const [addTag, { loading }] = useAddTagMutation();
     const refetchFilesQuery = useRefetchFilesQuery();
+    const refetchTagsQuery = useRefetchTagsQuery();
     
     const confirm = async(tag: string) => {
         await addTag({
@@ -131,7 +132,7 @@ export const AddTag: React.FC<AddTagProps> = (props) => {
                 path: props.path,
                 tag,
             },
-            refetchQueries: [refetchFilesQuery]
+            refetchQueries: [refetchFilesQuery, refetchTagsQuery]
         });
         setIsOpen(false);
     };
