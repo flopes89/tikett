@@ -33,7 +33,9 @@ const TagList: React.FC<TagListProps> = (props) => {
     }
 
     let tags = tagsQuery.tags;
-    tags = tags.filter(tag => typed.length >= 3 && tag.indexOf(typed) !== -1);
+    tags = tags
+        .map(tag => tag.toLocaleLowerCase())
+        .filter(tag => typed.length >= 3 && tag.indexOf(typed.toLocaleLowerCase()) !== -1);
 
     const confirm = () => {
         props.confirm(displayValue);
