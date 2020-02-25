@@ -44,13 +44,13 @@ const TagList: React.FC<TagListProps> = (props) => {
     };
 
     const onKeyPress = (event: KeyboardEvent) => {
-        if (event.key === "Enter") {
-            confirm();
-        }
-
         if (selected) {
             setTyped(selected);
             setSelected("");
+        }
+        
+        if (event.key === "Enter") {
+            confirm();
         }
     };
 
