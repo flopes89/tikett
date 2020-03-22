@@ -44,7 +44,7 @@ export const RemoveTag: React.FC<RemoveTagProps> = (props) => {
     }
 
     return (
-        <a className="remove_tag ml-2" href="#" onClick={() => remove()} tabIndex={-1}>
+        <a className="remove_tag ml-2" href="#" onClick={() => remove()}>
             <Octicon icon={Trashcan} size={12} verticalAlign="middle" />
         </a>
     );

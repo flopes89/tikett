@@ -67,9 +67,9 @@ type Mutation {
         color: String!
     ): Boolean!
 
-    addTag(
+    addTags(
         path: String!
-        tag: String!
+        tags: [String!]!
     ): Boolean!
     
     removeTag(

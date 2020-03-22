@@ -175,11 +175,11 @@ export const folders: GqlQueryResolvers["folders"] = async(root, args) => {
 };
 
 // Add a tag to a file
-export const addTag: GqlMutationResolvers["addTag"] = async(root, args) => {
-    LOG.info(`Adding tag [%s] to [%s]`, args.tag, args.path);
+export const addTags: GqlMutationResolvers["addTags"] = async(root, args) => {
+    LOG.info(`Adding tags %s to [%s]`, args.tags, args.path);
 
     const [filename, ext, tags] = splitFilename(args.path);
-    const newTags = Array.from(new Set([...tags, args.tag]));
+    const newTags = Array.from(new Set([...tags, ...args.tags]));
 
     const newName = filename + "[" + newTags.join(" ") + "]" + ext;
 

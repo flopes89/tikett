@@ -1,10 +1,10 @@
 import React, { KeyboardEvent, useEffect, useRef, useState } from "react";
-import { Badge, Button, ButtonGroup, Input, Modal, ModalBody, ModalHeader } from "reactstrap";
-import Octicon, { Plus } from "@primer/octicons-react";
+import { Badge, Button, ButtonGroup, Input, Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap";
+import Octicon, { Plus, Trashcan } from "@primer/octicons-react";
 import { Tag } from "../tags";
 import classnames from "classnames";
 import { getColorOfTag, useRefetchFilesQuery, useRefetchTagsQuery } from "../../util";
-import { useAddTagMutation, useTagGroupsQuery, useTagsQuery } from "../../../generated/graphql";
+import { useAddTagsMutation, useTagGroupsQuery, useTagsQuery } from "../../../generated/graphql";
 import { Loading } from "../util";
 
 type TagListProps = {
@@ -37,8 +37,8 @@ const TagList: React.FC<TagListProps> = (props) => {
         .map(tag => tag.toLocaleLowerCase())
         .filter(tag => typed.length >= 3 && tag.indexOf(typed.toLocaleLowerCase()) !== -1);
 
-    const confirm = () => {
-        props.confirm(displayValue);
+    const confirm = (tag: string) => {
+        props.confirm(tag);
         setTyped("");
         setSelected("");
     };
@@ -50,7 +50,7 @@ const TagList: React.FC<TagListProps> = (props) => {
         }
         
         if (event.key === "Enter") {
-            confirm();
+            confirm(displayValue);
         }
     };
 
@@ -90,7 +90,7 @@ const TagList: React.FC<TagListProps> = (props) => {
         });
 
         return (
-            <Button outline size="sm" className={classes} key={index} onClick={confirm}>
+            <Button outline size="sm" className={classes} key={index} onClick={() => confirm(tag)}>
                 <Tag color={color}>
                     {tag}
                 </Tag>
@@ -122,36 +122,39 @@ type AddTagProps = {
 
 export const AddTag: React.FC<AddTagProps> = (props) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [addTag, { loading }] = useAddTagMutation();
+    const [addTag, { loading }] = useAddTagsMutation();
+    const { data: tagGroupsQuery } = useTagGroupsQuery();
+    const [tags, setTags] = useState<string[]>([]);
     const refetchFilesQuery = useRefetchFilesQuery();
     const refetchTagsQuery = useRefetchTagsQuery();
     
-    const confirm = async(tag: string) => {
+    const addSelectedTag = (tag: string) => {
+        setTags(Array.from(new Set([...tags, tag])).sort());
+    };
+
+    const removeTag = (tag: string) => {
+        setTags(tags.filter(t => t !== tag));
+    };
+
+    const confirm = async() => {
         await addTag({
             variables: {
                 path: props.path,
-                tag,
+                tags,
             },
             refetchQueries: [refetchFilesQuery, refetchTagsQuery]
         });
         setIsOpen(false);
+        setTags([]);
     };
 
-    const onKeyDown = (event: KeyboardEvent) => {
-        if (event.key === "Insert") {
-            setIsOpen(true);
-            event.stopPropagation();
-            return false;
-        }
-    };
-
-    if (loading) {
+    if (loading || !tagGroupsQuery) {
         return <Loading />;
     }
 
     return (
         <>
-            <Badge className="add_tag" color="primary" onClick={() => setIsOpen(true)} tabIndex={0} onKeyDown={onKeyDown}>
+            <Badge className="add_tag" color="primary" onClick={() => setIsOpen(true)} >
                 <Octicon icon={Plus} height={12} verticalAlign="middle" />
             </Badge>
             <Modal isOpen={isOpen} toggle={() => setIsOpen(false)}>
@@ -162,8 +165,29 @@ export const AddTag: React.FC<AddTagProps> = (props) => {
                     <p className="break">
                         {props.path}
                     </p>
-                    <TagList confirm={confirm} />
+                    <p>
+                        {tags.map(tag => {
+                            const color = getColorOfTag(tagGroupsQuery.tagGroups, tag);
+                            return (
+                                <>
+                                    <Tag color={color}>
+                                        {tag}
+                                        <a className="remove_tag ml-2" href="#" onClick={() => removeTag(tag)}>
+                                            <Octicon icon={Trashcan} size={12} verticalAlign="middle" />
+                                        </a>
+                                    </Tag>
+                                    &nbsp;
+                                </>
+                            );
+                        })}
+                    </p>
+                    <TagList confirm={addSelectedTag} />
                 </ModalBody>
+                <ModalFooter>
+                    <Button color="primary" onClick={confirm}>
+                        OK
+                    </Button>
+                </ModalFooter>
             </Modal>
         </>
     );

@@ -41,7 +41,7 @@ export type GqlMutation = {
   removeTagGroup: Scalars['Boolean'],
   moveTag: Scalars['Boolean'],
   changeColor: Scalars['Boolean'],
-  addTag: Scalars['Boolean'],
+  addTags: Scalars['Boolean'],
   removeTag: Scalars['Boolean'],
   renameFile: Scalars['Boolean'],
   removeFile: Scalars['Boolean'],
@@ -81,9 +81,9 @@ export type GqlMutationChangeColorArgs = {
 };
 
 
-export type GqlMutationAddTagArgs = {
+export type GqlMutationAddTagsArgs = {
   path: Scalars['String'],
-  tag: Scalars['String']
+  tags: Array<Scalars['String']>
 };
 
 
@@ -131,15 +131,15 @@ export type GqlTagGroup = {
   tags: Array<Scalars['String']>,
 };
 
-export type GqlAddTagMutationVariables = {
+export type GqlAddTagsMutationVariables = {
   path: Scalars['String'],
-  tag: Scalars['String']
+  tags: Array<Scalars['String']>
 };
 
 
-export type GqlAddTagMutation = (
+export type GqlAddTagsMutation = (
   { __typename?: 'Mutation' }
-  & Pick<GqlMutation, 'addTag'>
+  & Pick<GqlMutation, 'addTags'>
 );
 
 export type GqlChangeColorMutationVariables = {
@@ -296,37 +296,37 @@ export type GqlRenameTagGroupMutation = (
 );
 
 
-export const AddTagDocument = gql`
-    mutation AddTag($path: String!, $tag: String!) {
-  addTag(path: $path, tag: $tag)
+export const AddTagsDocument = gql`
+    mutation AddTags($path: String!, $tags: [String!]!) {
+  addTags(path: $path, tags: $tags)
 }
     `;
-export type GqlAddTagMutationFn = ApolloReactCommon.MutationFunction<GqlAddTagMutation, GqlAddTagMutationVariables>;
+export type GqlAddTagsMutationFn = ApolloReactCommon.MutationFunction<GqlAddTagsMutation, GqlAddTagsMutationVariables>;
 
 /**
- * __useAddTagMutation__
+ * __useAddTagsMutation__
  *
- * To run a mutation, you first call `useAddTagMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useAddTagMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useAddTagsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddTagsMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [addTagMutation, { data, loading, error }] = useAddTagMutation({
+ * const [addTagsMutation, { data, loading, error }] = useAddTagsMutation({
  *   variables: {
  *      path: // value for 'path'
- *      tag: // value for 'tag'
+ *      tags: // value for 'tags'
  *   },
  * });
  */
-export function useAddTagMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<GqlAddTagMutation, GqlAddTagMutationVariables>) {
-        return ApolloReactHooks.useMutation<GqlAddTagMutation, GqlAddTagMutationVariables>(AddTagDocument, baseOptions);
+export function useAddTagsMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<GqlAddTagsMutation, GqlAddTagsMutationVariables>) {
+        return ApolloReactHooks.useMutation<GqlAddTagsMutation, GqlAddTagsMutationVariables>(AddTagsDocument, baseOptions);
       }
-export type AddTagMutationHookResult = ReturnType<typeof useAddTagMutation>;
-export type AddTagMutationResult = ApolloReactCommon.MutationResult<GqlAddTagMutation>;
-export type AddTagMutationOptions = ApolloReactCommon.BaseMutationOptions<GqlAddTagMutation, GqlAddTagMutationVariables>;
+export type AddTagsMutationHookResult = ReturnType<typeof useAddTagsMutation>;
+export type AddTagsMutationResult = ApolloReactCommon.MutationResult<GqlAddTagsMutation>;
+export type AddTagsMutationOptions = ApolloReactCommon.BaseMutationOptions<GqlAddTagsMutation, GqlAddTagsMutationVariables>;
 export const ChangeColorDocument = gql`
     mutation ChangeColor($group: String!, $color: String!) {
   changeColor(group: $group, color: $color)
@@ -885,7 +885,7 @@ export type GqlMutationResolvers<ContextType = any, ParentType extends GqlResolv
   removeTagGroup: Resolver<GqlResolversTypes['Boolean'], ParentType, ContextType, RequireFields<GqlMutationRemoveTagGroupArgs, 'group'>>,
   moveTag: Resolver<GqlResolversTypes['Boolean'], ParentType, ContextType, RequireFields<GqlMutationMoveTagArgs, 'tag'>>,
   changeColor: Resolver<GqlResolversTypes['Boolean'], ParentType, ContextType, RequireFields<GqlMutationChangeColorArgs, 'group' | 'color'>>,
-  addTag: Resolver<GqlResolversTypes['Boolean'], ParentType, ContextType, RequireFields<GqlMutationAddTagArgs, 'path' | 'tag'>>,
+  addTags: Resolver<GqlResolversTypes['Boolean'], ParentType, ContextType, RequireFields<GqlMutationAddTagsArgs, 'path' | 'tags'>>,
   removeTag: Resolver<GqlResolversTypes['Boolean'], ParentType, ContextType, RequireFields<GqlMutationRemoveTagArgs, 'path' | 'tag'>>,
   renameFile: Resolver<GqlResolversTypes['Boolean'], ParentType, ContextType, RequireFields<GqlMutationRenameFileArgs, 'path' | 'newName'>>,
   removeFile: Resolver<GqlResolversTypes['Boolean'], ParentType, ContextType, RequireFields<GqlMutationRemoveFileArgs, 'path'>>,

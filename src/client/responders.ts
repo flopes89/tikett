@@ -4,7 +4,7 @@ import { DragDropContextProps } from "react-beautiful-dnd";
 import { Store } from "redux";
 import { Store as State } from "./state";
 import { ApolloClient } from "apollo-boost";
-import { AddTagDocument, MoveTagDocument, FilesDocument, TagGroupsDocument, TagsDocument } from "../generated/graphql";
+import { AddTagsDocument, MoveTagDocument, FilesDocument, TagGroupsDocument, TagsDocument } from "../generated/graphql";
 
 export const onBeforeDragStart: (store: Store) => DragDropContextProps["onBeforeDragStart"] = (store) => () => {
     store.dispatch({
@@ -31,7 +31,7 @@ export const onDragEnd: (client: ApolloClient<any>, store: Store) => DragDropCon
 
     if (destType === "file") {
         client.mutate({
-            mutation: AddTagDocument,
+            mutation: AddTagsDocument,
             variables: {
                 path: destName,
                 tag: source[0],
